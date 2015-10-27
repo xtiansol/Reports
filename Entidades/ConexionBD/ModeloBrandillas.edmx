@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BarandillasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="RelacionCamposTablas_BD">
+          <Key>
+            <PropertyRef Name="RelacionCompoID" />
+          </Key>
+          <Property Name="RelacionCompoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RelacionID" Type="int" Nullable="false" />
+          <Property Name="CampoTablaBase" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CampoTablaRelacion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelacionesTablas_BD">
+          <Key>
+            <PropertyRef Name="RelacionID" />
+          </Key>
+          <Property Name="RelacionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TablaID" Type="int" Nullable="false" />
+          <Property Name="TablaRelacionada" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Tablas_BD">
+          <Key>
+            <PropertyRef Name="TablaID" />
+          </Key>
+          <Property Name="TablaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreTabla" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+          <Property Name="TipoTabla" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Estatus" Type="bit" />
+        </EntityType>
+        <Association Name="FK_RelacionCamposTablas">
+          <End Role="RelacionesTablas_BD" Type="Self.RelacionesTablas_BD" Multiplicity="1" />
+          <End Role="RelacionCamposTablas_BD" Type="Self.RelacionCamposTablas_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelacionesTablas_BD">
+              <PropertyRef Name="RelacionID" />
+            </Principal>
+            <Dependent Role="RelacionCamposTablas_BD">
+              <PropertyRef Name="RelacionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TablaBaseID">
+          <End Role="Tablas_BD" Type="Self.Tablas_BD" Multiplicity="1" />
+          <End Role="RelacionesTablas_BD" Type="Self.RelacionesTablas_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tablas_BD">
+              <PropertyRef Name="TablaID" />
+            </Principal>
+            <Dependent Role="RelacionesTablas_BD">
+              <PropertyRef Name="TablaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BarandillasModelStoreContainer">
+          <EntitySet Name="RelacionCamposTablas_BD" EntityType="Self.RelacionCamposTablas_BD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelacionesTablas_BD" EntityType="Self.RelacionesTablas_BD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tablas_BD" EntityType="Self.Tablas_BD" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RelacionCamposTablas" Association="Self.FK_RelacionCamposTablas">
+            <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
+            <End Role="RelacionCamposTablas_BD" EntitySet="RelacionCamposTablas_BD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TablaBaseID" Association="Self.FK_TablaBaseID">
+            <End Role="Tablas_BD" EntitySet="Tablas_BD" />
+            <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BarandillasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="RelacionCamposTablas_BD">
+          <Key>
+            <PropertyRef Name="RelacionCompoID" />
+          </Key>
+          <Property Name="RelacionCompoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RelacionID" Type="Int32" Nullable="false" />
+          <Property Name="CampoTablaBase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CampoTablaRelacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="RelacionesTablas_BD" Relationship="Self.FK_RelacionCamposTablas" FromRole="RelacionCamposTablas_BD" ToRole="RelacionesTablas_BD" />
+        </EntityType>
+        <EntityType Name="RelacionesTablas_BD">
+          <Key>
+            <PropertyRef Name="RelacionID" />
+          </Key>
+          <Property Name="RelacionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TablaID" Type="Int32" Nullable="false" />
+          <Property Name="TablaRelacionada" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RelacionCamposTablas_BD" Relationship="Self.FK_RelacionCamposTablas" FromRole="RelacionesTablas_BD" ToRole="RelacionCamposTablas_BD" />
+          <NavigationProperty Name="Tablas_BD" Relationship="Self.FK_TablaBaseID" FromRole="RelacionesTablas_BD" ToRole="Tablas_BD" />
+        </EntityType>
+        <EntityType Name="Tablas_BD">
+          <Key>
+            <PropertyRef Name="TablaID" />
+          </Key>
+          <Property Name="TablaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreTabla" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TipoTabla" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estatus" Type="Boolean" />
+          <NavigationProperty Name="RelacionesTablas_BD" Relationship="Self.FK_TablaBaseID" FromRole="Tablas_BD" ToRole="RelacionesTablas_BD" />
+        </EntityType>
+        <Association Name="FK_RelacionCamposTablas">
+          <End Role="RelacionesTablas_BD" Type="Self.RelacionesTablas_BD" Multiplicity="1" />
+          <End Role="RelacionCamposTablas_BD" Type="Self.RelacionCamposTablas_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelacionesTablas_BD">
+              <PropertyRef Name="RelacionID" />
+            </Principal>
+            <Dependent Role="RelacionCamposTablas_BD">
+              <PropertyRef Name="RelacionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TablaBaseID">
+          <End Role="Tablas_BD" Type="Self.Tablas_BD" Multiplicity="1" />
+          <End Role="RelacionesTablas_BD" Type="Self.RelacionesTablas_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tablas_BD">
+              <PropertyRef Name="TablaID" />
+            </Principal>
+            <Dependent Role="RelacionesTablas_BD">
+              <PropertyRef Name="TablaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BarandillasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RelacionCamposTablas_BD" EntityType="Self.RelacionCamposTablas_BD" />
+          <EntitySet Name="RelacionesTablas_BD" EntityType="Self.RelacionesTablas_BD" />
+          <EntitySet Name="Tablas_BD" EntityType="Self.Tablas_BD" />
+          <AssociationSet Name="FK_RelacionCamposTablas" Association="Self.FK_RelacionCamposTablas">
+            <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
+            <End Role="RelacionCamposTablas_BD" EntitySet="RelacionCamposTablas_BD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TablaBaseID" Association="Self.FK_TablaBaseID">
+            <End Role="Tablas_BD" EntitySet="Tablas_BD" />
+            <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BarandillasModelStoreContainer" CdmEntityContainer="BarandillasEntities">
+          <EntitySetMapping Name="RelacionCamposTablas_BD">
+            <EntityTypeMapping TypeName="BarandillasModel.RelacionCamposTablas_BD">
+              <MappingFragment StoreEntitySet="RelacionCamposTablas_BD">
+                <ScalarProperty Name="RelacionCompoID" ColumnName="RelacionCompoID" />
+                <ScalarProperty Name="RelacionID" ColumnName="RelacionID" />
+                <ScalarProperty Name="CampoTablaBase" ColumnName="CampoTablaBase" />
+                <ScalarProperty Name="CampoTablaRelacion" ColumnName="CampoTablaRelacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelacionesTablas_BD">
+            <EntityTypeMapping TypeName="BarandillasModel.RelacionesTablas_BD">
+              <MappingFragment StoreEntitySet="RelacionesTablas_BD">
+                <ScalarProperty Name="RelacionID" ColumnName="RelacionID" />
+                <ScalarProperty Name="TablaID" ColumnName="TablaID" />
+                <ScalarProperty Name="TablaRelacionada" ColumnName="TablaRelacionada" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tablas_BD">
+            <EntityTypeMapping TypeName="BarandillasModel.Tablas_BD">
+              <MappingFragment StoreEntitySet="Tablas_BD">
+                <ScalarProperty Name="TablaID" ColumnName="TablaID" />
+                <ScalarProperty Name="NombreTabla" ColumnName="NombreTabla" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="TipoTabla" ColumnName="TipoTabla" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
