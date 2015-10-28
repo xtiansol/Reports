@@ -11,6 +11,7 @@
     <asp:PlaceHolder runat="server">
         <%:System.Web.Optimization.Scripts.Render("~/bundles/modernizr") %>
         <%:System.Web.Optimization.Styles.Render("~/Content/css") %>
+        <%:System.Web.Optimization.Scripts.Render("~/bundles/Jquery") %>
     </asp:PlaceHolder>
     
 </head>
@@ -44,6 +45,5 @@
             </footer>
         </div>
     </form>
-    <%:System.Web.Optimization.Scripts.Render("~/bundles/Jquery") %>
 </body>
 </html>
