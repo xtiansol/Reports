@@ -79,6 +79,7 @@
     <Compile Include="ConexionBD\Tablas_BD.cs">
       <DependentUpon>ModeloBrandillas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Paginado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

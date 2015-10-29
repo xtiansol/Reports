@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using System.Web.Services;
+using System.Web.Script.Serialization;
+using Paginado = Entidades.Helpers.Paginado;
+using LogicaLayer = Logica.clsTablaBD;
 
 namespace Presentacion.Catalogos
 {
@@ -14,10 +18,19 @@ namespace Presentacion.Catalogos
         {
 
         }
-
-        protected void Unnamed7_Command(object sender, CommandEventArgs e)
+        [WebMethod]
+        public static Paginado getData(int skip, int take)
         {
-
+            try
+            {
+                return LogicaLayer.SelectAll(skip, take);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
+
     }
 }
+

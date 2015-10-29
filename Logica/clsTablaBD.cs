@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tablas_BD = Entidades.ConexionBD.Tablas_BD;
+using Paginado = Entidades.Helpers.Paginado;
 using DataLayer = Datos.clsTablasBD;
 
 namespace Logica
 {
     public class clsTablaBD
     {
-        public static List<Tablas_BD> SelectAll()
+        public static Paginado SelectAll(int skip, int take)
         {
             try
             {
                 //return Datos.clsTablasBD.SelectAll();
                 var procedimiento = new DataLayer();
-                return procedimiento.SelectAll();
+                return procedimiento.SelectAll(skip, take);
             }
             catch (Exception ex)
             {

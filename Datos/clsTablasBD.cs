@@ -9,13 +9,23 @@ namespace Datos
 {
     public class clsTablasBD
     {
-        public  List<Tablas_BD> SelectAll()
+        public Entidades.Helpers.Paginado SelectAll(int skip, int take)
         {
             try
             {
+                var data = new Entidades.Helpers.Paginado();
                 using (var context = new BarandillasEntities())
                 {
-                    return context.Tablas_BD.Where(r => r.Estatus == true).ToList();
+                    var query = (from p in context.Tablas_BD where p.Estatus == true
+                                 orderby p.TablaID
+                                 select p)
+                                .Skip(skip)
+                                .Take(take)
+                                .ToList();
+                    data.Customers = query;
+                    data.TotalRecords = (from p in context.Tablas_BD
+                                         select p).Count();
+                    return data;
                 }
             }
             catch (Exception ex)
@@ -24,7 +34,7 @@ namespace Datos
             }
 
         }
-        public  string Insert(Tablas_BD tablas)
+        public string Insert(Tablas_BD tablas)
         {
             try
             {
@@ -40,7 +50,7 @@ namespace Datos
                 throw new Exception(ex.Message);
             }
         }
-        public  string Update(Tablas_BD tablas)
+        public string Update(Tablas_BD tablas)
         {
             try
             {
@@ -56,7 +66,7 @@ namespace Datos
                 throw new Exception(ex.Message);
             }
         }
-        public  string Delete(int id)
+        public string Delete(int id)
         {
             try
             {
@@ -69,7 +79,7 @@ namespace Datos
                     return tabla.NombreTabla;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -14,8 +14,6 @@ namespace Presentacion
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
-            //
-
         }
 
     }

@@ -12,11 +12,11 @@ namespace Presentacion
         {
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //RouteTable.Routes.MapHttpRoute(
-            //    name: "DefaultApi",
-            //    routeTemplate: "api/{controller}/{id}",
-            //    defaults: new { id = System.Web.Http.RouteParameter.Optional }
-            //    );
+            RouteTable.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = System.Web.Http.RouteParameter.Optional }
+                );
         }
 
         protected void Session_Start(object sender, EventArgs e)

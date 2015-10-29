@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmTablasBD.aspx.cs" Inherits="Presentacion.Catalogos.frmTablasBD" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <p class="text-danger">
+        <p class="text-danger">
         <asp:Literal runat="server" ID="ErrorMessage" />
     </p>
 
@@ -37,13 +37,30 @@
             </div>
         </div>
     </div>
-        <h2>Products</h2>
-    <table>
-    <thead>
-        <tr><th>Name</th><th>Price</th></tr>
-    </thead>
-    <tbody id="products">
-    </tbody>
-    </table>
-    <script src="../Scripts/Product.js"></script>
+    <div class="row">
+	<div class="col-md-12 ">
+	<div class="green-panel">
+	<div class="green-header">
+	   <h5><strong>CATALOGO TIPO MOVIMIENTO (SUA)</strong></h5>
+	</div>
+	</div>
+	</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="fa fa-1x fa-plus-circle"></i>  Nuevo</button>
+        <button type="button" id="btnModificar" class="btn btn-theme03"><i class="fa fa-1x fa-edit"></i> Modificar</button>
+        <button type="button" id="btnConsultar" class="btn btn-theme03"><i class="fa fa-1x fa-search"></i> Consultar</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+       <div id="divData" class="table-responsive">
+       </div>
+       <div id="paging" class="pager">
+           <span id="totalRecords"></span>
+       </div>
+    </div>
+</div>
+    <script src="../Scripts/Tablas.js"></script>
 </asp:Content>
