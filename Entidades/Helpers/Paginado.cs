@@ -8,7 +8,7 @@ namespace Entidades.Helpers
 {
     public class Paginado
     {
-        public List<ConexionBD.Tablas_BD> Customers { get; set; }
+        public List<Tablas> Customers { get; set; }
         public int TotalRecords { get; set; }
     }
 }

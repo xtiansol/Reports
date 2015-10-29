@@ -61,7 +61,7 @@ $('#btnConsultar').click(function () {
 function bindData() {
     $.ajax({
         type: "POST",
-        url: "frmTipoMovimiento.aspx/getData",
+        url: "frmTablasBD.aspx/getData",
         data: "{skip:0,take:" + pageSize + "}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -69,14 +69,14 @@ function bindData() {
         cache: false,
         success: function (msg) {
             var total = msg.d.TotalRecords;
-            if (total > 0) {
+            if (total > 14) {
                 printCustomer(msg);
                 var pageTotal = Math.ceil(total / pageSize);
-                if (pageTotal > 14) {
+                //if (pageTotal > 14) {
                     for (var i = 0; i < pageTotal; i++) {
                         $("#paging").append("<a class=\"paginado\" onClick=\"pageData(" + (i + 1) + ")\">" + (i + 1) + "</a>");
                     }
-                }
+                //}
             }
             else {
                 $("#paging").text("No records were found.");
@@ -93,7 +93,7 @@ function pageData(e) {
     var skip = e == 1 ? 0 : (e * pageSize) - pageSize;
     $.ajax({
         type: "POST",
-        url: "frmDelegaciones.aspx/getData",
+        url: "frmTablasBD.aspx/getData",
         data: "{skip:" + skip + ",take:" + pageSize + "}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -110,12 +110,13 @@ function printCustomer(customers) {
     var msg = customers.d.Customers;
     if ($('#tblResult').length != 0) // remove table if it exists
     { $("#tblResult").remove(); }
-    var table = "<table class='tblResult' id='tblResult' ><thead><tr><th>Seleccionar</th><th>Tipo Movimiento</th><th>Descripción</th></thead><tbody>";
+    var table = "<table class='tblResult' id='tblResult' ><thead><tr><th>Seleccionar</th><th>Nombre Tabla</th><th>Descripción</th><th>Tipo Tabla</th></thead><tbody>";
     for (var i = 0; i <= (msg.length - 1) ; i++) {
         var row = "<tr>";
-        row += '<td><input id="CkbSelect" type="checkbox" value="' + msg[i].Id_TipoMovimiento + '" /> </td>';
-        row += '<td>' + msg[i].Tipo_Movimiento + '</td>';
+        row += '<td><input id="CkbSelect" type="checkbox" value="' + msg[i].TablaID + '" /> </td>';
+        row += '<td>' + msg[i].NombreTabla + '</td>';
         row += '<td>' + msg[i].Descripcion + '</td>';
+        row += '<td>' + msg[i].TipoTabla + '</td>';
 
         row += '</tr>';
         table += row;

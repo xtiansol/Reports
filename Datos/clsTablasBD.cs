@@ -14,15 +14,22 @@ namespace Datos
             try
             {
                 var data = new Entidades.Helpers.Paginado();
+                List<Entidades.Helpers.Tablas> t = new List<Entidades.Helpers.Tablas>();
                 using (var context = new BarandillasEntities())
                 {
+
                     var query = (from p in context.Tablas_BD where p.Estatus == true
                                  orderby p.TablaID
                                  select p)
                                 .Skip(skip)
                                 .Take(take)
                                 .ToList();
-                    data.Customers = query;
+                    foreach (var i in query)
+                    {
+                        t.Add(new Entidades.Helpers.Tablas { TablaID = i.TablaID, NombreTabla = i.NombreTabla, Descripcion = i.Descripcion, TipoTabla = i.TipoTabla, Estatus = i.Estatus });
+                    }
+                    
+                    data.Customers = t;
                     data.TotalRecords = (from p in context.Tablas_BD
                                          select p).Count();
                     return data;

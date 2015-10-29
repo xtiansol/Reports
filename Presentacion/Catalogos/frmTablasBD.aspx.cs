@@ -9,6 +9,7 @@ using System.Web.Services;
 using System.Web.Script.Serialization;
 using Paginado = Entidades.Helpers.Paginado;
 using LogicaLayer = Logica.clsTablaBD;
+using Entidades.ConexionBD;
 
 namespace Presentacion.Catalogos
 {
@@ -23,7 +24,11 @@ namespace Presentacion.Catalogos
         {
             try
             {
-                return LogicaLayer.SelectAll(skip, take);
+                var data = new Paginado();
+
+                data = LogicaLayer.SelectAll(skip, take);
+                return data;
+
             }
             catch (Exception ex)
             {
