@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Catalogos\frmRelacionesTablas.aspx" />
     <Content Include="Catalogos\frmTablasBD.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -192,6 +193,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Tablas.js" />
+    <Content Include="Scripts\TablasRelaciones.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -199,6 +201,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Catalogos\frmRelacionesTablas.aspx.cs">
+      <DependentUpon>frmRelacionesTablas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\frmRelacionesTablas.aspx.designer.cs">
+      <DependentUpon>frmRelacionesTablas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\frmTablasBD.aspx.cs">
       <DependentUpon>frmTablasBD.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -10,6 +10,6 @@
 namespace Presentacion.Catalogos {
     
     
-    public partial class frmTablasBD {
+    public partial class frmRelacionesTablas {
     }
 }

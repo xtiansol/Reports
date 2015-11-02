@@ -35,6 +35,58 @@ namespace Presentacion.Catalogos
                 throw new Exception(ex.Message);
             }
         }
+        [WebMethod]
+        public static string saveData(string NombreTabla, string Descripcion, string TipoTabla)
+        {
+            try
+            {
+                Tablas_BD t = new Tablas_BD();
+                t.NombreTabla = NombreTabla;
+                t.Descripcion = Descripcion;
+                t.TipoTabla = TipoTabla;
+                t.Estatus = true;
+                string data = LogicaLayer.Insert(t);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod]
+        public static string updateData(int id, string NombreTabla, string Descripcion, string TipoTabla)
+        {
+            try
+            {
+                Tablas_BD t = new Tablas_BD();
+                t.TablaID = id;
+                t.NombreTabla = NombreTabla;
+                t.Descripcion = Descripcion;
+                t.TipoTabla = TipoTabla;
+                t.Estatus = true;
+                string data = LogicaLayer.Update(t);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod]
+        public static string deleteData(int id)
+        {
+            try
+            {
+                string data = LogicaLayer.Delete(id);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

@@ -1,29 +1,48 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmTablasBD.aspx.cs" Inherits="Presentacion.Catalogos.frmTablasBD" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-        <p class="text-danger">
-        <asp:Literal runat="server" ID="ErrorMessage" />
-    </p>
-
-    
 <div class="row">
 <div class="col-md-6">
   <div class="panel panel-info">
     <div class="panel-heading">Bootstrap: Horizontal Form</div>
     <div class="panel-body">
-      <div class="form-horizontal" role="form">
-  <div class="form-group">
-    <div class="col-sm-12">
-       <div id="divData" class="table-responsive">
-       </div>
-    </div>
-      <div class="col-sm-6">
-       <div id="paging" class="pager">
-           <span id="totalRecords"></span>
-       </div>
-     </div>
-  </div>
-</div>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-ms-3">
+              <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+              <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+          <div class="form-group">
+            <Label class="col-ms-3 control-label">Nombre:</Label>
+            <div class="col-ms-9">
+                <input type="text" ID="txtNombre" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <Label  class="col-ms-3 control-label">Descripción</Label>
+            <div class="col-ms-10">
+                <input type="text" ID="txtDescricpion"  class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <Label runat="server" class="col-ms-3 control-label">Tipo Tabla</Label>
+            <div class="col-ms-10">
+                <input type="text" ID="txtTipoTabla" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+        <button type="button" id="btnGuardar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+          </div>
+     </form>
     </div>
   </div>
 </div>
@@ -32,42 +51,42 @@
   <div class="panel panel-info">
     <div class="panel-heading">Bootstrap: Horizontal Form</div>
     <div class="panel-body">
-      <form class="form-horizontal" role="form">
-          <div class="form-group">
-        <div class="col-ms-6">
-        <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="fa fa-1x fa-plus-circle"></i>  Nuevo</button>
-        <button type="button" id="btnModificar" class="btn btn-theme03"><i class="fa fa-1x fa-edit"></i> Modificar</button>
-        <button type="button" id="btnConsultar" class="btn btn-theme03"><i class="fa fa-1x fa-search"></i> Consultar</button>
-        </div>
-  </div>
-
-          <div class="form-group">
-            <asp:Label runat="server" AssociatedControlID="txtNombre" CssClass="col-ms-3 control-label">Nombre:</asp:Label>
-            <div class="col-ms-9">
-                <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtNombre"
-                    CssClass="text-danger" ErrorMessage="El campo Nombre es obligatorio." />
-            </div>
+      <div class="form-horizontal" role="form">
+       <div class="form-group">
+          <div class="col-sm-12">
+              <input id="hdID" type="hidden" />
+           <div id="divData" class="table-responsive">                
+           </div>
           </div>
-
-          <div class="form-group">
-            <asp:Label runat="server" CssClass="col-ms-3 control-label">Descripción</asp:Label>
-            <div class="col-ms-10">
-                <asp:TextBox runat="server" ID="txtDescricpion"  CssClass="form-control" />
-            </div>
+          <div class="col-sm-8">
+            <ul id="paging" class="pagination">
+             <li class="disabled"><a href="#" id="totalRecords"></a></li>
+            </ul>
           </div>
-          <div class="form-group">
-            <asp:Label runat="server" AssociatedControlID="txtTipoTabla" CssClass="col-ms-3 control-label">Tipo Tabla</asp:Label>
-            <div class="col-ms-10">
-                <asp:TextBox runat="server" ID="txtTipoTabla" CssClass="form-control" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtTipoTabla"
-                    CssClass="text-danger" Display="Dynamic" ErrorMessage="El campo de Tipo Tabla es obligatorio." />
-            </div>
-          </div>
-     </form>
+       </div>
+      </div>
     </div>
   </div>
 </div>
+</div>
+<div class="row">
+   <div id="dialogEliminar" class="modal fade">
+    <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
+        <h4 class="modal-title">Eliminar !!</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro de eliminar este registro?&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button  id="Delete" type="button" class="btn btn-primary">Si</button>
+      </div>
+    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
 </div>
     <script src="../Scripts/Tablas.js"></script>
     <%--http://simple-form-bootstrap.plataformatec.com.br/examples?optionsRadios=option1&optionsRadios=option1--%>
