@@ -28,5 +28,6 @@ namespace Entidades.ConexionBD
         public virtual DbSet<RelacionCamposTablas_BD> RelacionCamposTablas_BD { get; set; }
         public virtual DbSet<RelacionesTablas_BD> RelacionesTablas_BD { get; set; }
         public virtual DbSet<Tablas_BD> Tablas_BD { get; set; }
+        public virtual DbSet<RelacionesDeTablas> RelacionesDeTablas { get; set; }
     }
 }

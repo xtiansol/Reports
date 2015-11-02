@@ -11,4 +11,10 @@ namespace Entidades.Helpers
         public List<Tablas> Customers { get; set; }
         public int TotalRecords { get; set; }
     }
+    public class PaginadoRelacion
+    {
+        public List<Relaciones> Customers { get; set; }
+        public int TotalRecords { get; set; }
+        public int Count { get; set; }
+    }
 }

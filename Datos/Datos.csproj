@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="clsTablasBD.cs" />
     <Compile Include="clsTablasRelaciones.cs" />
+    <Compile Include="clsVistaRelaciones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

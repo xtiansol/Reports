@@ -7,6 +7,9 @@
                 <div class="panel-heading">Bootstrap: Horizontal Form</div>
                 <div class="panel-body">
                 <form id="mySuperCoolForm">
+                 <div class="col-md-12">
+                     <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+                 </div>
                  <div class="col-md-3">
                      <label>Tablas</label>
                     <select id="Tablas" multiple="multiple" class="form-control altoSelect" >
@@ -54,6 +57,10 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
         </div>
     </div>
     <%:System.Web.Optimization.Scripts.Render("~/bundles/jqueryval") %>

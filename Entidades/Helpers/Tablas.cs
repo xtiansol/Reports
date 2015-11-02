@@ -14,4 +14,10 @@ namespace Entidades.Helpers
         public string TipoTabla { get; set; }
         public Nullable<bool> Estatus { get; set; }
     }
+    public class Relaciones
+    {
+        public int TablaID { get; set; }
+        public string NombreTabla { get; set; }
+        public int  Count { get; set; }
+    }
 }

@@ -6,22 +6,23 @@ using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using LogicaLayer = Logica.clsTablasRelaciones;
+using Logica;
 using Entidades.ConexionBD;
+
 namespace Presentacion.Catalogos
 {
     public partial class frmRelacionesTablas : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            clsVistaRelaciones.SelectAll(0, 10);
         }
         [WebMethod()]
         public static string selectTables()
         {
             try
             {
-                List<Tuple<int, string>> tables = LogicaLayer.selectTables();
+                List<Tuple<int, string>> tables = clsTablasRelaciones.selectTables();
                 var json = new JavaScriptSerializer();
                 return json.Serialize(tables);
             }
@@ -41,7 +42,7 @@ namespace Presentacion.Catalogos
                 RelacionesTablas_BD rt = new RelacionesTablas_BD();
                 rt.TablaID = idTabla;
                 rt.Descripcion = Descripcion;
-                int tables = LogicaLayer.Insert(rt, m);
+                int tables = clsTablasRelaciones.Insert(rt, m);
 
                 return 1;
             }

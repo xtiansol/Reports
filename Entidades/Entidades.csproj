@@ -73,6 +73,9 @@
     <Compile Include="ConexionBD\RelacionCamposTablas_BD.cs">
       <DependentUpon>ModeloBrandillas.tt</DependentUpon>
     </Compile>
+    <Compile Include="ConexionBD\RelacionesDeTablas.cs">
+      <DependentUpon>ModeloBrandillas.tt</DependentUpon>
+    </Compile>
     <Compile Include="ConexionBD\RelacionesTablas_BD.cs">
       <DependentUpon>ModeloBrandillas.tt</DependentUpon>
     </Compile>

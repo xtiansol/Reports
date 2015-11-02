@@ -34,7 +34,20 @@
           <Property Name="Estatus" Type="bit" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'Barandillas.dbo.Usuario2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'Barandillas.dbo.RelacionesDeTablas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="RelacionesDeTablas">
+          <Key>
+            <PropertyRef Name="TablaID" />
+            <PropertyRef Name="NombreTabla" />
+            <PropertyRef Name="RelacionID" />
+            <PropertyRef Name="TablaRelacionada" />
+          </Key>
+          <Property Name="TablaID" Type="int" Nullable="false" />
+          <Property Name="NombreTabla" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RelacionID" Type="int" Nullable="false" />
+          <Property Name="TablaRelacionada" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
         <Association Name="FK_RelacionCamposTablas">
           <End Role="RelacionesTablas_BD" Type="Self.RelacionesTablas_BD" Multiplicity="1" />
           <End Role="RelacionCamposTablas_BD" Type="Self.RelacionCamposTablas_BD" Multiplicity="*" />
@@ -63,6 +76,15 @@ advertencia 6002: La tabla o vista 'Barandillas.dbo.Usuario2' no tiene definida 
           <EntitySet Name="RelacionCamposTablas_BD" EntityType="Self.RelacionCamposTablas_BD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelacionesTablas_BD" EntityType="Self.RelacionesTablas_BD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tablas_BD" EntityType="Self.Tablas_BD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelacionesDeTablas" EntityType="Self.RelacionesDeTablas" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RelacionesDeTablas].[TablaID] AS [TablaID], 
+    [RelacionesDeTablas].[NombreTabla] AS [NombreTabla], 
+    [RelacionesDeTablas].[RelacionID] AS [RelacionID], 
+    [RelacionesDeTablas].[TablaRelacionada] AS [TablaRelacionada], 
+    [RelacionesDeTablas].[Descripcion] AS [Descripcion]
+    FROM [dbo].[RelacionesDeTablas] AS [RelacionesDeTablas]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_RelacionCamposTablas" Association="Self.FK_RelacionCamposTablas">
             <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
             <End Role="RelacionCamposTablas_BD" EntitySet="RelacionCamposTablas_BD" />
@@ -144,7 +166,21 @@ advertencia 6002: La tabla o vista 'Barandillas.dbo.Usuario2' no tiene definida 
             <End Role="Tablas_BD" EntitySet="Tablas_BD" />
             <End Role="RelacionesTablas_BD" EntitySet="RelacionesTablas_BD" />
           </AssociationSet>
+          <EntitySet Name="RelacionesDeTablas" EntityType="BarandillasModel.RelacionesDeTablas" />
         </EntityContainer>
+        <EntityType Name="RelacionesDeTablas">
+          <Key>
+            <PropertyRef Name="TablaID" />
+            <PropertyRef Name="NombreTabla" />
+            <PropertyRef Name="RelacionID" />
+            <PropertyRef Name="TablaRelacionada" />
+          </Key>
+          <Property Name="TablaID" Type="Int32" Nullable="false" />
+          <Property Name="NombreTabla" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RelacionID" Type="Int32" Nullable="false" />
+          <Property Name="TablaRelacionada" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -179,6 +215,17 @@ advertencia 6002: La tabla o vista 'Barandillas.dbo.Usuario2' no tiene definida 
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="TipoTabla" ColumnName="TipoTabla" />
                 <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelacionesDeTablas">
+            <EntityTypeMapping TypeName="BarandillasModel.RelacionesDeTablas">
+              <MappingFragment StoreEntitySet="RelacionesDeTablas">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="TablaRelacionada" ColumnName="TablaRelacionada" />
+                <ScalarProperty Name="RelacionID" ColumnName="RelacionID" />
+                <ScalarProperty Name="NombreTabla" ColumnName="NombreTabla" />
+                <ScalarProperty Name="TablaID" ColumnName="TablaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

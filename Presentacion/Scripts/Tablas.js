@@ -161,7 +161,7 @@ function deleteData(id) {
         }
     });
 }
-//==== Inicio Funciones que guardan los datos en la BD
+//==== FIN Funciones que guardan los datos en la BD
 
 function EnableTrue() {
     $("#txtNombre").prop("disabled", true);

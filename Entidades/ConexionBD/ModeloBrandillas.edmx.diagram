@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="BarandillasModel.Tablas_BD" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="BarandillasModel.FK_RelacionCamposTablas" ManuallyRouted="false" />
         <AssociationConnector Association="BarandillasModel.FK_TablaBaseID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BarandillasModel.RelacionesDeTablas" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

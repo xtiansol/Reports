@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="clsTablaBD.cs" />
     <Compile Include="clsTablasRelaciones.cs" />
+    <Compile Include="clsVistaRelaciones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
