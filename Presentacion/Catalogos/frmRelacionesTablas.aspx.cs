@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Logica;
 using Entidades.ConexionBD;
+using Entidades.Helpers;
 
 namespace Presentacion.Catalogos
 {
@@ -15,7 +16,7 @@ namespace Presentacion.Catalogos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            clsVistaRelaciones.SelectAll(0, 10);
+            //clsVistaRelaciones.SelectAll(0, 10);
         }
         [WebMethod()]
         public static string selectTables()
@@ -25,6 +26,20 @@ namespace Presentacion.Catalogos
                 List<Tuple<int, string>> tables = clsTablasRelaciones.selectTables();
                 var json = new JavaScriptSerializer();
                 return json.Serialize(tables);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod()]
+        public static PaginadoRelacion selectData(int skip, int take)
+        {
+            try
+            {
+                var data = new PaginadoRelacion();
+                data = clsVistaRelaciones.SelectAll(skip, take);
+                return data;
             }
             catch (Exception ex)
             {

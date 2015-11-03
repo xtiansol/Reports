@@ -60,8 +60,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-        </div>
+       <div class="form-group">
+          <div class="col-sm-6">
+              <input id="hdID" type="hidden" />
+           <div id="divData" class="table-responsive">                
+           </div>
+          </div>
+          <div class="col-sm-6">
+            <ul id="paging" class="pagination">
+             <li class="disabled"><a href="#" id="totalRecords"></a></li>
+            </ul>
+          </div>
+       </div>
     </div>
     <%:System.Web.Optimization.Scripts.Render("~/bundles/jqueryval") %>
     <script src="../Scripts/TablasRelaciones.js"></script>

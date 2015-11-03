@@ -14,7 +14,7 @@ namespace Datos
             try
             {
                 var data = new Entidades.Helpers.Paginado();
-                List<Entidades.Helpers.Relaciones> t = new List<Entidades.Helpers.Relaciones>();
+                List<Entidades.Helpers.Tablas> t = new List<Entidades.Helpers.Tablas>();
                 using (var context = new BarandillasEntities())
                 {
 
@@ -26,7 +26,7 @@ namespace Datos
                                 .ToList();
                     foreach (var i in query)
                     {
-                        t.Add(new Entidades.Helpers.Relaciones { TablaID = i.TablaID, NombreTabla = i.NombreTabla, Descripcion = i.Descripcion, TipoTabla = i.TipoTabla, Estatus = i.Estatus });
+                        t.Add(new Entidades.Helpers.Tablas { TablaID = i.TablaID, NombreTabla = i.NombreTabla, Descripcion = i.Descripcion, TipoTabla = i.TipoTabla, Estatus = i.Estatus });
                     }
                     
                     data.Customers = t;

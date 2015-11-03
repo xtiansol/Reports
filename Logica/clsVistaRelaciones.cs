@@ -15,7 +15,6 @@ namespace Logica
         {
             try
             {
-                //return Datos.clsTablasBD.SelectAll();
                 var procedimiento = new DataLayer();
                 return procedimiento.selectAll(skip, take);
             }
