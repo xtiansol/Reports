@@ -3,7 +3,7 @@
     EnableTrue();
 });
 //==== VARIABLE GLOBAL PARA EL PAGINADO
-var pageSize = 10;
+var pageSize = 12;
 var Evento = null;
 //==== Inicio Get data from database, created HTML table and place inside #divData
 function bindData() {
@@ -17,22 +17,25 @@ function bindData() {
         cache: false,
         success: function (msg) {
             var total = msg.d.TotalRecords;
-            if (total > 10) {
-                printCustomer(msg);
+            printCustomer(msg);
+            if (total > 12) {
                 var pageTotal = Math.ceil(total / pageSize);
-                //if (pageTotal > 14) {
-                //if ($('#paging').length != 0) // remove table if it exists
-                //{
-                //    $("#paging").empty();
-                //}
-                //else {
+                if ($('#ul').length != 0) // remove table if it exists
+                { $("#ul").remove(); }
+                var paginado = "<ul id='paging' class='pagination'>";
+                paginado += '<li class="disabled"><a href="#" id="totalRecords"></a></li>';
                 for (var i = 0; i < pageTotal; i++) {
-                    $("#paging").append("<li><a href=\"#\" onClick=\"pageData(" + (i + 1) + ")\">" + (i + 1) + "</a></li>");
+                        var row = "<li>";
+                        row += '<a href=\'#\' onClick=\'pageData(' + (i + 1) + ')\'>' + (i + 1) + '</a>';
+                        row += '</li>';
+                        paginado += row;
                 }
-                //}
+                paginado += '</ul>';
+                $('#paging2').html(paginado);
+                $("#paging2").slideDown("slow");
             }
             else {
-                $("#paging").text("No records were found.");
+                $("#paging").text("Registros Insuficientes Para el Paginado.");
             }
             $("#totalRecords").text("Total Registros: " + total);
         },

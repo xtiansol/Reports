@@ -19,9 +19,9 @@
                      <br />
                      <br />
                      <button type="button" id="btnPasart" class="btn btn-theme03"><i class="glyphicon glyphicon-forward"></i></button>
+                <%--<br />
                      <br />
-                     <br />
-                     <button type="button" id="btnRegresart" class="btn btn-theme03"><i class="glyphicon glyphicon-backward"></i></button>
+                     <button type="button" id="btnRegresart" class="btn btn-theme03"><i class="glyphicon glyphicon-backward"></i></button>--%>
                  </div>
                  <div class="col-md-3">
                     <label>Relación</label>
@@ -44,7 +44,7 @@
                  <div class="col-md-6">
                     <br />
                     <label>Descripcion</label>
-                    <textarea name="Descripcion" cols="40" rows="5"  class="form-control"></textarea>
+                    <input id="Descripcion" type="text" name="Descripcion"  class="form-control" />
                 </div>
                  <div class="col-md-6">
                      <br />
@@ -65,10 +65,7 @@
               <input id="hdID" type="hidden" />
            <div id="divData" class="table-responsive">                
            </div>
-          </div>
-          <div class="col-sm-6">
-            <ul id="paging" class="pagination">
-             <li class="disabled"><a href="#" id="totalRecords"></a></li>
+            <ul id="paging2" >
             </ul>
           </div>
        </div>

@@ -59,8 +59,7 @@
            </div>
           </div>
           <div class="col-sm-8">
-            <ul id="paging" class="pagination">
-             <li class="disabled"><a href="#" id="totalRecords"></a></li>
+            <ul id="paging2" >
             </ul>
           </div>
        </div>

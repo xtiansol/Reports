@@ -47,6 +47,18 @@ namespace Presentacion.Catalogos
             }
         }
         [WebMethod()]
+        public static List<int> tablasRelacionadas(int id)
+        {
+            try
+            {
+                return clsVistaRelaciones.tablasRelacionadas(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod()]
         public static int saveData(int idTabla,string data,string Descripcion)
         {
             try

@@ -24,5 +24,18 @@ namespace Logica
             }
 
         }
+
+        public static List<int> tablasRelacionadas(int id)
+        {
+            try
+            {
+                var procedimiento = new DataLayer();
+                return procedimiento.tablasRelacionadas(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -31,9 +31,6 @@ namespace Datos
                                 .Skip(skip)
                                 .Take(take)
                                 .ToList().Distinct();
-                    //var blogs = context.RelacionesDeTablas.SqlQuery("Select distinct(TablaID),NombreTabla, COUNT(TablaID) as Relaciones,r.RelacionID, r.TablaRelacionada, r.Descripcion from RelacionesDeTablas group by TablaID, NombreTabla").ToList();
-
-                    //var query2 = context.RelacionesDeTablas.GroupBy(t => new { t.TablaID, t.NombreTabla}).Select(g => new { g.Key.TablaID, g.Key.NombreTabla, count = g.Select(l => l.RelacionID).Distinct().Count() });
                     foreach (var i in query)
                     {
                         t.Add(new Relaciones { TablaID = i.TablaID, NombreTabla = i.NombreTabla, Count = i.Count});
@@ -41,6 +38,35 @@ namespace Datos
 
                     data.Customers = t;
                     data.TotalRecords = t.Count();
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<int> tablasRelacionadas(int id)
+        {
+            try
+            {
+                List<int> data = new List<int>();
+                using (var context = new BarandillasEntities())
+                {
+                    var query = (from i in context.RelacionesDeTablas
+                                 where i.TablaID == id
+                                 select i.TablaRelacionada).ToList();
+                    if (query.Count > 0)
+                    {
+                        foreach (var i in query)
+                        {
+                            data.Add(i);
+                        }
+                    }
+                    else
+                    {
+                        data.Add(0);
+                    }
                     return data;
                 }
             }
