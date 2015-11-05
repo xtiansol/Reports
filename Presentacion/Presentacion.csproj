@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Catalogos\frmRelacionCampos.aspx" />
     <Content Include="Catalogos\frmRelacionesTablas.aspx" />
     <Content Include="Catalogos\frmTablasBD.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -201,6 +202,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Catalogos\frmRelacionCampos.aspx.cs">
+      <DependentUpon>frmRelacionCampos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\frmRelacionCampos.aspx.designer.cs">
+      <DependentUpon>frmRelacionCampos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\frmRelacionesTablas.aspx.cs">
       <DependentUpon>frmRelacionesTablas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

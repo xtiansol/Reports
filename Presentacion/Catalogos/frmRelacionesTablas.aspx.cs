@@ -78,5 +78,17 @@ namespace Presentacion.Catalogos
                 throw new Exception(ex.Message);
             }
         }
+        [WebMethod()]
+        public static string Delete(int id)
+        {
+            try
+            {
+                return clsTablasRelaciones.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

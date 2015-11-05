@@ -174,7 +174,6 @@ function updateData(id) {
                 //var myObject = eval('(' + response.d + ')');
                 if (response) {
                     alert("Los Datos de " + response.d + " Actualizaron Exitosamente.");
-                    EnableTrue();
                     CleanText();
                     bindData();
                 }
@@ -192,7 +191,7 @@ function updateData(id) {
 function deleteData(id) {
     $.ajax({
         type: "POST",
-        url: "frmTablasBD.aspx/deleteData",
+        url: "frmRelacionesTablas.aspx/Delete",
         data: "{id:'" + id + "'}",
         contentType: "application/json; charset=utf-8",
         datatype: "json",
@@ -260,22 +259,35 @@ $('#btnNuevo').click(function () {
 //==== VENTO DEL BOTON Guardar
 $('#btnGuardar').click(function (e) {
     if (Evento == "Nuevo") {
-    saveData();
+        saveData();
+        $("#btnGuardar").prop("disabled", true);
+        $("#btnCancelar").prop("disabled", true);
     }
     else {
         var id = $("#hdID").val();
         updateData(id);
     }
 });
+//==== VENTO DEL BOTON Eliminar
+$(document).on("click", ".Eliminar", function () {
+    var id = $(this).attr("value");
+    $('#dialogEliminar').modal({ backdrop: 'static', keyboard: false })
+     .one('click', '#Delete', function () {
+         deleteData(id);
+         $('#dialogEliminar').modal('hide');
+     });
+});
 //==== VENTO DEL BOTON Cancelar
 $('#btnCancelar').click(function () {
     CleanText();
+    EnableTrue();
 });
+
 $('#btnPasart').click(function (e) {
     var id = $('#Tablas option:selected').val();
     var selectedOpts = $('#Tablas option:selected');
     if (selectedOpts.length == 0) {
-        alert("Nothing to move.");
+        alert("No Hay Datos Seleccionados !!");
         e.preventDefault();
     } else {
     $.ajax({
@@ -330,28 +342,27 @@ $('#btnPasart').click(function (e) {
 $('#btnPasarR').click(function (e) {
     var selectedOpts = $('#relacion option:selected');
     if (selectedOpts.length == 0) {
-        alert("Nothing to move.");
+        alert("No Hay Datos Seleccionados !!");
+        $("#btnGuardar").prop("disabled", true);
         e.preventDefault();
+    } else{
+        $("#btnGuardar").prop("disabled", false);
     }
     $('#relacionadas').append($(selectedOpts).clone().prop('selected', true));
     $(selectedOpts).remove();
-    $("#btnGuardar").prop("disabled", false);
+
     e.preventDefault();
 });
 $('#btnRegresaR').click(function (e) {
     var selectedOpts = $('#relacionadas option:selected');
-    var selectedOpts2 = $('#relacionadas optionoption:selected');
+    var selectedOpts2 = $('#relacionadas option');
     if (selectedOpts.length == 0) {
-        alert("Nothing to move.");
+        alert("No Hay Datos Seleccionados !!");
+        $("#btnGuardar").prop("disabled", true);
         e.preventDefault();
     } else
     {
-        $("#btnGuardar").prop("disabled", true);
-    }
-    if (selectedOpts2.length == 0) {
         $("#btnGuardar").prop("disabled", false);
-    } else {
-        $("#btnGuardar").prop("disabled", true);
     }
 
     $('#relacion').append($(selectedOpts).clone());

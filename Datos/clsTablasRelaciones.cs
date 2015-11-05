@@ -50,5 +50,30 @@ namespace Datos
                 throw new Exception(ex.Message);
             }
         }
+
+        public string Delete(int id)
+        {
+            try
+            {
+                string data = null;
+                using (var context = new BarandillasEntities())
+                {
+                    var query = (from i in context.RelacionesTablas_BD
+                                 where i.TablaID == id
+                                 select i).ToList();
+                    data = query[0].Tablas_BD.NombreTabla;
+                    foreach(var d in query)
+                    {
+                        context.RelacionesTablas_BD.Remove(d);
+                    }
+                    context.SaveChanges();
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

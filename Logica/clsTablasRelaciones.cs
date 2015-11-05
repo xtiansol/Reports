@@ -39,5 +39,17 @@ namespace Logica
                 throw new Exception(ex.Message);
             }
         }
+        public static string Delete(int id)
+        {
+            try
+            {
+                var procedimiento = new DataLayer();
+                return procedimiento.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

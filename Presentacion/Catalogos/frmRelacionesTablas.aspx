@@ -44,7 +44,7 @@
                  <div class="col-md-6">
                     <br />
                     <label>Descripcion</label>
-                    <input id="Descripcion" type="text" name="Descripcion"  class="form-control" />
+                    <input id="txtDescricpion" type="text"  class="form-control" />
                 </div>
                  <div class="col-md-6">
                      <br />
@@ -70,6 +70,25 @@
           </div>
        </div>
     </div>
+<div class="row">
+   <div id="dialogEliminar" class="modal fade">
+    <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
+        <h4 class="modal-title">Eliminar !!</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Esta seguro de eliminar este registro?&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button  id="Delete" type="button" class="btn btn-primary">Si</button>
+      </div>
+    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+</div>
     <%:System.Web.Optimization.Scripts.Render("~/bundles/jqueryval") %>
     <script src="../Scripts/TablasRelaciones.js"></script>
 </asp:Content>
