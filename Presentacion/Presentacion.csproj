@@ -193,6 +193,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\TablaCampos.js" />
     <Content Include="Scripts\Tablas.js" />
     <Content Include="Scripts\TablasRelaciones.js" />
     <Content Include="Web.config">

@@ -55,4 +55,5 @@
     </div><!-- /.modal-dialog -->
    </div><!-- /.modal -->
 </div>
+    <script src="../Scripts/TablaCampos.js"></script>
 </asp:Content>
