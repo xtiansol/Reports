@@ -52,6 +52,50 @@ function bindDetail(id) {
         }
     });
 }
+function bindColumns(tableName) {
+    $.ajax({
+        type: 'POST',
+        url: 'frmRelacionCampos.aspx/selectColumns',
+        data: "{nombre:'" + tableName + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            var datos = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+            $("#CamposP").get(0).options.length = 0;
+            $("#CamposP").get(0).options[0] = new Option("--Seleccionar--", "-1");
+            for (var i = 0; i < datos.length; i++) {
+                //var val = datos[i].Item1;
+                var text = datos[i];
+                $('#CamposP').get(0).options[$("#CamposP").get(0).options.length] = new Option(text);
+            }
+        },
+        error: function (result) {
+            alert("ERROR " + result.status + " " + result.statusText);
+        }
+    });
+}
+function bindColumnsF(tableName) {
+    $.ajax({
+        type: 'POST',
+        url: 'frmRelacionCampos.aspx/selectColumns',
+        data: "{nombre:'" + tableName + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            var datos = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+            $("#CamposF").get(0).options.length = 0;
+            $("#CamposF").get(0).options[0] = new Option("--Seleccionar--", "-1");
+            for (var i = 0; i < datos.length; i++) {
+                //var val = datos[i].Item1;
+                var text = datos[i];
+                $('#CamposF').get(0).options[$("#CamposF").get(0).options.length] = new Option(text);
+            }
+        },
+        error: function (result) {
+            alert("ERROR " + result.status + " " + result.statusText);
+        }
+    });
+}
 function bindData() {
     $.ajax({
         type: "POST",
@@ -306,7 +350,13 @@ $('#btnCancelar').click(function () {
 });
 $('#Tablas').change(function () {
     var id = $('#Tablas option:selected').val();
+    var tableName = $('#Tablas option:selected').text();
     bindDetail(id);
+    bindColumns(tableName);
+});
+$('#relacion').change(function () {
+    var tableName = $('#relacion option:selected').text();
+    bindColumnsF(tableName);
 });
 
 $('#btnPasart').click(function (e) {

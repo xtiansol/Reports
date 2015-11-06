@@ -25,6 +25,18 @@
             </div>
 
         </div>
+        <div class="col-md-12">
+             <div class="col-md-3">
+                     <label>Campo Principal</label>
+                    <select id="CamposP"  class="form-control" >
+                    </select>
+             </div>
+             <div class="col-md-3">
+                     <label>Campo Principal</label>
+                    <select id="CamposF"  class="form-control" >
+                    </select>
+             </div>
+        </div>
     </div>
     <div class="row">
        <div class="form-group">

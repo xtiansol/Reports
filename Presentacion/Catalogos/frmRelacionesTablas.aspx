@@ -19,9 +19,6 @@
                      <br />
                      <br />
                      <button type="button" id="btnPasart" class="btn btn-theme03"><i class="glyphicon glyphicon-forward"></i></button>
-                <%--<br />
-                     <br />
-                     <button type="button" id="btnRegresart" class="btn btn-theme03"><i class="glyphicon glyphicon-backward"></i></button>--%>
                  </div>
                  <div class="col-md-3">
                     <label>Relación</label>
@@ -71,12 +68,11 @@
        </div>
     </div>
 <div class="row">
-   <div id="dialogEliminar" class="modal fade">
-    <div class="modal-dialog modal-sm">
-    <div class="modal-content">
+   <div id="dialogEliminar" class="modal fade"><!-- /.modal -->
+    <div class="modal-dialog modal-sm"><!-- /.modal-dialog -->
+    <div class="modal-content"><!-- /.modal-content -->
       <div class="modal-header">
-        <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
-        <h4 class="modal-title">Eliminar !!</h4>
+       <h4 class="modal-title">Eliminar !!</h4>
       </div>
       <div class="modal-body">
         <p>¿Esta seguro de eliminar este registro?&hellip;</p>

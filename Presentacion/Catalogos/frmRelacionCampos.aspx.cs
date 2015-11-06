@@ -10,7 +10,6 @@ namespace Presentacion.Catalogos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            selectColumn(1);
         }
         [WebMethod()]
         public static string selectTables()
@@ -40,16 +39,21 @@ namespace Presentacion.Catalogos
                 throw new Exception(ex.Message);
             }
         }
-        public static List<string> selectColumn(int id)
+        [WebMethod()]
+        public static List<string> selectColumns(string nombre)
         {
             try
             {
-                return clsTablaCampo.selectColumn(id);
+                //List<string> tables = clsTablaCampo.selectColumn(nombre);
+                //var json = new JavaScriptSerializer();
+                //return json.Serialize(clsTablaCampo.selectColumn(nombre));
+                return clsTablaCampo.selectColumn(nombre);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }

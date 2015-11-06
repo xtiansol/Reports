@@ -33,12 +33,12 @@ namespace Logica
                 throw new Exception(ex.Message);
             }
         }
-        public static List<string> selectColumn(int id)
+        public static List<string> selectColumn(string tableName)
         {
             try
             {
                 var procedimiento = new DataLayer();
-                return procedimiento.selectColumn(id);
+                return procedimiento.selectColumn(tableName);
             }
             catch (Exception ex)
             {

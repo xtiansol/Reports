@@ -63,11 +63,10 @@ namespace Datos
                 throw new Exception(ex.Message);
             }
         }
-        public  List<string> selectColumn(int id)
+        public  List<string> selectColumn(string tableName)
         {
             try
             {
-                string tableName = "Tablas_BD";
                 DataTable dt = new DataTable();                
                 string SqlString = "SELECT Column_Name from INFORMATION_SCHEMA.COLUMNS where table_name = @tableName";
                 List<string> data = new List<string>();
@@ -99,8 +98,7 @@ namespace Datos
                                 sda.Dispose();
                             }
                         }
-                    }
-                    
+                    }                    
                     return data;
                 }
             }
