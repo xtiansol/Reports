@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<config>
+	<BD>
+		<item name="NomBD" >
+			<value>Barandillas</value>
+		</item>
+		<item name="Servidor" >
+			<value>MTL-PC122\QLSERVER</value>
+		</item>
+		<item name="Us" >
+			<value>sa</value>
+		</item>
+		<item name="Pwd" >
+			<value>mtlg1234</value>
+		</item>
+		<item name="BD" >
+			<value>1</value>
+		</item>
+	</BD>
+
+	<RutasArchSAP>
+		<item name="RutaArchSAPTrabajadores" >
+			<value>C:\trabajadores.txt</value>
+		</item>
+		<item name="RutaArchSAPTrabajadoresGrales" >
+			<value>C:\Trabajadores_grales.txt</value>
+		</item>
+		<item name="RutaArchSAPRel_Trab_Ins_Dep" >
+			<value>C:\Rel_trab_ins_dep.txt</value>
+		</item>
+		<item name="RutaArchSAPHistorico_Sueldo" >
+			<value>C:\Historico_Sueldos.txt</value>
+		</item>
+		<item name="RutaArchSAPRel_Trab_Agr" >
+			<value>C:\rel_trab_agr.txt</value>
+		</item>
+		<item name="RutaArchSAPRel_Trab_Coleccion" >
+			<value>C:\Rel_trab_coleccion.txt</value>
+		</item>
+
+		<item name="RutaArchPatSAPTrabajadores" >
+			<value>C:\PatronesTrabajadores.xml</value>
+		</item>
+		<item name="RutaArchPatSAPTrabajadoresGrales" >
+			<value>C:\Patronestrabajadores_Grales.xml</value>
+		</item>
+		<item name="RutaArchPatSAPRel_Trab_Ins_Dep" >
+			<value>C:\PatronesRel_trab_ins_dep.xml</value>
+		</item>
+		<item name="RutaArchPatSAPHistorico_Sueldo" >
+			<value>C:\PatronesHistorico_Sueldos.xml</value>
+		</item>
+		<item name="RutaArchPatSAPRel_Trab_Agr" >
+			<value>C:\PatronesRel_trab_agr.xml</value>
+		</item>
+		<item name="RutaArchPatSAPRel_Trab_Coleccion" >
+			<value>C:\PatronesRel_trab_coleccion.xml</value>
+		</item>
+		
+		
+	</RutasArchSAP>
+
+	<RutasArch>
+		<item name="RutaArchXMLLog4Net">
+			<value>C:\confLog4Net.xml</value>
+		</item>
+		<item name="RutaArchLog4Net">
+			<value>C:\MSD_InterfazSAP.log</value>
+		</item>
+
+		<item name="RutaArchPatDispBanc">
+			<value>C:\PatDispBanc.xml</value>
+		</item>
+		<item name="RutaArchDispBanc">
+			<value>C:\DispBanc.txt</value>
+		</item>
+		
+		<item name="RutaArchPatPolizaContSAP">
+			<value>C:\PatPolizaContable.xml</value>
+		</item>
+		<item name="RutaArchPolizaContSAP">
+			<value>C:\PolizaContSAP.txt</value>
+		</item>
+	</RutasArch>
+	
+	<Servicio>
+		<item name="Hour">
+			<value>17</value>
+		</item>
+		<item name="Minute">
+			<value>13</value>
+		</item>
+		<item name="Second">
+			<value>40</value>
+		</item>
+		<item name="Intervalo">
+			<value>20000</value>
+		</item>
+	</Servicio>
+	
+</config>

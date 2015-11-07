@@ -43,6 +43,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdminArch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AdminArch\bin\Debug\AdminArch.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminBD">
+      <HintPath>..\AdminBD\bin\Debug\AdminBD.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminReflex">
+      <HintPath>..\AdminReflex\bin\Debug\AdminReflex.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminXML">
+      <HintPath>..\AdminXML\bin\Debug\AdminXML.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxControlToolkit, Version=15.1.4.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.15.1.4.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +75,10 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Logica">
       <HintPath>..\Logica\bin\Debug\Logica.dll</HintPath>
@@ -173,6 +194,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="PaginaMaestra\PageMaster.Master" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Reportes\config.xml" />
+    <Content Include="Reportes\frmSelectTablas.aspx" />
+    <Content Include="Reportes\Login.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
@@ -193,6 +217,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Reportes.js" />
     <Content Include="Scripts\TablaCampos.js" />
     <Content Include="Scripts\Tablas.js" />
     <Content Include="Scripts\TablasRelaciones.js" />
@@ -235,6 +260,26 @@
       <DependentUpon>PageMaster.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportes\ConfArch.cs" />
+    <Compile Include="Reportes\ConfBD.cs" />
+    <Compile Include="Reportes\Config.cs" />
+    <Compile Include="Reportes\ConfMail.cs" />
+    <Compile Include="Reportes\frmSelectTablas.aspx.cs">
+      <DependentUpon>frmSelectTablas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reportes\frmSelectTablas.aspx.designer.cs">
+      <DependentUpon>frmSelectTablas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\GenReportes.cs" />
+    <Compile Include="Reportes\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reportes\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ServiciosGen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Estilos\" />

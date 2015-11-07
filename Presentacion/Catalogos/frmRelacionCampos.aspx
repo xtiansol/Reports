@@ -7,36 +7,57 @@
                 <div class="panel-heading">Bootstrap: Horizontal Form</div>
                 <div class="panel-body">
                 <form id="mySuperCoolForm">
+                 <div class="col-md-6">
+                 <div class="col-md-6">
+                     <button class="btn btn-theme03" id="btnNuevo" type="button"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+                 </div>
                  <div class="col-md-12">
-                     <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
-                 </div>
-                 <div class="col-md-3">
+                 <div class="col-md-6">
                      <label>Tablas Principal</label>
-                    <select id="Tablas"  class="form-control" >
+                    <select class="form-control" id="Tablas">
+                     </select>
+                 </div>
+                 <div class="col-md-6">
+                    <label>Tablas Foraneas</label>
+                    <select class="form-control" id="relacion">
                     </select>
                  </div>
-                 <div class="col-md-3">
-                    <label>Tablas Foraneas</label>
-                    <select  id="relacion" class="form-control" >
+                 </div>
+                 <div class="col-md-12">
+                   <div class="col-md-6">
+                     <label>PK</label>
+                    <select class="form-control" id="CamposP">
                     </select>
+                   </div>
+                   <div class="col-md-6">
+                     <label>FK</label>
+                    <select class="form-control" id="CamposF">
+                    </select>
+                   </div>
+                 </div>
+                 <div class="col-md-12">
+                     <div class="col-md-12">
+
+                     </div>
+                 </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="col-md-6">
+                     <button type="button" id="btnGuardar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
+                     <button type="button" id="btnCancelar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+                    </div>
+                    <div class="col-md-8">
+                    <label>FK</label>
+                    <select id="CamposR" multiple="multiple"  class="form-control" >
+                    </select>
+                    </div>
                  </div>
                  </form>
                 </div>
             </div>
 
         </div>
-        <div class="col-md-12">
-             <div class="col-md-3">
-                     <label>Campo Principal</label>
-                    <select id="CamposP"  class="form-control" >
-                    </select>
-             </div>
-             <div class="col-md-3">
-                     <label>Campo Principal</label>
-                    <select id="CamposF"  class="form-control" >
-                    </select>
-             </div>
-        </div>
+
     </div>
     <div class="row">
        <div class="form-group">
@@ -48,6 +69,7 @@
           </div>
        </div>
     </div>
+
 <div class="row">
    <div id="dialogEliminar" class="modal fade">
     <div class="modal-dialog modal-sm">
