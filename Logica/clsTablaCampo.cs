@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Entidades.ConexionBD;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +41,37 @@ namespace Logica
             {
                 var procedimiento = new DataLayer();
                 return procedimiento.selectColumn(tableName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        //List<Tuple<string, string>>
+        public static List<Tuple<string, string>> selectData()
+        {
+            try
+            {
+                var procedimiento = new DataLayer();
+                return procedimiento.selectData();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public static int Insert(RelacionCamposTablas_BD tablas, int[] m, string[] pk)
+        {
+            try
+            {
+                var procedimiento = new DataLayer();
+                for (int i = 0; i < m.Length; i++)
+                {
+                    tablas.RelacionID = m[i];
+                    tablas.CampoTablaRelacion = pk[i];
+                    procedimiento.Insert(tablas);
+                }
+                return 1;
             }
             catch (Exception ex)
             {

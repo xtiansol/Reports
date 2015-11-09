@@ -2,14 +2,14 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <div class="row">
-<div class="col-md-6">
-  <div class="panel panel-info">
-    <div class="panel-heading">Bootstrap: Horizontal Form</div>
+<div class="col-md-5">
+  <div class="panel panel-default">
+    <div class="panel-heading">FORMULARIO DE REGISTRO DE DATOS</div>
     <div class="panel-body">
       <form class="form-horizontal" role="form">
         <div class="form-group">
           <div class="col-ms-3">
-              <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+              <button type="button" id="btnNuevo" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
               <form class="navbar-form" role="search">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" name="q">
@@ -39,17 +39,17 @@
             </div>
           </div>
           <div class="form-group">
-        <button type="button" id="btnGuardar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
-        <button type="button" id="btnCancelar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+        <button type="button" id="btnGuardar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
           </div>
      </form>
     </div>
   </div>
 </div>
 
-<div class="col-md-6">
-  <div class="panel panel-info">
-    <div class="panel-heading">Bootstrap: Horizontal Form</div>
+<div class="col-md-7">
+  <div class="panel panel-default">
+    <div class="panel-heading">DATOS ALMACENADOS</div>
     <div class="panel-body">
       <div class="form-horizontal" role="form">
        <div class="form-group">

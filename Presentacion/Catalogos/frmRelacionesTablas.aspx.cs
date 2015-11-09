@@ -59,7 +59,7 @@ namespace Presentacion.Catalogos
             }
         }
         [WebMethod()]
-        public static int saveData(int idTabla,string data,string Descripcion)
+        public static int saveData(int idTabla, string data, string Descripcion)
         {
             try
             {

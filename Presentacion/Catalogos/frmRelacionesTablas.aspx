@@ -3,12 +3,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">Bootstrap: Horizontal Form</div>
                 <div class="panel-body">
                 <form id="mySuperCoolForm">
                  <div class="col-md-12">
-                     <button type="button" id="btnNuevo" class="btn btn-theme03"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+                     <button type="button" id="btnNuevo" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
                  </div>
                  <div class="col-md-3">
                      <label>Tablas</label>
@@ -18,7 +18,7 @@
                  <div class="col-md-1">
                      <br />
                      <br />
-                     <button type="button" id="btnPasart" class="btn btn-theme03"><i class="glyphicon glyphicon-forward"></i></button>
+                     <button type="button" id="btnPasart" class="btn btn-default"><i class="glyphicon glyphicon-forward"></i></button>
                  </div>
                  <div class="col-md-3">
                     <label>Relación</label>
@@ -28,10 +28,10 @@
                  <div class="col-md-1">
                      <br />
                      <br />
-                     <button type="button" id="btnPasarR" class="btn btn-theme03"><i class="glyphicon glyphicon-forward"></i></button>
+                     <button type="button" id="btnPasarR" class="btn btn-default"><i class="glyphicon glyphicon-forward"></i></button>
                      <br />
                      <br />
-                     <button type="button" id="btnRegresaR" class="btn btn-theme03"><i class="glyphicon glyphicon-backward"></i></button>
+                     <button type="button" id="btnRegresaR" class="btn btn-default"><i class="glyphicon glyphicon-backward"></i></button>
                 </div>
                  <div class="col-md-3">
                     <label>Relación</label>
@@ -47,8 +47,8 @@
                      <br />
                     <br />
                     <br />
-                     <button type="button" id="btnGuardar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
-                     <button type="button" id="btnCancelar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+                     <button type="button" id="btnGuardar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
+                     <button type="button" id="btnCancelar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
                 </div>
                  </form>
                 </div>

@@ -1,11 +1,13 @@
 ﻿$(document).ready(function () {
-    //bindData();
-    //EnableTrue();
+    bindData();
+    EnableTrue();
     //bindTable();
 });
 //==== VARIABLE GLOBAL PARA EL PAGINADO
 var pageSize = 10;
 var Evento = null;
+var cont = 0;
+var list = [];
 
 //==== Inicio Get data from database, created HTML table and place inside #divData
 function bindTable() {
@@ -99,35 +101,35 @@ function bindColumnsF(tableName) {
 function bindData() {
     $.ajax({
         type: "POST",
-        url: "frmRelacionesTablas.aspx/selectData",
-        data: "{skip:0,take:" + pageSize + "}",
+        url: "frmRelacionCampos.aspx/selectCampos",
+        data: "",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         async: true,
         cache: false,
         success: function (msg) {
-            var total = msg.d.TotalRecords;
+            //var total = msg.d.TotalRecords;
             printCustomer(msg);
-            if (total > 10) {
-                var pageTotal = Math.ceil(total / pageSize);
-                if ($('#ul').length != 0) // remove table if it exists
-                { $("#ul").remove(); }
-                var paginado = "<ul id='paging' class='pagination'>";
-                paginado += '<li class="disabled"><a href="#" id="totalRecords"></a></li>';
-                for (var i = 0; i < pageTotal; i++) {
-                    var row = "<li>";
-                    row += '<a href=\'#\' onClick=\'pageData(' + (i + 1) + ')\'>' + (i + 1) + '</a>';
-                    row += '</li>';
-                    paginado += row;
-                }
-                paginado += '</ul>';
-                $('#paging2').html(paginado);
-                $("#paging2").slideDown("slow");
-            }
-            else {
-                $("#paging").text("Registros Insuficientes Para el Paginado.");
-            }
-            $("#totalRecords").text("Total Registros: " + total);
+            //if (total > 10) {
+            //    var pageTotal = Math.ceil(total / pageSize);
+            //    if ($('#ul').length != 0) // remove table if it exists
+            //    { $("#ul").remove(); }
+            //    var paginado = "<ul id='paging' class='pagination'>";
+            //    paginado += '<li class="disabled"><a href="#" id="totalRecords"></a></li>';
+            //    for (var i = 0; i < pageTotal; i++) {
+            //        var row = "<li>";
+            //        row += '<a href=\'#\' onClick=\'pageData(' + (i + 1) + ')\'>' + (i + 1) + '</a>';
+            //        row += '</li>';
+            //        paginado += row;
+            //    }
+            //    paginado += '</ul>';
+            //    $('#paging2').html(paginado);
+            //    $("#paging2").slideDown("slow");
+            //}
+            //else {
+            //    $("#paging").text("Registros Insuficientes Para el Paginado.");
+            //}
+            //$("#totalRecords").text("Total Registros: " + total);
         },
         error: function (response) {
             alert(response.status + ' ' + response.statusText);
@@ -151,15 +153,15 @@ function pageData(e) {
     return false;
 }
 function printCustomer(customers) {
-    var msg = customers.d.Customers;
+    var msg = $.parseJSON(customers.d);
     if ($('#table').length != 0) // remove table if it exists
     { $("#table").remove(); }
-    var table = "<table class='table table-striped' id='tblResult' ><thead><tr><th>Nombre Tabla</th><th>Relaciones</th><th>Eliminar</th></thead><tbody>";
-    for (var i = 0; i <= (msg.length - 1) ; i++) {
+    var table = "<table class='table table-bordered' id='tblResult' ><thead class='theadTabla'><tr><th>Campo PK</th><th>Campos FK</th><th>Eliminar</th></thead><tbody>";
+    for (var i = 0; i < msg.length; i++) {
         var row = "<tr>";
-        row += '<td>' + msg[i].NombreTabla + '</td>';
-        row += '<td>' + msg[i].Count + '</td>';
-        row += '<td><a href="#" class="Eliminar" value="' + msg[i].TablaID + '"><span class="glyphicon glyphicon-trash"></span></a> </td>';
+        row += '<td>' + msg[i].Item1 + '</td>';
+        row += '<td>' + msg[i].Item2 + '</td>';
+        row += '<td><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
         row += '</tr>';
         table += row;
     }
@@ -196,25 +198,23 @@ function bindRelation() {
 //==== Method to save record.
 function saveData() {
     var errCount = validateData();
-    var list = [];
-    $('#relacionadas option:selected').each(function () {
-        list.push($(this).val());
+    var listFK = [];
+    $('#CamposR option:selected').each(function () {
+        listFK.push($(this).val());
     });
-    //var jsonText = JSON.stringify({ list: list });
     //==== If validation pass save the data.
     if (errCount == 0) {
         $.ajax({
             type: "POST",
-            url: "frmRelacionesTablas.aspx/saveData",
-            data: "{idTabla:'" + $("#Tablas option:selected").val() + "',data:'" + JSON.stringify(list) + "', Descripcion:'" + $("#txtDescricpion").val() + "'}",
+            url: "frmRelacionCampos.aspx/saveColumns",
+            data: "{idRelacion:'" + JSON.stringify(list) + "',campoPK:'" + $("#CamposP option:selected").text() + "', campoFK:'" + JSON.stringify(listFK) + "'}",
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             async: "true",
             success: function (response) {
                 if (response) {
                     alert("Los Datos de la tabla " + response.d + " se Guardaron Exitosamente.");
-                    CleanText();
-                    bindData();
+                    //bindData();
                 }
                 else {
                     alert("Hay un Error, no se pudieron Guardar los Datos.");
@@ -284,20 +284,27 @@ function deleteData(id) {
 function CleanText() {
     var tablas = $('#Tablas option');
     var rel = $('#relacion option');
-    var selectedOpts = $('#relacionadas option');
-    $(selectedOpts).remove();
-    $(rel).remove();
+    var CamposP = $('#CamposP option');
+    var CamposF = $('#CamposF option');
+    var CamposR = $('#CamposR option');
     $(tablas).remove();
-    $("#txtDescricpion").val("");
+    $(rel).remove();
+    $(CamposP).remove();
+    (CamposF).remove();
+    $(CamposR).remove();
 }
 function EnableTrue() {
     $("#btnGuardar").prop("disabled", true);
-    $("#btnCancelar").prop("disabled", true);
+    $("#btnAceptar").prop("disabled", true);
+    $("#Tablas").prop("disabled", true);
+    $("#relacion").prop("disabled", true);
+    $("#CamposP").prop("disabled", true);
+    $("#CamposF").prop("disabled", true);
 }
 //==== Method to validate textboxes
 function validateData(e) {
     var errCount = 0;
-    var selectedOpts = $('#relacionadas option:selected');
+    var selectedOpts = $('#CamposR option:selected');
     if (selectedOpts.length == 0) {
         alert("Nothing to move.");
         errCount++
@@ -321,18 +328,15 @@ function validateData(e) {
 $('#btnNuevo').click(function () {
     Evento = "Nuevo";
     bindTable();
+    $("#Tablas").prop("disabled", false);
     //$("#btnCancelar").prop("disabled", false);
 });
 //==== VENTO DEL BOTON Guardar
 $('#btnGuardar').click(function (e) {
     if (Evento == "Nuevo") {
         saveData();
-        $("#btnGuardar").prop("disabled", true);
-        $("#btnCancelar").prop("disabled", true);
-    }
-    else {
-        var id = $("#hdID").val();
-        updateData(id);
+        CleanText();
+        EnableTrue();
     }
 });
 //==== VENTO DEL BOTON Eliminar
@@ -346,103 +350,47 @@ $(document).on("click", ".Eliminar", function () {
 });
 //==== VENTO DEL BOTON Cancelar
 $('#btnCancelar').click(function () {
-
+    CleanText();
+    EnableTrue();
 });
 $('#Tablas').change(function () {
     var id = $('#Tablas option:selected').val();
     var tableName = $('#Tablas option:selected').text();
     bindDetail(id);
     bindColumns(tableName);
+    $("#CamposP").prop("disabled", false);
+    $("#relacion").prop("disabled", false);
 });
 $('#relacion').change(function () {
     var tableName = $('#relacion option:selected').text();
     bindColumnsF(tableName);
+    $("#CamposF").prop("disabled", false);
+    $("#btnAceptar").prop("disabled", false);
 });
 
-$('#btnPasart').click(function (e) {
-    var id = $('#Tablas option:selected').val();
-    var selectedOpts = $('#Tablas option:selected');
-    if (selectedOpts.length == 0) {
+$('#btnAceptar').click(function (e) {
+    var selectedP = $('#CamposP option:selected');
+    var selectedF = $('#CamposF option:selected');
+    
+    $('#relacion option:selected').each(function () {
+        list.push($(this).val());
+    });
+    if (selectedP.length == 0 || selectedF.length == 0 || $('#CamposF option:selected').val() == -1) {
         alert("No Hay Datos Seleccionados !!");
         e.preventDefault();
     } else {
-        $.ajax({
-            type: "POST",
-            url: "frmRelacionesTablas.aspx/tablasRelacionadas",
-            data: "{id:" + id + "}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            cache: false,
-            success: function (msg) {
-                var datos = msg.d;
-
-                var lstLeftSelectedItems = $('#Tablas option');
-                if (datos.length > 0) {
-                    for (var j = 0; j < datos.length; j++) {
-                        for (var i = 0; i < lstLeftSelectedItems.length; i++) {
-                            if (datos[j] == lstLeftSelectedItems[i].value) {
-                                var opt = $(lstLeftSelectedItems[i]).clone().prop('disabled', true).addClass('item-disabled');
-                            } else {
-                                var opt = $(lstLeftSelectedItems[i]).clone();
-                            }
-
-                            $(lstLeftSelectedItems[i]).remove();
-                            $('#relacion').append(opt);
-                        }
-                    }
-                } else {
-                    for (var i = 0; i < lstLeftSelectedItems.length; i++) {
-
-                        var opt = $(lstLeftSelectedItems[i]).clone();
-                        $(lstLeftSelectedItems[i]).remove();
-                        $('#relacion').append(opt);
-                    }
-                }
-                var rel = $('#relacion option');
-                for (var i = 0; i < rel.length; i++) {
-
-                    if (rel[i].text == selectedOpts[0].text) {
-                        $(rel[i]).remove();
-                    }
-                }
-                $('#Tablas').append($(selectedOpts).clone().prop('selected', true));
-            },
-            error: function (response) {
-                alert(response.status + ' ' + response.statusText);
-            }
-        });
-    }
-    e.preventDefault();
-});
-$('#btnPasarR').click(function (e) {
-    var selectedOpts = $('#relacion option:selected');
-    if (selectedOpts.length == 0) {
-        alert("No Hay Datos Seleccionados !!");
-        $("#btnGuardar").prop("disabled", true);
-        e.preventDefault();
-    } else {
+        if (cont == 0) {
+            $('#CamposR').append($(selectedP).clone());
+            $('#CamposR').append($(selectedF).clone().prop('selected', true));
+            $('#CamposP').prop('disabled', true);
+            cont++;
+        } else {
+            $('#CamposR').append($(selectedF).clone().prop('selected', true));
+        }
         $("#btnGuardar").prop("disabled", false);
+        $("#btnCancelar").prop("disabled", false);
     }
-    $('#relacionadas').append($(selectedOpts).clone().prop('selected', true));
-    $(selectedOpts).remove();
-
     e.preventDefault();
 });
-$('#btnRegresaR').click(function (e) {
-    var selectedOpts = $('#relacionadas option:selected');
-    var selectedOpts2 = $('#relacionadas option');
-    if (selectedOpts.length == 0) {
-        alert("No Hay Datos Seleccionados !!");
-        $("#btnGuardar").prop("disabled", true);
-        e.preventDefault();
-    } else {
-        $("#btnGuardar").prop("disabled", false);
-    }
 
-    $('#relacion').append($(selectedOpts).clone());
-    $(selectedOpts).remove();
-
-    e.preventDefault();
-});
 

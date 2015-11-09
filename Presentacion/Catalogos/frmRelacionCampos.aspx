@@ -3,13 +3,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
         <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">Bootstrap: Horizontal Form</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">FORMULARIO DE REGISTRO DE DATOS</div>
                 <div class="panel-body">
                 <form id="mySuperCoolForm">
                  <div class="col-md-6">
                  <div class="col-md-6">
-                     <button class="btn btn-theme03" id="btnNuevo" type="button"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
+                     <button class="btn btn-default" id="btnNuevo" type="button"><i class="glyphicon glyphicon-plus"></i>  Nuevo</button>
                  </div>
                  <div class="col-md-12">
                  <div class="col-md-6">
@@ -36,18 +36,18 @@
                    </div>
                  </div>
                  <div class="col-md-12">
-                     <div class="col-md-12">
-
+                     <div class="col-xs-6 col-md-offset-5 btnAceptar">
+                         <button class="btn btn-default" id="btnAceptar" type="button"><i class="glyphicon glyphicon-ok"></i> Aceptar</button>
                      </div>
                  </div>
                  </div>
                  <div class="col-md-6">
                     <div class="col-md-6">
-                     <button type="button" id="btnGuardar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
-                     <button type="button" id="btnCancelar" class="btn btn-theme03"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+                     <button type="button" id="btnGuardar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
+                     <button type="button" id="btnCancelar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
                     </div>
                     <div class="col-md-8">
-                    <label>FK</label>
+                    <label>Relaciones De Campos</label>
                     <select id="CamposR" multiple="multiple"  class="form-control" >
                     </select>
                     </div>

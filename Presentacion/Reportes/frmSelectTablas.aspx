@@ -17,45 +17,49 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:ListBox ID="TablasBD" runat="server" Height="283px" Width="167px"></asp:ListBox>
+                        <asp:ListBox ID="TablasBD" CssClass="form-control" runat="server" Height="283px" Width="167px"></asp:ListBox>
                     </td>
                     <td>
-                        <asp:Button ID="AgregaTablaBase" runat="server" Text=">>" OnClick="AgregaTablaBase_Click" />
+                        <asp:Button ID="AgregaTablaBase" runat="server" CssClass="btn btn-default" Text=">>" OnClick="AgregaTablaBase_Click" />
                         <br />
-                        <asp:Button ID="QuitaTablaBase" runat="server" Text="<<" OnClick="QuitaTablaBase_Click" />
+                        <asp:Button ID="QuitaTablaBase" runat="server" CssClass="btn btn-default" Text="<<" OnClick="QuitaTablaBase_Click" />
                     </td>
                     <td>
-                        <asp:ListBox ID="TablaBaseSel" runat="server" Height="277px" Width="174px"></asp:ListBox>
+                        <asp:ListBox ID="TablaBaseSel"  CssClass="form-control" runat="server" Height="277px" Width="174px"></asp:ListBox>
                     </td>
                     <td>
-                        <asp:Button ID="ObtieneCampos" runat="server" Text=">>" OnClick="ObtieneCampos_Click" />
+                        <asp:Button ID="ObtieneCampos" runat="server" CssClass="btn btn-default" Text=">>" OnClick="ObtieneCampos_Click" />
                         <br />
                     </td>
                     <td class="auto-style1">
-                        <asp:ListBox ID="CamposTalbaBaseSel" runat="server" Height="277px" Width="182px"></asp:ListBox>
+                        <asp:ListBox ID="CamposTalbaBaseSel"  CssClass="form-control" runat="server" Height="277px" Width="182px"></asp:ListBox>
                     </td>
                     <td>
-                        <asp:Button ID="AgregaCampoTablaSel" runat="server" Text=">>" OnClick="AgregaCampoTablaSel_Click" />
+                        <asp:Button ID="AgregaCampoTablaSel" runat="server" CssClass="btn btn-default" Text=">>" OnClick="AgregaCampoTablaSel_Click" />
                         <br />
-                        <asp:Button ID="QuitaCampoTablaSel" runat="server" Text="<<" OnClick="QuitaCampoTablaSel_Click" style="height: 26px" />
+                        <asp:Button ID="QuitaCampoTablaSel" runat="server" CssClass="btn btn-default" Text="<<" OnClick="QuitaCampoTablaSel_Click" />
                     </td>
                     <td>
-                        <asp:ListBox ID="CamposSeleccionados" runat="server" Height="277px" Width="229px"></asp:ListBox>
+                        <asp:ListBox ID="CamposSeleccionados"  CssClass="form-control" runat="server" Height="277px" Width="210px"></asp:ListBox>
                     </td>
-                    <td></td>
                     <td>
-                        <asp:ListBox ID="CamposSeleccionadosFin" runat="server" Height="277px" Width="229px"></asp:ListBox>
+                        <br />
+                        <br />
+                        <br />
+                    </td>
+                    <td>
+                        <asp:ListBox ID="CamposSeleccionadosFin"  CssClass="form-control" runat="server" Height="277px" Width="210px"></asp:ListBox>
                     </td>
                 </tr>
                 <tr>
-                    <td><asp:Button ID="ResetAll" runat="server" Text="Reset" Width="150" OnClick="ResetAll_Click"  /></td>
+                    <td> <br /> <asp:Button ID="ResetAll" runat="server" CssClass="btn btn-default" Text="Reset" Width="150" OnClick="ResetAll_Click"  /></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>
-                        <asp:Button ID="btnAsistente" runat="server" Text="Agregar Filtros" Width="150" OnClick="btnAsistente_Click" />
+                        <asp:Button ID="btnAsistente" runat="server" CssClass="btn btn-default" Text="Agregar Filtros" Width="150" OnClick="btnAsistente_Click" />
                     </td>
                     <td></td>
                     <td></td>
@@ -70,15 +74,15 @@
         <br />
         <br />
 
-        <asp:Button ID="Button1" runat="server" Text="GenerarReporte" OnClick="Button1_Click" />
+        <asp:Button ID="Button1" runat="server" CssClass="btn btn-default" Text="GenerarReporte" OnClick="Button1_Click" />
 
-        <asp:Button ID="Button2" runat="server" Text="Exportar PDF" OnClick="Button2_Click" />
+        <asp:Button ID="Button2" runat="server" CssClass="btn btn-default" Text="Exportar PDF" OnClick="Button2_Click" />
 
-        <asp:Button ID="Button3" runat="server" Text="Exportar XLS" OnClick="Button3_Click" />
+        <asp:Button ID="Button3" runat="server" CssClass="btn btn-default" Text="Exportar XLS" OnClick="Button3_Click" />
 
-        <asp:Button ID="Button4" runat="server" Text="Exportar CSV" OnClick="Button4_Click" />
+        <asp:Button ID="Button4" runat="server" CssClass="btn btn-default" Text="Exportar CSV" OnClick="Button4_Click" />
 
-        <asp:Button ID="Button5" runat="server" Text="Exportar Word" OnClick="Button5_Click" />
+        <asp:Button ID="Button5" runat="server" CssClass="btn btn-default" Text="Exportar Word" OnClick="Button5_Click" />
 
         <br />
         <br />

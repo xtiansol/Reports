@@ -87,12 +87,12 @@ function printCustomer(customers) {
     var msg = customers.d.Customers;
     if ($('#table').length != 0) // remove table if it exists
     { $("#table").remove(); }
-    var table = "<table class='table table-striped' id='tblResult' ><thead><tr><th>Nombre Tabla</th><th>Relaciones</th><th>Eliminar</th></thead><tbody>";
+    var table = "<table class='table table-bordered' id='tblResult' ><thead class='theadTabla'><tr><th>Nombre Tabla</th><th>Relaciones</th><th>Eliminar</th></thead><tbody>";
     for (var i = 0; i <= (msg.length - 1) ; i++) {
         var row = "<tr>";
         row += '<td>' + msg[i].NombreTabla + '</td>';
         row += '<td>' + msg[i].Count + '</td>';
-        row += '<td><a href="#" class="Eliminar" value="' + msg[i].TablaID + '"><span class="glyphicon glyphicon-trash"></span></a> </td>';
+        row += '<td><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
         row += '</tr>';
         table += row;
     }

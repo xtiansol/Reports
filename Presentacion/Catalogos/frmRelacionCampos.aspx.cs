@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using Logica;
+using Entidades.ConexionBD;
+using System.Data;
 
 namespace Presentacion.Catalogos
 {
@@ -54,6 +56,41 @@ namespace Presentacion.Catalogos
                 throw new Exception(ex.Message);
             }
         }
+        [WebMethod()]
+        public static string selectCampos()
+        {
+            try
+            {
+                List<Tuple<string, string>> tables = clsTablaCampo.selectData();
+                var json = new JavaScriptSerializer();
+                return json.Serialize(tables);
+               // return clsTablaCampo.selectData();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod()]
+        public static int saveColumns(string idRelacion, string campoPK, string campoFK)
+        {
+            try
+            {
+                var json = new JavaScriptSerializer();
 
+                int[] pk= json.Deserialize<int[]>(idRelacion);
+                string[] fk = json.Deserialize<string[]>(campoFK);
+                RelacionCamposTablas_BD rt = new RelacionCamposTablas_BD();
+                rt.CampoTablaBase = campoPK;
+
+                int tables = clsTablaCampo.Insert(rt, pk, fk);
+
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

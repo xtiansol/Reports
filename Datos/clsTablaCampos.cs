@@ -48,7 +48,7 @@ namespace Datos
                                  select new
                                  {
                                      NombreTabla = t1.NombreTabla,
-                                     ID = t1.TablaID
+                                     ID = t2.RelacionID
                                  });
 
                     foreach (var d in query)
@@ -100,6 +100,72 @@ namespace Datos
                         }
                     }                    
                     return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        //List<Tuple<string, string>>
+        public List<Tuple<string, string>> selectData()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                string SqlString = "SELECT t1.CampoTablaBase,"+"CamposForaneos = REPLACE((SELECT CampoTablaRelacion AS[data()]"+
+                                   "FROM RelacionCamposTablas_BD t2 WHERE t2.CampoTablaBase = t1.CampoTablaBase ORDER BY CampoTablaRelacion FOR XML PATH('') ), ' ', ',') FROM RelacionCamposTablas_BD t1 GROUP BY CampoTablaBase ";
+                List<Tuple<string,string>> data = new List<Tuple<string, string>>();
+                String con = System.Configuration.ConfigurationManager.ConnectionStrings["Prueba"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(con))
+                {
+                    using (SqlCommand cmd = new SqlCommand(SqlString, conn))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        //cmd.Parameters.AddWithValue("tableName", tableName);
+                        SqlDataAdapter sda = new SqlDataAdapter();
+                        try
+                        {
+                            conn.Open();
+                            sda.SelectCommand = cmd;
+                            sda.Fill(dt);
+
+                            List<DataRow> rows = dt.Rows.Cast<DataRow>().ToList();
+                            foreach (DataRow dr in rows)
+                            {
+                                data.Add(new Tuple<string, string> ( dr.ItemArray[0].ToString(), dr.ItemArray[1].ToString()));
+                            }
+                            //    //data.Add(dt.Rows[0][i].ToString());
+                            //    data.Add(new Tuple<string, string>(dt.Rows[0][i].ToString(), dt.Rows[0][i].ToString()));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                        finally
+                        {
+                            conn.Close();
+                            cmd.Dispose();
+                            sda.Dispose();
+                        }
+                    }
+                }
+                    return data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public int Insert(RelacionCamposTablas_BD tablas)
+        {
+            try
+            {
+                using (var context = new BarandillasEntities())
+                {
+                    context.RelacionCamposTablas_BD.Add(tablas);
+                    context.SaveChanges();
+                    return tablas.RelacionID;
                 }
             }
             catch (Exception ex)
