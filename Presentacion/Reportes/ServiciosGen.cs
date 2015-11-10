@@ -16,35 +16,16 @@ namespace Presentacion.Reportes
 
         private static SQLDispatcher sqlDispatcher = new SQLDispatcher();
 
-        // Valida si el usuario ingresado es valido string us, string pwd
-        public static bool esUsuario(string us, string pwd)
+
+
+        // Recupera las tablas base de la BD
+        public static ArrayList getTablasBase()
         {
             config.getConfiguraciones();
             confArch = config.getConfArch();
             confBD = config.getConfBD();
             sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            ArrayList colbd = new ArrayList();
-            colbd = sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + ("usuario2 P               "
-                            + (("where P.clave = \'"
-                            + (us + "\' ")) + ("and P.password = \'"
-                            + (pwd + "\' "))))))));
-            if ((!(colbd == null)
-                        && (colbd.Count > 0)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
-        // Recupera las tablas base de la BD
-        public static ArrayList getTablasBase()
-        {
-            sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            return sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + "TABLAS_BD P               "))));
+            return sqlDispatcher.getColConsulta(("SELECT " + ("P.* " + ("FROM " + "TABLAS_BD P "))));
         }
 
         // Recupera las tablas base de la BD
@@ -69,13 +50,13 @@ namespace Presentacion.Reportes
         public static ArrayList getTablasRelacionadas(ArrayList tablasBaseSel)
         {
             sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            string sql1 = (" SELECT DISTINCT * FROM " + (" Tablas_BD T, RelacionesTablas_BD RT " + ("      WHERE " + (" T.TablaID = RT.TABLARELACIONADA" + (" AND  RT.RelacionID IN (" + (" Select TablaID " + ("       FROM " + "       TABLAS_BD ")))))));
+            string sql1 = (" SELECT DISTINCT * FROM " + (" TABLAS_BD T, RELACIONESTABLAS_BD RT " + ("      WHERE " + (" T.TablaID = RT.TablaRelacionada" + (" AND  RT.TablaID IN (" + (" Select TablaID " + ("       FROM " + "       TABLAS_BD ")))))));
             int cont = 0;
             if (tablasBaseSel.Count > 0)
             {
                 string sql2 = " where NombreTabla in ";
                 string sql3 = " (";
-                string sql4 = "AND  T.NOMBRETABLA not in ";
+                string sql4 = "AND  T.NombreTabla not in ";
                 string sep = "";
                 while (cont < tablasBaseSel.Count)
                 {
@@ -101,7 +82,75 @@ namespace Presentacion.Reportes
             return sqlDispatcher.getColConsulta(sql1);
         }
 
-        public static ArrayList reporteDinamico(ArrayList campos, ArrayList tablas, ArrayList relaciones, ArrayList filtros)
+        public static ArrayList generaCamposRelacion(ArrayList tabSelec, ArrayList alias, ArrayList camposRel)
+        {
+            ArrayList resp = new ArrayList();
+            foreach (ArrayList regCam in camposRel)
+            {
+                string nombreTabB = (string)regCam[2];
+                string nombreTabR = (string)regCam[3];
+
+                string nombreCampoTB = (string)regCam[4];
+                string nombreCampoTR = (string)regCam[5];
+
+                int indexTB = tabSelec.IndexOf(nombreTabB);
+                int indexTR = tabSelec.IndexOf(nombreTabR);
+
+                string aliasTB = (string)alias[indexTB];
+                string aliasTR = (string)alias[indexTR];
+
+                resp.Add(aliasTB + "." + nombreCampoTB + " = " + aliasTR + "." + nombreCampoTR);
+
+            }
+
+            return resp;
+        }
+
+
+        public static ArrayList obtieneCamosRelacion(ArrayList tabSelec)
+        {
+            string sqlTablas = "";
+            string sep = "";
+            foreach (string tabla in tabSelec)
+            {
+                sqlTablas = sqlTablas + sep + " '" + tabla + "'";
+                sep = ", ";
+            }
+
+            string sqlF = "select " +
+                        " rtb.TablaID, rtb.RelacionID, tb1.NombreTabla nombreTB, tb2.NombreTabla nombreTR, rtcb.CampoTablaBase, rtcb.CampoTablaRelacion" +
+                        " from" +
+                        " RELACIONESTABLAS_BD rtb, RelacionCamposTablas_BD rtcb, TABLAS_BD tb1, TABLAS_BD tb2" +
+                        " where" +
+                        " (" +
+                        " rtb.TablaID in (" +
+                        " select tb.TablaID from" +
+                        " tablas_bd tb" +
+                        " where" +
+                        " tb.NombreTabla in (" + sqlTablas + ")" +
+                        " )" +
+                        " or" +
+                        " rtb.TablaRelacionada in (" +
+                        " select tb.TablaID from" +
+                        " tablas_bd tb" +
+                        " where" +
+                        " tb.NombreTabla in (" + sqlTablas + " )" +
+                        " )" +
+                        " )" +
+                        " and" +
+                        " (" +
+                        " tb1.NombreTabla in (" + sqlTablas + ")" +
+                        " and tb2.NombreTabla in (" + sqlTablas + " )" +
+                        " )" +
+                        " and rtcb.RelacionID = rtb.RelacionID" +
+                        " and rtb.TablaID = tb1.TablaID" +
+                        " and rtb.RelacionID = tb2.TablaID ";
+
+            return sqlDispatcher.getColConsulta(sqlF);
+
+        }
+
+        public static ArrayList reporteDinamico(ArrayList campos, ArrayList tablas, ArrayList alias, ArrayList relaciones, ArrayList filtros)
         {
             string sqlF = "SELECT ";
 
@@ -117,9 +166,11 @@ namespace Presentacion.Reportes
             string sqlTablasSel = " FROM ";
             sep = "";
 
-            foreach (string tabla in tablas)
+            for (int contTa = 0; contTa < tablas.Count; contTa++)
             {
-                sqlTablasSel = sqlTablasSel + sep + tabla;
+                string tabla = (string)tablas[contTa];
+                string alia = (string)alias[contTa];
+                sqlTablasSel = sqlTablasSel + sep + tabla + " " + alia;
                 sep = ", ";
             }
 
@@ -127,6 +178,7 @@ namespace Presentacion.Reportes
             if (relaciones.Count > 0 || filtros.Count > 0)
             {
                 sqlCondicion = " WHERE ";
+                sep = "";
                 foreach (string relacion in relaciones)
                 {
                     sqlCondicion = sqlCondicion + sep + relacion;

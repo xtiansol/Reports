@@ -156,12 +156,12 @@ function printCustomer(customers) {
     var msg = $.parseJSON(customers.d);
     if ($('#table').length != 0) // remove table if it exists
     { $("#table").remove(); }
-    var table = "<table class='table table-bordered' id='tblResult' ><thead class='theadTabla'><tr><th>Campo PK</th><th>Campos FK</th><th>Eliminar</th></thead><tbody>";
+    var table = "<table class='table table-hover table-striped table-bordered' id='tblResult' ><thead class='theadTabla'><tr><th>Campo PK</th><th>Campos FK</th><th>Eliminar</th></thead><tbody>";
     for (var i = 0; i < msg.length; i++) {
         var row = "<tr>";
         row += '<td>' + msg[i].Item1 + '</td>';
         row += '<td>' + msg[i].Item2 + '</td>';
-        row += '<td><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
+        row += '<td class="text-center"><span value="' + msg[i].Item1 + '" class="Delete glyphicon glyphicon-trash"></span></td>';
         row += '</tr>';
         table += row;
     }
@@ -214,7 +214,7 @@ function saveData() {
             success: function (response) {
                 if (response) {
                     alert("Los Datos de la tabla " + response.d + " se Guardaron Exitosamente.");
-                    //bindData();
+                    bindData();
                 }
                 else {
                     alert("Hay un Error, no se pudieron Guardar los Datos.");
@@ -226,47 +226,19 @@ function saveData() {
         });
     }
 }
-//==== Method to update record.
-function updateData(id) {
-    var errCount = validateData();
-    if (errCount == 0) {
-        $.ajax({
-            type: "POST",
-            url: "frmTablasBD.aspx/updateData",
-            data: "{id:'" + id + "',NombreTabla:'" + $("#txtNombre").val() + "', Descripcion:'" + $("#txtDescricpion").val() + "',TipoTabla:'" + $("#txtTipoTabla").val() + "'}",
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            async: "true",
-            success: function (response) {
-                //var myObject = eval('(' + response.d + ')');
-                if (response) {
-                    alert("Los Datos de " + response.d + " Actualizaron Exitosamente.");
-                    CleanText();
-                    bindData();
-                }
-                else {
-                    alert("Hay un Error, no se pudieron Actualizar los Datos.");
-                }
-            },
-            error: function (response) {
-                alert(response.status + ' ' + response.statusText);
-            }
-        });
-    }
-}
 //==== Method to Delete record.
-function deleteData(id) {
+function EliminaCampo(id) {
     $.ajax({
         type: "POST",
-        url: "frmRelacionesTablas.aspx/Delete",
-        data: "{id:'" + id + "'}",
+        url: "frmRelacionCampos.aspx/DeleteCampo",
+        data: "{idRelacion:'" + id + "'}",
         contentType: "application/json; charset=utf-8",
         datatype: "json",
         async: "true",
         success: function (response) {
             //var myObject = eval('(' + response.d + ')');
             if (response) {
-                alert("Los Datos de " + response.d + " Elimino Exitosamente.");
+                alert("Los Datos Se Eliminaron Exitosamente.");
                 bindData();
             }
             else {
@@ -309,27 +281,14 @@ function validateData(e) {
         alert("Nothing to move.");
         errCount++
     }
-    //var txtTipoMovimiento = $("#txtNombre").val();
-    //var txtDescripcion = $("#txtTipoTabla").val();
-    //var errCount = 0;
-    //if (txtTipoMovimiento.length <= 0) {
-    //    errCount++;
-    //    alert("Por Favor Introduce un Nombre de Tabla");
-    //}
-    //if (txtDescripcion.length <= 0) {
-    //    errCount++;
-    //    alert("Por Favor Introduce un Tipo de Tabla");
-    //}
     return errCount;
     e.preventDefault();
 }
-
 //==== VENTO DEL BOTON Nuevo
 $('#btnNuevo').click(function () {
     Evento = "Nuevo";
     bindTable();
     $("#Tablas").prop("disabled", false);
-    //$("#btnCancelar").prop("disabled", false);
 });
 //==== VENTO DEL BOTON Guardar
 $('#btnGuardar').click(function (e) {
@@ -337,6 +296,7 @@ $('#btnGuardar').click(function (e) {
         saveData();
         CleanText();
         EnableTrue();
+        cont = 0;
     }
 });
 //==== VENTO DEL BOTON Eliminar
@@ -344,7 +304,7 @@ $(document).on("click", ".Eliminar", function () {
     var id = $(this).attr("value");
     $('#dialogEliminar').modal({ backdrop: 'static', keyboard: false })
      .one('click', '#Delete', function () {
-         deleteData(id);
+         deleteCampo(id);
          $('#dialogEliminar').modal('hide');
      });
 });
@@ -367,7 +327,6 @@ $('#relacion').change(function () {
     $("#CamposF").prop("disabled", false);
     $("#btnAceptar").prop("disabled", false);
 });
-
 $('#btnAceptar').click(function (e) {
     var selectedP = $('#CamposP option:selected');
     var selectedF = $('#CamposF option:selected');
@@ -391,6 +350,16 @@ $('#btnAceptar').click(function (e) {
         $("#btnCancelar").prop("disabled", false);
     }
     e.preventDefault();
+});
+//==== VENTO DEL BOTON Eliminar
+$(document).on("click", ".Delete", function () {
+    var id = $(this).attr("value");
+    $('#dialogEliminar').modal({ backdrop: 'static', keyboard: false })
+     .one('click', '#Delete', function () {        
+         EliminaCampo(id);
+         $('#dialogEliminar').modal('hide');
+     });
+
 });
 
 

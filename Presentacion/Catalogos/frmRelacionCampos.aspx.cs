@@ -83,9 +83,23 @@ namespace Presentacion.Catalogos
                 RelacionCamposTablas_BD rt = new RelacionCamposTablas_BD();
                 rt.CampoTablaBase = campoPK;
 
-                int tables = clsTablaCampo.Insert(rt, pk, fk);
+                clsTablaCampo.Insert(rt, pk, fk);
 
                 return 1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [WebMethod()]
+        public static string DeleteCampo(string idRelacion)
+        {
+            try
+            {
+                //string id = "holA";
+                clsTablaCampo.DeleteCampo(idRelacion);
+                return "si";
             }
             catch (Exception ex)
             {

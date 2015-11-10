@@ -28,10 +28,14 @@ namespace Presentacion.Reportes
         static ArrayList nomCamSel = new ArrayList();
         static ArrayList nomTaCamSel = new ArrayList();
         static ArrayList nomTaSel = new ArrayList();
+        static ArrayList aliasTaSel = new ArrayList();
         static string tablaEnUso = "";
+        static string aliasEnUso = "";
+        static int idTablas = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            int cont = CamposSeleccionadosFin.Items.Count;
 
             if (!IsPostBack)
             {
@@ -39,6 +43,24 @@ namespace Presentacion.Reportes
                 arregloTextBoxs = new TextBox[20];
                 arregloCombos = new DropDownList[20];
                 contadorControles = 0;
+                //Listas relacionadas de filtros tablas, campos y alias seleccionadas
+                Session["filtrosTablasAlias"] = new ArrayList();
+                Session["filtrosConAlias"] = new ArrayList();
+                Session["filtrosSinAlias"] = new ArrayList();
+                Session["filtrosCampos"] = new ArrayList();
+                //Listas relacionadas de tablas, campos y alias seleccionadas
+                Session["tablasCampos"] = new ArrayList();
+                Session["campos"] = new ArrayList();
+                Session["aliasCampos"] = new ArrayList();
+            }
+            else
+            {
+                ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
+                CamposSeleccionadosFin.Items.Clear();
+                foreach (string filtro in filtrosFin)
+                {
+                    CamposSeleccionadosFin.Items.Add(filtro);
+                }
             }
             principal();
         }
@@ -153,29 +175,38 @@ namespace Presentacion.Reportes
 
         protected void AgregaTablaBase_Click(object sender, EventArgs e)
         {
-            CamposTalbaBaseSel.Items.Clear();
-            if (((TablasBD.Items.Count > 0) && (TablasBD.SelectedIndex > -1)))
+            if ((TablasBD.Items.Count > 0) && (TablasBD.SelectedIndex > -1))
             {
-                TablaBaseSel.Items.Add(TablasBD.SelectedItem.Text);
-                // TablasBD.Items.RemoveAt(TablasBD.SelectedIndex)
-                ArrayList colTBS = new ArrayList();
-                int cont = 0;
-                while ((cont < TablaBaseSel.Items.Count))
+                if (TablaBaseSel.Items.Count == 0)
                 {
-                    colTBS.Add(TablaBaseSel.Items[cont].Text);
-                    cont++;
+                    aliasTaSel.Clear();
                 }
-
-                ArrayList colbd = new ArrayList();
-                colbd = ServiciosGen.getTablasRelacionadas(colTBS);
-                cont = 0;
-                TablasBD.Items.Clear();
-                while (cont < colbd.Count)
+                CamposTalbaBaseSel.Items.Clear();
+                if (aliasTaSel.IndexOf("alias" + TablasBD.SelectedItem.Text/*+idTablas*/) < 0)
                 {
-                    ArrayList reg = new ArrayList();
-                    reg = (ArrayList)colbd[cont];
-                    TablasBD.Items.Add((string)reg[1]);
-                    cont++;
+                    TablaBaseSel.Items.Add(TablasBD.SelectedItem.Text);
+                    aliasTaSel.Add("alias" + TablasBD.SelectedItem.Text/*+idTablas*/);
+                    idTablas++;
+                    // TablasBD.Items.RemoveAt(TablasBD.SelectedIndex)
+                    ArrayList colTBS = new ArrayList();
+                    int cont = 0;
+                    while ((cont < TablaBaseSel.Items.Count))
+                    {
+                        colTBS.Add(TablaBaseSel.Items[cont].Text);
+                        cont++;
+                    }
+
+                    ArrayList colbd = new ArrayList();
+                    colbd = ServiciosGen.getTablasRelacionadas(colTBS);
+                    cont = 0;
+                    TablasBD.Items.Clear();
+                    while (cont < colbd.Count)
+                    {
+                        ArrayList reg = new ArrayList();
+                        reg = (ArrayList)colbd[cont];
+                        TablasBD.Items.Add((string)reg[1]);
+                        cont++;
+                    }
                 }
 
             }
@@ -187,7 +218,40 @@ namespace Presentacion.Reportes
             CamposTalbaBaseSel.Items.Clear();
             if ((TablaBaseSel.Items.Count > 0) && (TablaBaseSel.SelectedIndex > -1))
             {
+                //Elimina relaciones de todas las listas
+                string nombreTabla = TablaBaseSel.SelectedItem.Text;
+                ArrayList listaTablasCampos = ((ArrayList)Session["tablasCampos"]);
+                for (int index = 0; index < listaTablasCampos.Count; index++)
+                {
+                    if ((string)listaTablasCampos[index] == nombreTabla)
+                    {
+                        ArrayList filtrosTablasAlias = ((ArrayList)Session["filtrosTablasAlias"]);
+                        for (int index2 = 0; index2 < filtrosTablasAlias.Count; index2++)
+                        {
+                            if ((string)filtrosTablasAlias[index2] == nombreTabla)
+                            {
+                                ((ArrayList)Session["filtrosTablasAlias"]).RemoveAt(index2);
+                                ((ArrayList)Session["filtrosSinAlias"]).RemoveAt(index2);
+                                ((ArrayList)Session["filtrosConAlias"]).RemoveAt(index2);
+                                ((ArrayList)Session["filtrosCampos"]).RemoveAt(index2);
+                                CamposSeleccionadosFin.Items.RemoveAt(index2);
+                                filtrosTablasAlias = ((ArrayList)Session["filtrosTablasAlias"]);
+                                index2 = -1;
+                            }
+                        }
+                        ((ArrayList)Session["tablasCampos"]).RemoveAt(index);
+                        ((ArrayList)Session["campos"]).RemoveAt(index);
+                        ((ArrayList)Session["aliasCampos"]).RemoveAt(index);
+                        CamposSeleccionados.Items.RemoveAt(index);
+                        nomTaCamSel.RemoveAt(index);
+                        index = -1;
+                        listaTablasCampos = ((ArrayList)Session["tablasCampos"]);
+
+                    }
+                }
+
                 TablasBD.Items.Add(TablaBaseSel.SelectedItem.Text);
+                aliasTaSel.RemoveAt(TablaBaseSel.SelectedIndex);
                 TablaBaseSel.Items.RemoveAt(TablaBaseSel.SelectedIndex);
                 ArrayList colTBS = new ArrayList();
                 int cont = 0;
@@ -212,8 +276,18 @@ namespace Presentacion.Reportes
                 }//Quitar condicíón cuando la tabla de relaciones este completa
                 else//Quitar condicíón cuando la tabla de relaciones este completa
                 {
+                    nomCamSel.Clear();
+                    nomTaCamSel.Clear();
+                    nomTaSel.Clear();
+                    aliasTaSel.Clear();
+                    CamposSeleccionados.Items.Clear();
                     principal();
                 }//Quitar condicíón cuando la tabla de relaciones este completa
+            }
+            else
+            {
+                aliasTaSel.Clear();
+                nomTaCamSel.Clear();
             }
             agregaFiltros();
         }
@@ -226,6 +300,8 @@ namespace Presentacion.Reportes
                 CamposTalbaBaseSel.Items.Clear();
                 // Se invoca al servicio General getCamposTablasBase
                 tablaEnUso = TablaBaseSel.SelectedItem.Text;
+                aliasEnUso = (string)aliasTaSel[TablaBaseSel.SelectedIndex];
+                idTablas++;
                 colTab = ServiciosGen.getCamposTablasBaseSQLServer(TablaBaseSel.SelectedItem.Text);
                 int cont = 0;
                 while (cont < colTab.Count)
@@ -247,12 +323,16 @@ namespace Presentacion.Reportes
                 if (CamposSeleccionados.Items.FindByText(CamposTalbaBaseSel.SelectedItem.Text) == null)
                 {
                     CamposSeleccionados.Items.Add(CamposTalbaBaseSel.SelectedItem.Text);
-                    nomTaCamSel.Add(tablaEnUso + "." + CamposTalbaBaseSel.SelectedItem.Text);
+                    nomTaCamSel.Add(aliasEnUso + "." + CamposTalbaBaseSel.SelectedItem.Text);
+                    ((ArrayList)Session["tablasCampos"]).Add(tablaEnUso);
+                    ((ArrayList)Session["campos"]).Add(CamposTalbaBaseSel.SelectedItem.Text);
+                    ((ArrayList)Session["aliasCampos"]).Add(aliasEnUso);
                     nomCamSel.Add(CamposTalbaBaseSel.SelectedItem.Text);
                     CamposTalbaBaseSel.Items.RemoveAt(CamposTalbaBaseSel.SelectedIndex);
                 }
 
             }
+
             agregaFiltros();
         }
 
@@ -264,8 +344,29 @@ namespace Presentacion.Reportes
                 int index = nomCamSel.IndexOf(CamposSeleccionados.SelectedItem.Text);
                 if (index >= 0)
                 {
+                    //Elimina relaciones de filtros
+                    string nombreTabla = CamposSeleccionados.SelectedItem.Text;
+                    ArrayList filtrosCampos = ((ArrayList)Session["filtrosCampos"]);
+                    ArrayList prueba = ((ArrayList)Session["filtrosTablasAlias"]);
+                    for (int index2 = 0; index2 < filtrosCampos.Count; index2++)
+                    {
+                        if ((string)filtrosCampos[index2] == nombreTabla)
+                        {
+                            ((ArrayList)Session["filtrosTablasAlias"]).RemoveAt(index2);
+                            ((ArrayList)Session["filtrosSinAlias"]).RemoveAt(index2);
+                            ((ArrayList)Session["filtrosConAlias"]).RemoveAt(index2);
+                            ((ArrayList)Session["filtrosCampos"]).RemoveAt(index2);
+                            CamposSeleccionadosFin.Items.RemoveAt(index2);
+                            filtrosCampos = ((ArrayList)Session["filtrosCampos"]);
+                            index2 = -1;
+                        }
+                    }
+
                     nomCamSel.RemoveAt(index);
                     nomTaCamSel.RemoveAt(index);
+                    ((ArrayList)Session["tablasCampos"]).RemoveAt(index);
+                    ((ArrayList)Session["campos"]).RemoveAt(index);
+                    ((ArrayList)Session["aliasCampos"]).RemoveAt(index);
                 }
                 CamposSeleccionados.Items.RemoveAt(CamposSeleccionados.SelectedIndex);
 
@@ -277,6 +378,7 @@ namespace Presentacion.Reportes
         {
             GridView1.DataSource = obtienDatosTabla();
             GridView1.DataBind();
+            agregaFiltros();
         }
 
         protected DataTable obtienDatosTabla()
@@ -290,35 +392,44 @@ namespace Presentacion.Reportes
             }
 
             //  Total number of rows.
-            int rowCnt;
+            int rowCnt = 0;
             //  Current row count
-            int rowCtr;
+            int rowCtr = 0;
             //  Total number of cells (columns).
-            int cellCtr;
+            int cellCtr = 0;
             //  Current cell counter.
-            int cellCnt;
+            int cellCnt = 0;
             rowCnt = 10;
             cellCnt = CamposSeleccionados.Items.Count;
 
             nomTaSel = new ArrayList();
+            nomTaSel.Clear();
             for (int contAux = 0; contAux < TablaBaseSel.Items.Count; contAux++)
             {
                 nomTaSel.Add(TablaBaseSel.Items[contAux].Text);
             }
 
-            ArrayList resp = ServiciosGen.reporteDinamico(nomTaCamSel, nomTaSel, new ArrayList(), new ArrayList());
-            for (rowCtr = 1; (rowCtr <= rowCnt); rowCtr++)
-            {
-                DataRow tRow = dt.NewRow();
-                for (cellCtr = 0; (cellCtr
-                            <= (cellCnt - 1)); cellCtr++)
-                {
-                    tRow[cellCtr] = ("val" + cellCtr);
-                    // cellCtr = cellCtr + 1
-                }
+            ArrayList filtros = (ArrayList)Session["filtrosConAlias"];
 
-                //  Add new row to table.
-                dt.Rows.Add(tRow);
+
+            ArrayList camposRel = ServiciosGen.generaCamposRelacion(nomTaSel, aliasTaSel, ServiciosGen.obtieneCamosRelacion(nomTaSel));
+
+            ArrayList resp = ServiciosGen.reporteDinamico(nomTaCamSel, nomTaSel, aliasTaSel, camposRel, filtros);
+            if (resp != null)
+            {
+                for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)
+                {
+                    ArrayList camposRec = (ArrayList)resp[rowCtr];
+                    DataRow tRow = dt.NewRow();
+                    for (cellCtr = 0; cellCtr < camposRec.Count; cellCtr++)
+                    {
+                        tRow[cellCtr] = camposRec[cellCtr];
+                        // cellCtr = cellCtr + 1
+                    }
+
+                    //  Add new row to table.
+                    dt.Rows.Add(tRow);
+                }
             }
 
             return dt;

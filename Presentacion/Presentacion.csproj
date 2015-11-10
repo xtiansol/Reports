@@ -197,6 +197,7 @@
     <Content Include="Reportes\config.xml" />
     <Content Include="Reportes\frmSelectTablas.aspx" />
     <Content Include="Reportes\Login.aspx" />
+    <Content Include="Reportes\SolicitudesGen.asmx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
@@ -280,6 +281,10 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ServiciosGen.cs" />
+    <Compile Include="Reportes\SolicitudesGen.asmx.cs">
+      <DependentUpon>SolicitudesGen.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Estilos\" />

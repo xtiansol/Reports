@@ -78,5 +78,17 @@ namespace Logica
                 throw new Exception(ex.Message);
             }
         }
+        public static void DeleteCampo(string id)
+        {
+            try
+            {
+                var procedimiento = new DataLayer();
+                procedimiento.DeleteCampo(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

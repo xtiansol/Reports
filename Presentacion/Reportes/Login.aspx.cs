@@ -18,15 +18,15 @@ namespace Presentacion.Reportes
         protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
         {
             //Valida el usuario y pwd introducido con el servicio Generico esUsuario
-            if (ServiciosGen.esUsuario(Login1.UserName, Login1.Password))
-            {
-                FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
-                //FormsAuthentication.RedirectFromLoginPage(Login1.Username, Login1.RememberMeSet);
-            }
-            else
-            {
-                Login1.FailureText = "Username and/or password is incorrect.";
-            }
+            //if (ServiciosGen.esUsuario(Login1.UserName, Login1.Password))
+            //{
+            //    FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
+            //    //FormsAuthentication.RedirectFromLoginPage(Login1.Username, Login1.RememberMeSet);
+            //}
+            //else
+            //{
+            //    Login1.FailureText = "Username and/or password is incorrect.";
+            //}
         }
     }
 }

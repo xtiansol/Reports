@@ -60,6 +60,7 @@
 
     </div>
     <div class="row">
+      <div class="col-md-10 col-md-offset-3">
        <div class="form-group">
           <div class="col-sm-6">
            <div id="divData" class="table-responsive">                
@@ -68,6 +69,7 @@
             </ul>
           </div>
        </div>
+    </div>
     </div>
 
 <div class="row">
@@ -89,5 +91,5 @@
     </div><!-- /.modal-dialog -->
    </div><!-- /.modal -->
 </div>
-    <script src="../Scripts/TablaCampos.js"></script>
+    <script src='<%=ResolveUrl("~/Scripts/TablaCampos.js")%>'></script>
 </asp:Content>

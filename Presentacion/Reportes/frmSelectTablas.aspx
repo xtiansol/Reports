@@ -104,72 +104,95 @@
         <br />
 
         <asp:Panel ID="pnlSeleccionarDatos" runat="server" CssClass="CajaDialogo" Style="display: none;">
-            <div style="padding: 10px; background-color: #0033CC; color: #FFFFFF;">
+            <div class="FooterDialogo">
                 <asp:Label ID="Label4" runat="server" Text="Filtrar datos por:" />
             </div>
 
             <div>
                 <asp:Panel runat="server" ID="Panel1"></asp:Panel>
-                <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" />
+                <asp:Button ID="btnAceptar" CssClass="btn btn-default" runat="server" Text="Aceptar" />
                 &nbsp;&nbsp;
-                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
+                <asp:Button ID="btnCancelar" CssClass="btn btn-default" runat="server" Text="Cancelar" />
 
             </div>
         </asp:Panel>
         <cc1:ModalPopupExtender ID="mpeSeleccion" runat="server" TargetControlID="btnAsistente"
             PopupControlID="pnlSeleccionarDatos" OkControlID="btnAceptar" CancelControlID="btnCancelar"
-            OnOkScript="mpeSeleccionOnOk()" OnCancelScript="mpeSeleccionOnCancel()" DropShadow="True"
+            OnOkScript="mpeSeleccionOnOk()" OnCancelScript="mpeSeleccionOnCancel()" 
             BackgroundCssClass="FondoAplicacion" />
     <%--<script src="../Scripts/Reportes.js"></script>--%>
 
-        <script language="javascript" type="text/javascript">
-        function mpeSeleccionOnOk() {
-            var lista1 = document.getElementById("CamposSeleccionados");
-            var listaF = document.getElementById("CamposSeleccionadosFin");
-            var contF = 0;
-            for (cont = 0; cont < lista1.options.length; cont++) {
-                var campoHD = lista1.options[cont].text;
-                if (document.getElementById("hdf" + campoHD) != null) {
-                    var campoFin = "";
-                    var combo =  document.getElementById("cmb"+campoHD);
-                    var x = combo.selectedIndex;
-                    var y = combo.options;
-                    var comboText = x > 0 ? y[x].text:"";
-                    var text = document.getElementById("txt" + campoHD).value;
-                    campoFin = campoHD + " " + comboText + " " + text;
-                    var no = new Option();
-                    no.value = campoFin;
-                    no.text = campoFin;
-                    listaF[contF] = no;
-                    contF++;
+<script  type="text/javascript">
+            function mpeSeleccionOnOk() {
+                var lista1 = document.getElementById("CamposSeleccionados");
+                var listaF = document.getElementById("CamposSeleccionadosFin");
+                var filtroFinVar = "";
+                var campoNom = "";
+                var contF = 0;
+                for (cont = 0; cont < lista1.options.length; cont++) {
+                    var campoHD = lista1.options[cont].text;
+                    if (document.getElementById("hdf" + campoHD) != null) {
+                        var campoFin = "";
+                        var campoAlias = "";
+                        var combo = document.getElementById("cmb" + campoHD);
+                        var x = combo.selectedIndex;
+                        if (x > 0) {
+                            var y = combo.options;
+                            var comboText = x > 0 ? y[x].text : "";
+                            var text = document.getElementById("txt" + campoHD).value;
+                            //var filtro = document.getElementById("hiddenFiltros");
+                            campoFin = campoHD + " " + comboText + " " + text;
+                            filtroFinVar = filtroFinVar + "|" + campoFin;
+                            campoNom = campoNom + "|" + campoHD;
+                            var no = new Option();
+                            no.value = campoFin;
+                            no.text = campoFin;
+                            listaF[contF] = no;
+                            contF++;
+                        }
+                    }
                 }
-
+                $.ajax({
+                    type: "POST",
+                    url: "SolicitudesGen.asmx/AgregaFiltros",
+                    data: "{filtroFin:'" + filtroFinVar /*$("#edad").val()*/ + "',campos:'" + campoNom + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg.hasOwnProperty('d')) {
+                            msg = msg.d;
+                        }
+                        var json = JSON.parse(msg);
+                        alert(json.mensaje);
+                    },
+                    error: function (xhr, status, error) {
+                        alert("No se pudo agregar el Filtro...");
+                    }
+                });
 
             }
+            function mpeSeleccionOnCancel() {
+                //var txtSituacion = document.getElementById("txtSituacion");
+                //txtSituacion.value = "";
+                //txtSituacion.style.backgroundColor = "#FFFF99";
+            }
 
-        }
-        function mpeSeleccionOnCancel() {
-            //var txtSituacion = document.getElementById("txtSituacion");
-            //txtSituacion.value = "";
-            //txtSituacion.style.backgroundColor = "#FFFF99";
-        }
-
-        //Consecutivo de campos a agregar
-        campoNuevo = 0;
-        //Funcion de agregar campos
-        function AgregarCampos() {
-            campoNuevo = campoNuevo + 1;
-            campo = '<li><label>Campo ' + campoNuevo + ':</label><input type="text" size="20" name="campo' + campoNuevo + '"  /></li>';
-            $("#campos").append(campo);
-        }
-        //Pasar los valores txt por QueryString
-        function EnviarDatos() {
-            var query = "";
-            $('input[type=text][name!=""]').each(function (index, domEle) {
-                //alert(index + ': ' + $(domEle).val());
-                query = query + "&campo" + index + "=" + $(domEle).val();
-            });
-            window.location.href = "/CamposAdicionales.aspx?" + query;
-        }
-    </script>
+            //Consecutivo de campos a agregar
+            campoNuevo = 0;
+            //Funcion de agregar campos
+            function AgregarCampos() {
+                campoNuevo = campoNuevo + 1;
+                campo = '<li><label>Campo ' + campoNuevo + ':</label><input type="text" size="20" name="campo' + campoNuevo + '"  /></li>';
+                $("#campos").append(campo);
+            }
+            //Pasar los valores txt por QueryString
+            function EnviarDatos() {
+                var query = "";
+                $('input[type=text][name!=""]').each(function (index, domEle) {
+                    //alert(index + ': ' + $(domEle).val());
+                    query = query + "&campo" + index + "=" + $(domEle).val();
+                });
+                window.location.href = "/CamposAdicionales.aspx?" + query;
+            }
+</script>
 </asp:Content>

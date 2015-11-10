@@ -3,7 +3,7 @@
     EnableTrue();
 });
 //==== VARIABLE GLOBAL PARA EL PAGINADO
-var pageSize = 10;
+var pageSize = 12;
 var Evento = null;
 
 //==== Inicio Get data from database, created HTML table and place inside #divData
@@ -41,7 +41,7 @@ function bindData() {
         success: function (msg) {
             var total = msg.d.TotalRecords;
             printCustomer(msg);
-            if (total > 10) {
+            if (total > 12) {
                 var pageTotal = Math.ceil(total / pageSize);
                 if ($('#ul').length != 0) // remove table if it exists
                 { $("#ul").remove(); }
@@ -92,7 +92,7 @@ function printCustomer(customers) {
         var row = "<tr>";
         row += '<td>' + msg[i].NombreTabla + '</td>';
         row += '<td>' + msg[i].Count + '</td>';
-        row += '<td><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
+        row += '<td class="text-center"><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
         row += '</tr>';
         table += row;
     }
@@ -101,8 +101,6 @@ function printCustomer(customers) {
     $("#divData").slideDown("slow");
 }
 //====Fin Get data from database, created HTML table and place inside #divData
-
-
 
 //==== Inicio Funcione que verifica si una tabla tiene relaciones con otras tablas.
 function bindRelation() {
@@ -159,34 +157,6 @@ function saveData() {
         });
     }
 }
-//==== Method to update record.
-function updateData(id) {
-    var errCount = validateData();
-    if (errCount == 0) {
-        $.ajax({
-            type: "POST",
-            url: "frmTablasBD.aspx/updateData",
-            data: "{id:'" + id + "',NombreTabla:'" + $("#txtNombre").val() + "', Descripcion:'" + $("#txtDescricpion").val() + "',TipoTabla:'" + $("#txtTipoTabla").val() + "'}",
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            async: "true",
-            success: function (response) {
-                //var myObject = eval('(' + response.d + ')');
-                if (response) {
-                    alert("Los Datos de " + response.d + " Actualizaron Exitosamente.");
-                    CleanText();
-                    bindData();
-                }
-                else {
-                    alert("Hay un Error, no se pudieron Actualizar los Datos.");
-                }
-            },
-            error: function (response) {
-                alert(response.status + ' ' + response.statusText);
-            }
-        });
-    }
-}
 //==== Method to Delete record.
 function deleteData(id) {
     $.ajax({
@@ -235,17 +205,6 @@ function validateData(e) {
         alert("Nothing to move.");
         errCount++
     }
-    //var txtTipoMovimiento = $("#txtNombre").val();
-    //var txtDescripcion = $("#txtTipoTabla").val();
-    //var errCount = 0;
-    //if (txtTipoMovimiento.length <= 0) {
-    //    errCount++;
-    //    alert("Por Favor Introduce un Nombre de Tabla");
-    //}
-    //if (txtDescripcion.length <= 0) {
-    //    errCount++;
-    //    alert("Por Favor Introduce un Tipo de Tabla");
-    //}
     return errCount;
     e.preventDefault();
 }

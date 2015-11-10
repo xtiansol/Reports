@@ -57,6 +57,7 @@
         </div>
     </div>
     <div class="row">
+    <div class="col-md-10 col-md-offset-3">
        <div class="form-group">
           <div class="col-sm-6">
               <input id="hdID" type="hidden" />
@@ -66,6 +67,7 @@
             </ul>
           </div>
        </div>
+    </div>
     </div>
 <div class="row">
    <div id="dialogEliminar" class="modal fade"><!-- /.modal -->
@@ -85,6 +87,5 @@
     </div><!-- /.modal-dialog -->
    </div><!-- /.modal -->
 </div>
-    <%:System.Web.Optimization.Scripts.Render("~/bundles/jqueryval") %>
-    <script src="../Scripts/TablasRelaciones.js"></script>
+    <script src='<%=ResolveUrl("~/Scripts/TablasRelaciones.js")%>'></script>
 </asp:Content>

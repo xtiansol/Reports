@@ -173,5 +173,26 @@ namespace Datos
                 throw new Exception(ex.Message);
             }
         }
+        public void DeleteCampo(string id)
+        {
+            try
+            {
+                using (var context = new BarandillasEntities())
+                {
+                    var query = (from i in context.RelacionCamposTablas_BD
+                                 where i.CampoTablaBase == id
+                                 select i).ToList();
+                    foreach (var d in query)
+                    {
+                        context.RelacionCamposTablas_BD.Remove(d);
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

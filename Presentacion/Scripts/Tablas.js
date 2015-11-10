@@ -70,8 +70,8 @@ function printCustomer(customers) {
         row += '<td>' + msg[i].NombreTabla + '</td>';
         row += '<td>' + msg[i].Descripcion + '</td>';
         row += '<td>' + msg[i].TipoTabla + '</td>';
-        row += '<td><span value="' + msg[i].TablaID + '" class="Seleccionar glyphicon glyphicon-arrow-left"></span></td>';
-        row += '<td><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
+        row += '<td class="text-center"><span value="' + msg[i].TablaID + '" class="Seleccionar glyphicon glyphicon-arrow-left"></span></td>';
+        row += '<td class="text-center"><span value="' + msg[i].TablaID + '" class="Eliminar glyphicon glyphicon-trash"></span></td>';
         row += '</tr>';
         table += row;
     }
@@ -177,6 +177,7 @@ function EnableFalse() {
     $("#txtNombre").prop("disabled", false);
     $("#txtDescricpion").prop("disabled", false);
     $("#txtTipoTabla").prop("disabled", false);
+    $("#btnGuardar").prop("disabled", false);
     $("#btnCancelar").prop("disabled", false);
 }
 function CleanText() {
@@ -203,13 +204,11 @@ function validateData() {
 
 //==== VENTO DEL BOTON Nuevo
 $('#btnNuevo').click(function () {
-    //window.location.href = 'frmTipoMovimientoEdicion.aspx';
     EnableFalse();
     Evento = "Nuevo";
 });
 //==== VENTO DEL BOTON Guardar
 $('#btnGuardar').click(function () {
-    //window.location.href = 'frmTipoMovimientoEdicion.aspx';
     if (Evento == "Nuevo") {
         saveData();
     }
@@ -220,37 +219,10 @@ $('#btnGuardar').click(function () {
 });
 //==== VENTO DEL BOTON Cancelar
 $('#btnCancelar').click(function () {
-    //window.location.href = 'frmTipoMovimientoEdicion.aspx';
     CleanText();
     EnableTrue();
 });
-//==== VENTO DEL BOTON TEXT PARA HABILITAR GUARDAR
-$("#txtTipoTabla").focus(function () {
-    $("#btnGuardar").prop("disabled", false);
-});
-//==== VENTO DEL BOTON MODIFICAR
-$('#btnModificar').click(function () {
-    var cont = 0;
-    var valor = null;
-    //estado del elemento seleccionado
-    if ($('#CkbSelect[type=checkbox]').is(':checked')) {
-        //cada elemento seleccionado
-        $("#CkbSelect[type=checkbox]:checked").each(function () {
-            cont++;
-            valor = $(this).val();
-        });
-    }
-    else {
-        alert('Seleccione la fila que desea Consultar');
-        return false;
-    }
-    if (cont >= 2) {
-        alert("No puede seleccionar 2 filas");
-        return false;
-    } else {
-        window.location.href = 'frmTipoMovimientoEdicion.aspx?key=' + valor;
-    }
-});
+
 //==== EVENTO DEL BOTON de la tabla para editar
 $(document).on("click", ".Seleccionar", function () {
     var tr = $(this).parent().parent();
@@ -259,6 +231,7 @@ $(document).on("click", ".Seleccionar", function () {
     $("#txtNombre").val($('td:eq(0)', tr).text()).prop("disabled", false);
     $("#txtDescricpion").val($('td:eq(1)', tr).text()).prop("disabled", false);
     $("#txtTipoTabla").val($('td:eq(2)', tr).text()).prop("disabled", false);
+    $("#btnGuardar").prop("disabled", false);
     $("#btnCancelar").prop("disabled", false);
     Evento = "Editar";
 });
