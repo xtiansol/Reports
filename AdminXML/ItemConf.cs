@@ -83,7 +83,7 @@ namespace AdminXML
         {
             get
             {
-                return ""+_size;
+                return "" + _size;
             }
             set
             {
@@ -103,7 +103,7 @@ namespace AdminXML
         {
             get
             {
-                return ""+_position;
+                return "" + _position;
             }
             set
             {
@@ -176,7 +176,7 @@ namespace AdminXML
             name = attributes["name"].Value;
         }
 
-        public string  value
+        public string value
         {
             get
             {

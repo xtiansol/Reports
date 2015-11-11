@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 
-namespace BarandillasRepV2c
+namespace Presentacion.Reportes
 {
     /// <summary>
     /// Summary description for SolicitudesGen

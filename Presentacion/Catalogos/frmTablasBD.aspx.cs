@@ -41,7 +41,7 @@ namespace Presentacion.Catalogos
             try
             {
                 Tablas_BD t = new Tablas_BD();
-                t.NombreTabla = NombreTabla;
+                t.Nombre = NombreTabla;
                 t.Descripcion = Descripcion;
                 t.TipoTabla = TipoTabla;
                 t.Estatus = true;
@@ -61,7 +61,7 @@ namespace Presentacion.Catalogos
             {
                 Tablas_BD t = new Tablas_BD();
                 t.TablaID = id;
-                t.NombreTabla = NombreTabla;
+                t.Nombre = NombreTabla;
                 t.Descripcion = Descripcion;
                 t.TipoTabla = TipoTabla;
                 t.Estatus = true;

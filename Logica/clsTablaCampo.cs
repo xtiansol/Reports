@@ -68,7 +68,7 @@ namespace Logica
                 for (int i = 0; i < m.Length; i++)
                 {
                     tablas.RelacionID = m[i];
-                    tablas.CampoTablaRelacion = pk[i];
+                    tablas.CampoTR = pk[i];
                     procedimiento.Insert(tablas);
                 }
                 return 1;

@@ -21,7 +21,7 @@ namespace Entidades.ConexionBD
         }
     
         public int RelacionID { get; set; }
-        public int TablaID { get; set; }
+        public int TablaBaseID { get; set; }
         public int TablaRelacionada { get; set; }
         public string Descripcion { get; set; }
     

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,7 +8,6 @@ using System.Data;
 using System.Text;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.html;
 using iTextSharp.text.html.simpleparser;
 
 namespace Presentacion.Reportes
@@ -36,53 +33,67 @@ namespace Presentacion.Reportes
         protected void Page_Load(object sender, EventArgs e)
         {
             int cont = CamposSeleccionadosFin.Items.Count;
-
-            if (!IsPostBack)
+            try
             {
-                arregloLabels = new Label[20];
-                arregloTextBoxs = new TextBox[20];
-                arregloCombos = new DropDownList[20];
-                contadorControles = 0;
-                //Listas relacionadas de filtros tablas, campos y alias seleccionadas
-                Session["filtrosTablasAlias"] = new ArrayList();
-                Session["filtrosConAlias"] = new ArrayList();
-                Session["filtrosSinAlias"] = new ArrayList();
-                Session["filtrosCampos"] = new ArrayList();
-                //Listas relacionadas de tablas, campos y alias seleccionadas
-                Session["tablasCampos"] = new ArrayList();
-                Session["campos"] = new ArrayList();
-                Session["aliasCampos"] = new ArrayList();
-            }
-            else
-            {
-                ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
-                CamposSeleccionadosFin.Items.Clear();
-                foreach (string filtro in filtrosFin)
+                if (!IsPostBack)
                 {
-                    CamposSeleccionadosFin.Items.Add(filtro);
+                    arregloLabels = new Label[20];
+                    arregloTextBoxs = new TextBox[20];
+                    arregloCombos = new DropDownList[20];
+                    contadorControles = 0;
+                    //Listas relacionadas de filtros tablas, campos y alias seleccionadas
+                    Session["filtrosTablasAlias"] = new ArrayList();
+                    Session["filtrosConAlias"] = new ArrayList();
+                    Session["filtrosSinAlias"] = new ArrayList();
+                    Session["filtrosCampos"] = new ArrayList();
+                    //Listas relacionadas de tablas, campos y alias seleccionadas
+                    Session["tablasCampos"] = new ArrayList();
+                    Session["campos"] = new ArrayList();
+                    Session["aliasCampos"] = new ArrayList();
                 }
+                else
+                {
+                    ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
+                    CamposSeleccionadosFin.Items.Clear();
+                    foreach (string filtro in filtrosFin)
+                    {
+                        CamposSeleccionadosFin.Items.Add(filtro);
+                    }
+                }
+                principal();
             }
-            principal();
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         protected void principal()
         {
-            generaCampos();
-            if ((TablaBaseSel.Items.Count <= 0))
+            try
             {
-                // Se crea Collection para almacenar los datos recuperados de la consulta
-                ArrayList colbd = new ArrayList();
-                // Se invoca al servicio General getTablasBase
-                colbd = ServiciosGen.getTablasBase();
-                int cont = 0;
-                while (cont < colbd.Count)
+                generaCampos();
+                if ((TablaBaseSel.Items.Count <= 0))
                 {
-                    ArrayList reg = new ArrayList();
-                    reg = (ArrayList)colbd[cont];
-                    TablasBD.Items.Add((string)reg[1]);
-                    cont++;
-                }
+                    // Se crea Collection para almacenar los datos recuperados de la consulta
+                    ArrayList colbd = new ArrayList();
+                    // Se invoca al servicio General getTablasBase
+                    colbd = ServiciosGen.getTablasBase();
+                    int cont = 0;
+                    while (cont < colbd.Count)
+                    {
+                        ArrayList reg = new ArrayList();
+                        reg = (ArrayList)colbd[cont];
+                        TablasBD.Items.Add((string)reg[1]);
+                        cont++;
+                        
+                    }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -164,12 +175,19 @@ namespace Presentacion.Reportes
 
         protected void generaCampos()
         {
-            int iCount = Request.QueryString.Count;
-            //Recorremos cada uno de los valores recibidos
-            for (int i = 1; i <= iCount; i++)
+            try
             {
-                //Mandamos a escribir los valores a la pagina
-                Response.Write(Request.QueryString[i - 1]);
+                int iCount = Request.QueryString.Count;
+                //Recorremos cada uno de los valores recibidos
+                for (int i = 1; i <= iCount; i++)
+                {
+                    //Mandamos a escribir los valores a la pagina
+                    Response.Write(Request.QueryString[i - 1]);
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -560,6 +578,22 @@ namespace Presentacion.Reportes
             CamposTalbaBaseSel.Items.Clear();
             CamposSeleccionados.Items.Clear();
             CamposSeleccionadosFin.Items.Clear();
+
+            nomCamSel.Clear();
+            nomTaCamSel.Clear();
+            nomTaSel.Clear();
+            aliasTaSel.Clear();
+
+            ((ArrayList)Session["filtrosTablasAlias"]).Clear();
+            ((ArrayList)Session["filtrosConAlias"]).Clear();
+            ((ArrayList)Session["filtrosSinAlias"]).Clear();
+            ((ArrayList)Session["filtrosCampos"]).Clear();
+            //Listas relacionadas de tablas, campos y alias seleccionadas
+            ((ArrayList)Session["tablasCampos"]).Clear();
+            ((ArrayList)Session["campos"]).Clear();
+            ((ArrayList)Session["aliasCampos"]).Clear();
+
+
             principal();
             agregaFiltros();
 

@@ -67,7 +67,7 @@ namespace Presentacion.Catalogos
                 //List<string[]> mystring = json.Deserialize<List<string[]>>(data);
                 int[] m = json.Deserialize<int[]>(data);
                 RelacionesTablas_BD rt = new RelacionesTablas_BD();
-                rt.TablaID = idTabla;
+                rt.TablaBaseID = idTabla;
                 rt.Descripcion = Descripcion;
                 int tables = clsTablasRelaciones.Insert(rt, m);
 

@@ -16,16 +16,53 @@ namespace Presentacion.Reportes
 
         private static SQLDispatcher sqlDispatcher = new SQLDispatcher();
 
-
-
-        // Recupera las tablas base de la BD
-        public static ArrayList getTablasBase()
+        // Valida si el usuario ingresado es valido
+        public static bool esUsuario(string us, string pwd)
         {
             config.getConfiguraciones();
             confArch = config.getConfArch();
             confBD = config.getConfBD();
             sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            return sqlDispatcher.getColConsulta(("SELECT " + ("P.* " + ("FROM " + "TABLAS_BD P "))));
+            ArrayList colbd = new ArrayList();
+            colbd = sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + ("usuario2 P               "
+                            + (("where P.clave = \'"
+                            + (us + "\' ")) + ("and P.password = \'"
+                            + (pwd + "\' "))))))));
+            if ((!(colbd == null)
+                        && (colbd.Count > 0)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        // Recupera las tablas base de la BD
+        public static ArrayList getTablasBase()
+        {
+            try
+            {
+                config.getConfiguraciones();
+                confArch = config.getConfArch();
+                confBD = config.getConfBD();
+
+                //string BD = "Barandillas";
+                //string server = "MTL-PC122\\QLSERVER";
+                //string usuario = "sa";
+                //string pwd = "mtlg1234";
+                //int tipoBD = 1;
+
+                sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
+                //sqlDispatcher.getConexion(BD, server, usuario, pwd, tipoBD);
+                return sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + "TABLAS_BD P               "))));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Recupera las tablas base de la BD
@@ -50,13 +87,13 @@ namespace Presentacion.Reportes
         public static ArrayList getTablasRelacionadas(ArrayList tablasBaseSel)
         {
             sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            string sql1 = (" SELECT DISTINCT * FROM " + (" TABLAS_BD T, RELACIONESTABLAS_BD RT " + ("      WHERE " + (" T.TablaID = RT.TablaRelacionada" + (" AND  RT.TablaID IN (" + (" Select TablaID " + ("       FROM " + "       TABLAS_BD ")))))));
+            string sql1 = (" SELECT DISTINCT * FROM " + (" TABLAS_BD T, RELACIONESTABLAS_BD RT " + ("      WHERE " + (" T.TablaID = RT.TABLARELACIONADA" + (" AND  RT.TABLABASEID IN (" + (" Select TablaID " + ("       FROM " + "       TABLAS_BD ")))))));
             int cont = 0;
             if (tablasBaseSel.Count > 0)
             {
-                string sql2 = " where NombreTabla in ";
+                string sql2 = " where Nombre in ";
                 string sql3 = " (";
-                string sql4 = "AND  T.NombreTabla not in ";
+                string sql4 = "AND  T.NOMBRE not in ";
                 string sep = "";
                 while (cont < tablasBaseSel.Count)
                 {
@@ -118,32 +155,32 @@ namespace Presentacion.Reportes
             }
 
             string sqlF = "select " +
-                        " rtb.TablaID, rtb.RelacionID, tb1.NombreTabla nombreTB, tb2.NombreTabla nombreTR, rtcb.CampoTablaBase, rtcb.CampoTablaRelacion" +
+                        " rtb.TablaBaseID, rtb.RelacionID, tb1.Nombre nombreTB, tb2.Nombre nombreTR, rtcb.campoTB, rtcb.campoTR" +
                         " from" +
                         " RELACIONESTABLAS_BD rtb, RelacionCamposTablas_BD rtcb, TABLAS_BD tb1, TABLAS_BD tb2" +
                         " where" +
                         " (" +
-                        " rtb.TablaID in (" +
+                        " rtb.TablaBaseID in (" +
                         " select tb.TablaID from" +
                         " tablas_bd tb" +
                         " where" +
-                        " tb.NombreTabla in (" + sqlTablas + ")" +
+                        " tb.Nombre in (" + sqlTablas + ")" +
                         " )" +
                         " or" +
                         " rtb.TablaRelacionada in (" +
                         " select tb.TablaID from" +
                         " tablas_bd tb" +
                         " where" +
-                        " tb.NombreTabla in (" + sqlTablas + " )" +
+                        " tb.Nombre in (" + sqlTablas + " )" +
                         " )" +
                         " )" +
                         " and" +
                         " (" +
-                        " tb1.NombreTabla in (" + sqlTablas + ")" +
-                        " and tb2.NombreTabla in (" + sqlTablas + " )" +
+                        " tb1.Nombre in (" + sqlTablas + ")" +
+                        " and tb2.Nombre in (" + sqlTablas + " )" +
                         " )" +
                         " and rtcb.RelacionID = rtb.RelacionID" +
-                        " and rtb.TablaID = tb1.TablaID" +
+                        " and rtb.TablaBaseID = tb1.TablaID" +
                         " and rtb.RelacionID = tb2.TablaID ";
 
             return sqlDispatcher.getColConsulta(sqlF);

@@ -21,7 +21,7 @@ namespace Datos
                                  select new
                                  {
                                      ID = i.TablaID,
-                                     NombreTabla = i.NombreTabla
+                                     NombreTabla = i.Nombre
                                  }).Distinct().ToList();
                     foreach(var d in query)
                     {
@@ -44,10 +44,10 @@ namespace Datos
                 {
                     var query = (from t1 in context.Tablas_BD
                                  join t2 in context.RelacionesTablas_BD on t1.TablaID equals t2.TablaRelacionada
-                                 where t2.TablaID == id
+                                 where t2.TablaBaseID == id
                                  select new
                                  {
-                                     NombreTabla = t1.NombreTabla,
+                                     NombreTabla = t1.Nombre,
                                      ID = t2.RelacionID
                                  });
 
@@ -113,8 +113,8 @@ namespace Datos
             try
             {
                 DataTable dt = new DataTable();
-                string SqlString = "SELECT t1.CampoTablaBase,"+"CamposForaneos = REPLACE((SELECT CampoTablaRelacion AS[data()]"+
-                                   "FROM RelacionCamposTablas_BD t2 WHERE t2.CampoTablaBase = t1.CampoTablaBase ORDER BY CampoTablaRelacion FOR XML PATH('') ), ' ', ',') FROM RelacionCamposTablas_BD t1 GROUP BY CampoTablaBase ";
+                string SqlString = "SELECT t1.CampoTB,"+"CamposForaneos = REPLACE((SELECT CampoTR AS[data()]"+
+                                   "FROM RelacionCamposTablas_BD t2 WHERE t2.CampoTB = t1.CampoTB ORDER BY CampoTR FOR XML PATH('') ), ' ', ',') FROM RelacionCamposTablas_BD t1 GROUP BY CampoTB ";
                 List<Tuple<string,string>> data = new List<Tuple<string, string>>();
                 String con = System.Configuration.ConfigurationManager.ConnectionStrings["Prueba"].ConnectionString;
                 using (SqlConnection conn = new SqlConnection(con))
@@ -180,7 +180,7 @@ namespace Datos
                 using (var context = new BarandillasEntities())
                 {
                     var query = (from i in context.RelacionCamposTablas_BD
-                                 where i.CampoTablaBase == id
+                                 where i.CampoTB == id
                                  select i).ToList();
                     foreach (var d in query)
                     {

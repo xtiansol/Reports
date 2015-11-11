@@ -81,7 +81,7 @@ namespace Presentacion.Catalogos
                 int[] pk= json.Deserialize<int[]>(idRelacion);
                 string[] fk = json.Deserialize<string[]>(campoFK);
                 RelacionCamposTablas_BD rt = new RelacionCamposTablas_BD();
-                rt.CampoTablaBase = campoPK;
+                rt.CampoTB = campoPK;
 
                 clsTablaCampo.Insert(rt, pk, fk);
 

@@ -121,7 +121,7 @@ namespace AdminXML
         {
             get
             {
-                return ""+_size;
+                return "" + _size;
             }
             set
             {
@@ -141,7 +141,7 @@ namespace AdminXML
         {
             get
             {
-                return ""+_position;
+                return "" + _position;
             }
             set
             {

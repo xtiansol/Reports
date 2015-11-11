@@ -21,7 +21,7 @@ namespace Entidades.ConexionBD
         }
     
         public int TablaID { get; set; }
-        public string NombreTabla { get; set; }
+        public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string TipoTabla { get; set; }
         public Nullable<bool> Estatus { get; set; }

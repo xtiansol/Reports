@@ -20,7 +20,7 @@ namespace Datos
                                  select new
                                  {
                                      ID = t.TablaID,
-                                     Nombretabla = t.NombreTabla
+                                     Nombretabla = t.Nombre
                                  }).ToList();
                     foreach(var i in query)
                     {
@@ -59,9 +59,9 @@ namespace Datos
                 using (var context = new BarandillasEntities())
                 {
                     var query = (from i in context.RelacionesTablas_BD
-                                 where i.TablaID == id
+                                 where i.TablaBaseID == id
                                  select i).ToList();
-                    data = query[0].Tablas_BD.NombreTabla;
+                    data = query[0].Tablas_BD.Nombre;
                     foreach(var d in query)
                     {
                         context.RelacionesTablas_BD.Remove(d);

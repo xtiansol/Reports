@@ -26,7 +26,7 @@ namespace Datos
                                 .ToList();
                     foreach (var i in query)
                     {
-                        t.Add(new Entidades.Helpers.Tablas { TablaID = i.TablaID, NombreTabla = i.NombreTabla, Descripcion = i.Descripcion, TipoTabla = i.TipoTabla, Estatus = i.Estatus });
+                        t.Add(new Entidades.Helpers.Tablas { TablaID = i.TablaID, NombreTabla = i.Nombre, Descripcion = i.Descripcion, TipoTabla = i.TipoTabla, Estatus = i.Estatus });
                     }
                     
                     data.Customers = t;
@@ -49,7 +49,7 @@ namespace Datos
                 {
                     context.Tablas_BD.Add(tablas);
                     context.SaveChanges();
-                    return tablas.NombreTabla;
+                    return tablas.Nombre;
                 }
             }
             catch (Exception ex)
@@ -65,7 +65,7 @@ namespace Datos
                 {
                     context.Entry(tablas).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
-                    return tablas.NombreTabla;
+                    return tablas.Nombre;
                 }
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace Datos
                     tabla.Estatus = false;
                     context.Entry(tabla).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
-                    return tabla.NombreTabla;
+                    return tabla.Nombre;
                 }
             }
             catch (Exception ex)

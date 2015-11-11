@@ -41,12 +41,19 @@ namespace AdminBD
 
         public ArrayList getColConsulta(string sql)
         {
-            if (admBD.abrirBD())
+            try
             {
-                return admBD.getColRegString(sql);
-            }
+                if (admBD.abrirBD())
+                {
+                    return admBD.getColRegString(sql);
+                }
 
-            return null;
+                return null;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public object getColConsultaResultSet(string sql)

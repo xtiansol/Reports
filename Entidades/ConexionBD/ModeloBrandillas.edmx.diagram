@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="5cb18588a91743e6bd5d49372b59d523" Name="Diagram1">
-        <EntityTypeShape EntityType="BarandillasModel.RelacionCamposTablas_BD" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="BarandillasModel.RelacionesTablas_BD" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BarandillasModel.Tablas_BD" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <AssociationConnector Association="BarandillasModel.FK_RelacionCamposTablas" ManuallyRouted="false" />
-        <AssociationConnector Association="BarandillasModel.FK_TablaBaseID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BarandillasModel.RelacionCamposTablas_BD" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="BarandillasModel.RelacionesTablas_BD" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="BarandillasModel.Tablas_BD" Width="1.5" PointX="0.75" PointY="0.875" />
         <EntityTypeShape EntityType="BarandillasModel.RelacionesDeTablas" Width="1.5" PointX="0.75" PointY="4.75" />
+        <AssociationConnector Association="BarandillasModel.FK_RelacionCamposTablas" />
+        <AssociationConnector Association="BarandillasModel.FK_TablaBaseID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

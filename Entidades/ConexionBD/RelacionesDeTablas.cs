@@ -15,7 +15,7 @@ namespace Entidades.ConexionBD
     public partial class RelacionesDeTablas
     {
         public int TablaID { get; set; }
-        public string NombreTabla { get; set; }
+        public string Nombre { get; set; }
         public int RelacionID { get; set; }
         public int TablaRelacionada { get; set; }
         public string Descripcion { get; set; }

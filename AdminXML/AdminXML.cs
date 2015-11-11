@@ -86,7 +86,7 @@ namespace AdminXML
 
         private ArrayList geElementos(string xpath)
         {
-             ArrayList col = new ArrayList();
+            ArrayList col = new ArrayList();
             XmlNodeList nodelist = nodelistPrincipal[0].SelectNodes(xpath);
             foreach (XmlNode node in nodelist)
             {
@@ -127,39 +127,6 @@ namespace AdminXML
             return itemPat;
         }
 
-        // Public Sub LeerXml(ByVal S As Stream)
-        //     Dim reader As New XmlTextReader(S)
-        //     'no he probrado codigo aun toy apuradito mi veija ta que 
-        //     reader.WhitespaceHandling = WhitespaceHandling.None
-        //     Dim num As Integer = 0
-        //     'mientras haya que leer
-        //     While reader.Read()
-        //         Select Case reader.NodeType
-        //             'leer elementos
-        //             Case XmlNodeType.Element
-        //                 num += 1
-        //                 Me.WriteRich("<" & reader.Name & ">", num)
-        //             Case XmlNodeType.Text      'leer texto
-        //                 Me.WriteRich(reader.Value, (num + 1))
-        //             Case XmlNodeType.CDATA     'seccion CDATA
-        //                 Me.WriteRich("<![CDATA[" & reader.Value & "]]>")
-        //             Case XmlNodeType.ProcessingInstruction    'instruccion de procesamiento
-        //                 Me.WriteRich("<?" & reader.Name & reader.Value & "?>")
-        //             Case XmlNodeType.Comment
-        //                 Me.WriteRich("<!--reader.Value-->")
-        //             Case XmlNodeType.XmlDeclaration
-        //                 Me.WriteRich("<?xml version='1.0'?>")
-        //             Case XmlNodeType.Document
-        //             Case XmlNodeType.DocumentType
-        //                 Me.WriteRich("<!DOCTYPE " & reader.Name & " [" & reader.Value & "]")
-        //             Case XmlNodeType.EntityReference
-        //                 Me.WriteRich(reader.Name)
-        //             Case XmlNodeType.EndElement
-        //                 Me.WriteRich("</" & reader.Name & ">", num)
-        //                 num -= 1
-        //         End Select
-        //     End While
-        // End Sub
         public AdminXML(string pathXML)
         {
             this.abrirXML(pathXML);

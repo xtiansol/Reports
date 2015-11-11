@@ -48,9 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AdminArch\AdminArch.csproj">
       <Project>{5acbc2b8-15f0-40dc-8efc-e828c37dec3f}</Project>
       <Name>AdminArch</Name>

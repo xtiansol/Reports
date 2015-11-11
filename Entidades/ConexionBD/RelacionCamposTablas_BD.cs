@@ -14,10 +14,10 @@ namespace Entidades.ConexionBD
     
     public partial class RelacionCamposTablas_BD
     {
-        public int RelacionCompoID { get; set; }
+        public int RelacionCampoID { get; set; }
         public int RelacionID { get; set; }
-        public string CampoTablaBase { get; set; }
-        public string CampoTablaRelacion { get; set; }
+        public string CampoTB { get; set; }
+        public string CampoTR { get; set; }
     
         public virtual RelacionesTablas_BD RelacionesTablas_BD { get; set; }
     }

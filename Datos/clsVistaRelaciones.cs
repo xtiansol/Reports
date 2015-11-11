@@ -20,11 +20,11 @@ namespace Datos
                 {
 
                     var query = (from p in context.RelacionesDeTablas
-                                 group p by new { p.TablaID, p.NombreTabla } into i
+                                 group p by new { p.TablaID, p.Nombre } into i
                                  select new
                                  {
                                      TablaID = i.Key.TablaID,
-                                     NombreTabla = i.Key.NombreTabla,
+                                     NombreTabla = i.Key.Nombre,
                                      Count = i.Count()
                                  })
                                  .OrderBy(i => i.TablaID)

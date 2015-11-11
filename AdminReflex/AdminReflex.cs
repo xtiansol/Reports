@@ -44,27 +44,7 @@ namespace AdminReflex
             return this.reflexColToValue(value, colItemPat);
         }
 
-        // Private Function reflexColToValue(ByVal value As Type, ByVal colItemPat As Collection) As Object
-        //     Dim flags As BindingFlags = BindingFlags.Instance _
-        //                     Or BindingFlags.Public _
-        //                     Or BindingFlags.DeclaredOnly _
-        //                     Or BindingFlags.Static _
-        //                     Or BindingFlags.NonPublic _
-        //                     Or BindingFlags.Instance _
-        //                     Or BindingFlags.CreateInstance
-        //     Dim newVal As Object = value.InvokeMember(Nothing, flags, Nothing, Nothing, Nothing)
-        //     For Each itmPat As ItemPattern In colItemPat
-        //         'Busca el nombre de la propiedad en el value
-        //         Dim ppr As PropertyInfo() = value.GetProperties(flags)
-        //         For Each prop As PropertyInfo In ppr
-        //             If itmPat.name = prop.Name Then
-        //                 prop.SetValue(newVal, itmPat.value, Nothing)
-        //                 Exit For
-        //             End If
-        //         Next
-        //     Next
-        //     Return newVal
-        // End Function
+
         private object reflexColToValue(Type value, ArrayList colItem)
         {
             BindingFlags flags = (BindingFlags.Instance
@@ -93,27 +73,7 @@ namespace AdminReflex
             return newVal;
         }
 
-        // Private Function reflexValueToCol(ByVal value As Object, ByVal colItemPat As Collection) As Collection
-        //     Dim flags As BindingFlags = BindingFlags.Instance _
-        //                     Or BindingFlags.Public _
-        //                     Or BindingFlags.DeclaredOnly _
-        //                     Or BindingFlags.Static
-        //     Dim typ As Type = value.GetType
-        //     Dim colPatNew As New Collection
-        //     For Each itmPat As ItemPattern In colItemPat
-        //         'Busca el nombre de la propiedad en el value
-        //         Dim pr As PropertyInfo() = typ.GetProperties(flags)
-        //         Dim newItmPat As ItemPattern = itmPat.Clone
-        //         For Each prop As PropertyInfo In pr
-        //             If newItmPat.name = prop.Name Then
-        //                 newItmPat.value = prop.GetValue(value, Nothing)
-        //                 Exit For
-        //             End If
-        //         Next
-        //         colPatNew.Add(newItmPat)
-        //     Next
-        //     Return colPatNew
-        // End Function
+
         private ArrayList reflexValueToCol(object value, ArrayList colItem)
         {
             BindingFlags flags = (BindingFlags.Instance
