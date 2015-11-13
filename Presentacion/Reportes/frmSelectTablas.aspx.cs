@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -8,6 +10,7 @@ using System.Data;
 using System.Text;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.html;
 using iTextSharp.text.html.simpleparser;
 
 namespace Presentacion.Reportes
@@ -33,67 +36,91 @@ namespace Presentacion.Reportes
         protected void Page_Load(object sender, EventArgs e)
         {
             int cont = CamposSeleccionadosFin.Items.Count;
-            try
+
+            if (!IsPostBack)
             {
-                if (!IsPostBack)
+                arregloLabels = new Label[20];
+                arregloTextBoxs = new TextBox[20];
+                arregloCombos = new DropDownList[20];
+                contadorControles = 0;
+                //Listas relacionadas de filtros tablas, campos y alias seleccionadas
+                Session["filtrosTablasAlias"] = new ArrayList();
+                Session["filtrosConAlias"] = new ArrayList();
+                Session["filtrosSinAlias"] = new ArrayList();
+                Session["filtrosCampos"] = new ArrayList();
+
+                //Listas tablas y alias filtros
+                Session["tablasSel"] = new ArrayList();
+                Session["aliasTablasSel"] = new ArrayList();
+
+                //Listas relacionadas de tablas, campos y alias seleccionadas
+                Session["tablasCampos"] = new ArrayList();
+                Session["aliasCampos"] = new ArrayList();
+                Session["campos"] = new ArrayList();
+
+            }
+            else
+            {
+
+                ArrayList tablasSel = (ArrayList)Session["tablasSel"];
+                ArrayList aliasTablasSel = (ArrayList)Session["aliasTablasSel"];
+
+                if (tablasSel != null && aliasTablasSel != null)
                 {
-                    arregloLabels = new Label[20];
-                    arregloTextBoxs = new TextBox[20];
-                    arregloCombos = new DropDownList[20];
-                    contadorControles = 0;
-                    //Listas relacionadas de filtros tablas, campos y alias seleccionadas
-                    Session["filtrosTablasAlias"] = new ArrayList();
-                    Session["filtrosConAlias"] = new ArrayList();
-                    Session["filtrosSinAlias"] = new ArrayList();
-                    Session["filtrosCampos"] = new ArrayList();
-                    //Listas relacionadas de tablas, campos y alias seleccionadas
-                    Session["tablasCampos"] = new ArrayList();
-                    Session["campos"] = new ArrayList();
-                    Session["aliasCampos"] = new ArrayList();
+                    TablaBaseSel.Items.Clear();
+                    foreach (string tabla in tablasSel)
+                    {
+                        TablaBaseSel.Items.Add(tabla);
+                    }
                 }
-                else
+
+                ArrayList tablasCampos = (ArrayList)Session["tablasCampos"];
+                ArrayList aliasCampos = (ArrayList)Session["aliasCampos"];
+                ArrayList campos = (ArrayList)Session["campos"];
+
+
+                if (tablasCampos != null && aliasCampos != null && campos != null)
                 {
-                    ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
+                    CamposSeleccionados.Items.Clear();
+                    foreach (string campo in tablasSel)
+                    {
+                        CamposSeleccionados.Items.Add(campo);
+                    }
+                }
+
+
+                ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
+                if (filtrosFin != null)
+                {
                     CamposSeleccionadosFin.Items.Clear();
                     foreach (string filtro in filtrosFin)
                     {
                         CamposSeleccionadosFin.Items.Add(filtro);
                     }
                 }
-                principal();
+
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            principal();
         }
 
         protected void principal()
         {
-            try
+            generaCampos();
+            if ((TablaBaseSel.Items.Count <= 0))
             {
-                generaCampos();
-                if ((TablaBaseSel.Items.Count <= 0))
+                // Se crea Collection para almacenar los datos recuperados de la consulta
+                ArrayList colbd = new ArrayList();
+                // Se invoca al servicio General getTablasBase
+                colbd = ServiciosGen.getTablasBase();
+                int cont = 0;
+                while (cont < colbd.Count)
                 {
-                    // Se crea Collection para almacenar los datos recuperados de la consulta
-                    ArrayList colbd = new ArrayList();
-                    // Se invoca al servicio General getTablasBase
-                    colbd = ServiciosGen.getTablasBase();
-                    int cont = 0;
-                    while (cont < colbd.Count)
-                    {
-                        ArrayList reg = new ArrayList();
-                        reg = (ArrayList)colbd[cont];
-                        TablasBD.Items.Add((string)reg[1]);
-                        cont++;
-                        
-                    }
-
+                    ArrayList reg = new ArrayList();
+                    reg = (ArrayList)colbd[cont];
+                    TablasBD.Items.Add((string)reg[1]);
+                    cont++;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+
             }
         }
 
@@ -175,19 +202,12 @@ namespace Presentacion.Reportes
 
         protected void generaCampos()
         {
-            try
+            int iCount = Request.QueryString.Count;
+            //Recorremos cada uno de los valores recibidos
+            for (int i = 1; i <= iCount; i++)
             {
-                int iCount = Request.QueryString.Count;
-                //Recorremos cada uno de los valores recibidos
-                for (int i = 1; i <= iCount; i++)
-                {
-                    //Mandamos a escribir los valores a la pagina
-                    Response.Write(Request.QueryString[i - 1]);
-                }
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
+                //Mandamos a escribir los valores a la pagina
+                Response.Write(Request.QueryString[i - 1]);
             }
         }
 
@@ -394,73 +414,164 @@ namespace Presentacion.Reportes
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            GridView1.DataSource = obtienDatosTabla();
-            GridView1.DataBind();
-            agregaFiltros();
+            //GridView1.DataSource = obtienDatosTabla();
+            //GridView1.DataBind();
+            //agregaFiltros();
         }
 
-        protected DataTable obtienDatosTabla()
+        protected ArrayList obtienDatosTablaArray()
         {
-            DataTable dt = new DataTable();
+            ArrayList dt = new ArrayList();
             int cont = 0;
-            while ((cont < CamposSeleccionados.Items.Count))
+
+            //Relaciones tablas y alias seleccionados
+            ArrayList tablasSel = (ArrayList)Session["tablasSel"];
+            ArrayList aliasTablasSel = (ArrayList)Session["aliasTablasSel"];
+
+
+
+            //Relaciones tablas, alias y campos seleccionados
+            ArrayList tablasCampos = (ArrayList)Session["tablasCampos"];
+            ArrayList aliasCampos = (ArrayList)Session["aliasCampos"];
+            ArrayList campos = (ArrayList)Session["campos"];
+
+            if (tablasSel != null && aliasTablasSel != null && tablasCampos != null && aliasCampos != null && campos != null)
             {
-                dt.Columns.Add(new DataColumn(CamposSeleccionados.Items[cont].Text, typeof(string)));
-                cont = (cont + 1);
-            }
+                ArrayList headCol = new ArrayList();
 
-            //  Total number of rows.
-            int rowCnt = 0;
-            //  Current row count
-            int rowCtr = 0;
-            //  Total number of cells (columns).
-            int cellCtr = 0;
-            //  Current cell counter.
-            int cellCnt = 0;
-            rowCnt = 10;
-            cellCnt = CamposSeleccionados.Items.Count;
-
-            nomTaSel = new ArrayList();
-            nomTaSel.Clear();
-            for (int contAux = 0; contAux < TablaBaseSel.Items.Count; contAux++)
-            {
-                nomTaSel.Add(TablaBaseSel.Items[contAux].Text);
-            }
-
-            ArrayList filtros = (ArrayList)Session["filtrosConAlias"];
-
-
-            ArrayList camposRel = ServiciosGen.generaCamposRelacion(nomTaSel, aliasTaSel, ServiciosGen.obtieneCamosRelacion(nomTaSel));
-
-            ArrayList resp = ServiciosGen.reporteDinamico(nomTaCamSel, nomTaSel, aliasTaSel, camposRel, filtros);
-            if (resp != null)
-            {
-                for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)
+                while (cont < campos.Count)
                 {
-                    ArrayList camposRec = (ArrayList)resp[rowCtr];
-                    DataRow tRow = dt.NewRow();
-                    for (cellCtr = 0; cellCtr < camposRec.Count; cellCtr++)
-                    {
-                        tRow[cellCtr] = camposRec[cellCtr];
-                        // cellCtr = cellCtr + 1
-                    }
+                    headCol.Add((string)campos[cont]);
+                    cont = (cont + 1);
+                }
 
-                    //  Add new row to table.
-                    dt.Rows.Add(tRow);
+                dt.Add(headCol);
+
+                //  Total number of rows.
+                int rowCnt = 0;
+                //  Current row count
+                int rowCtr = 0;
+                //  Total number of cells (columns).
+                int cellCtr = 0;
+                //  Current cell counter.
+                int cellCnt = 0;
+                rowCnt = 10;
+                cellCnt = campos.Count;
+
+                ArrayList filtros = (ArrayList)Session["filtrosConAlias"];
+
+                ArrayList camposRel = ServiciosGen.generaCamposRelacion(tablasSel, aliasTablasSel, ServiciosGen.obtieneCamosRelacion(tablasSel));
+
+                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros);
+                if (resp != null)
+                {
+                    ArrayList datCol = new ArrayList();
+                    for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)
+                    {
+                        datCol = new ArrayList();
+
+                        ArrayList camposRec = (ArrayList)resp[rowCtr];
+                        for (cellCtr = 0; cellCtr < camposRec.Count; cellCtr++)
+                        {
+                            datCol.Add(camposRec[cellCtr]);
+                        }
+
+                        //  Add new row to table.
+                        dt.Add(datCol);
+                    }
                 }
             }
 
             return dt;
         }
 
+
+        protected DataTable obtienDatosTabla()
+        {
+            DataTable dt = new DataTable();
+            int cont = 0;
+
+            //Relaciones tablas y alias seleccionados
+            ArrayList tablasSel = (ArrayList)Session["tablasSel"];
+            ArrayList aliasTablasSel = (ArrayList)Session["aliasTablasSel"];
+
+
+
+            //Relaciones tablas, alias y campos seleccionados
+            ArrayList tablasCampos = (ArrayList)Session["tablasCampos"];
+            ArrayList aliasCampos = (ArrayList)Session["aliasCampos"];
+            ArrayList campos = (ArrayList)Session["campos"];
+
+            if (tablasSel != null && aliasTablasSel != null && tablasCampos != null && aliasCampos != null && campos != null)
+            {
+
+                while (cont < campos.Count)
+                {
+                    dt.Columns.Add(new DataColumn((string)campos[cont], typeof(string)));
+                    cont = (cont + 1);
+                }
+
+                //  Total number of rows.
+                int rowCnt = 0;
+                //  Current row count
+                int rowCtr = 0;
+                //  Total number of cells (columns).
+                int cellCtr = 0;
+                //  Current cell counter.
+                int cellCnt = 0;
+                rowCnt = 10;
+                cellCnt = campos.Count;
+
+                ArrayList filtros = (ArrayList)Session["filtrosConAlias"];
+
+                ArrayList camposRel = ServiciosGen.generaCamposRelacion(tablasSel, aliasTablasSel, ServiciosGen.obtieneCamosRelacion(tablasSel));
+
+                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros);
+                if (resp != null)
+                {
+                    for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)
+                    {
+                        ArrayList camposRec = (ArrayList)resp[rowCtr];
+                        DataRow tRow = dt.NewRow();
+                        for (cellCtr = 0; cellCtr < camposRec.Count; cellCtr++)
+                        {
+                            tRow[cellCtr] = camposRec[cellCtr];
+                            // cellCtr = cellCtr + 1
+                        }
+
+                        //  Add new row to table.
+                        dt.Rows.Add(tRow);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        //Genera Reporte en PDF
+
         protected void Button2_Click(object sender, EventArgs e)
+        {
+            if (idNombreReporte.Text != "")
+            {
+                //generaPDF(idNombreReporte.Text);
+                generaPDF2(idNombreReporte.Text);
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('Ingrese el nombre del reporte...');</script>");
+            }
+
+        }
+
+        protected void generaPDF(string reporte)
         {
             GridView GridView2 = new GridView();
             GridView2.AllowPaging = false;
             GridView2.DataSource = obtienDatosTabla();
             GridView2.DataBind();
             Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=DataTable.pdf");
+            Response.AddHeader("content-disposition", "attachment;filename=" + reporte + ".pdf");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
@@ -476,7 +587,51 @@ namespace Presentacion.Reportes
             Response.End();
         }
 
+        protected void generaPDF2(string tituloRep)
+        {
+            SendOutPDF(new CustomReports().CreatePDF("Reporte: " + tituloRep, obtienDatosTablaArray()), tituloRep);
+        }
+
+
+        //----------------------------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Sends a Stream of bytes to Client as a PDF file
+        /// </summary>
+        /// <param name="PDFData">Stream containing bytes</param>
+        protected void SendOutPDF(System.IO.MemoryStream PDFData, String tituloRep)
+        {
+
+            // Clear response content & headers
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.Charset = string.Empty;
+            Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+            Response.AddHeader("Content-Disposition",
+                "attachment;filename=" + tituloRep.Replace(" ", "").Replace(":", "-") + ".pdf");
+            Response.OutputStream.Write(PDFData.GetBuffer(), 0, PDFData.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.OutputStream.Close();
+            Response.End();
+        }
+
+
+
+        //Genera Reporte en XLS
         protected void Button3_Click(object sender, EventArgs e)
+        {
+            if (idNombreReporte.Text != "")
+            {
+                generaXLS(idNombreReporte.Text);
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('Ingrese el nombre del reporte...');</script>");
+            }
+        }
+
+        protected void generaXLS(string reporte)
         {
             GridView GridView2 = new GridView();
             GridView2.AllowPaging = false;
@@ -484,7 +639,7 @@ namespace Presentacion.Reportes
             GridView2.DataBind();
             Response.Clear();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment;filename=DataTable.xls");
+            Response.AddHeader("content-disposition", "attachment;filename=" + reporte + ".xls");
             Response.Charset = "";
             Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();
@@ -504,6 +659,7 @@ namespace Presentacion.Reportes
             Response.End();
         }
 
+        //Genera Reporte en CSV
         protected void Button4_Click(object sender, EventArgs e)
         {
             DataTable DataTable;
@@ -542,6 +698,7 @@ namespace Presentacion.Reportes
             Response.End();
         }
 
+        //Genera Reporte en WORD
         protected void Button5_Click(object sender, EventArgs e)
         {
             GridView GridView1 = new GridView();

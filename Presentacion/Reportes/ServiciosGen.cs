@@ -16,53 +16,14 @@ namespace Presentacion.Reportes
 
         private static SQLDispatcher sqlDispatcher = new SQLDispatcher();
 
-        // Valida si el usuario ingresado es valido
-        public static bool esUsuario(string us, string pwd)
+        // Recupera las tablas base de la BD
+        public static ArrayList getTablasBase()
         {
             config.getConfiguraciones();
             confArch = config.getConfArch();
             confBD = config.getConfBD();
             sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-            ArrayList colbd = new ArrayList();
-            colbd = sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + ("usuario2 P               "
-                            + (("where P.clave = \'"
-                            + (us + "\' ")) + ("and P.password = \'"
-                            + (pwd + "\' "))))))));
-            if ((!(colbd == null)
-                        && (colbd.Count > 0)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
-        // Recupera las tablas base de la BD
-        public static ArrayList getTablasBase()
-        {
-            try
-            {
-                config.getConfiguraciones();
-                confArch = config.getConfArch();
-                confBD = config.getConfBD();
-
-                //string BD = "Barandillas";
-                //string server = "MTL-PC122\\QLSERVER";
-                //string usuario = "sa";
-                //string pwd = "mtlg1234";
-                //int tipoBD = 1;
-
-                sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
-                //sqlDispatcher.getConexion(BD, server, usuario, pwd, tipoBD);
-                return sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + "TABLAS_BD P               "))));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            return sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + "TABLAS_BD P               "))));
         }
 
         // Recupera las tablas base de la BD
@@ -122,22 +83,25 @@ namespace Presentacion.Reportes
         public static ArrayList generaCamposRelacion(ArrayList tabSelec, ArrayList alias, ArrayList camposRel)
         {
             ArrayList resp = new ArrayList();
-            foreach (ArrayList regCam in camposRel)
+            if (camposRel != null)
             {
-                string nombreTabB = (string)regCam[2];
-                string nombreTabR = (string)regCam[3];
+                foreach (ArrayList regCam in camposRel)
+                {
+                    string nombreTabB = (string)regCam[2];
+                    string nombreTabR = (string)regCam[3];
 
-                string nombreCampoTB = (string)regCam[4];
-                string nombreCampoTR = (string)regCam[5];
+                    string nombreCampoTB = (string)regCam[4];
+                    string nombreCampoTR = (string)regCam[5];
 
-                int indexTB = tabSelec.IndexOf(nombreTabB);
-                int indexTR = tabSelec.IndexOf(nombreTabR);
+                    int indexTB = tabSelec.IndexOf(nombreTabB);
+                    int indexTR = tabSelec.IndexOf(nombreTabR);
 
-                string aliasTB = (string)alias[indexTB];
-                string aliasTR = (string)alias[indexTR];
+                    string aliasTB = (string)alias[indexTB];
+                    string aliasTR = (string)alias[indexTR];
 
-                resp.Add(aliasTB + "." + nombreCampoTB + " = " + aliasTR + "." + nombreCampoTR);
+                    resp.Add(aliasTB + "." + nombreCampoTB + " = " + aliasTR + "." + nombreCampoTR);
 
+                }
             }
 
             return resp;
@@ -232,6 +196,31 @@ namespace Presentacion.Reportes
 
             return sqlDispatcher.getColConsulta(sqlF);
 
+        }
+
+        public static Boolean agregaReporteConsulta(string nombreReporte, string cadenaConsultaReporte)
+        {
+            string sql = "INSERT INTO NOMBRES_REPORTS VALUES('" + nombreReporte + "', '" + cadenaConsultaReporte + "', GetDate(), 1);";
+            return sqlDispatcher.ejecutaSQL(sql);
+        }
+
+        public static ArrayList joinNombreAlias(ArrayList lNombre, ArrayList lAlias, string sep)
+        {
+            ArrayList resp = new ArrayList();
+            if (sep == "")
+            {
+                sep = ".";
+            }
+
+            if (lNombre != null && lAlias != null)
+            {
+                for (int cont = 0; cont < lNombre.Count; cont++)
+                {
+                    resp.Add(lAlias[cont] + sep + lNombre[cont]);
+                }
+
+            }
+            return resp;
         }
     }
 }

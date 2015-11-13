@@ -1,184 +1,154 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmSelectTablas.aspx.cs" Inherits="Presentacion.Reportes.frmSelectTablas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmSelectTablas.aspx.cs" Inherits="Presentacion.Reportes.frmSelectTablas"  validateRequest="false" enableEventValidation="false"%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
            <div>
             <asp:ScriptManager ID="ScriptManager1" runat="server" />
-            <table>
-                <tr>
-                    <td>Tablas en BD</td>
-                    <td></td>
-                    <td>Tablas Seleccionadas</td>
-                    <td></td>
-                    <td class="auto-style1">Campos en Tabla</td>
-                    <td></td>
-                    <td>Campos Seleccionados</td>
-                    <td></td>
-                    <td>Filtros</td>
-                </tr>
-                <tr>
-                    <td>
-                        <asp:ListBox ID="TablasBD" runat="server" Height="283px" Width="167px"></asp:ListBox>
-                    </td>
-                    <td>
-                        <asp:Button ID="AgregaTablaBase" runat="server" CssClass="btn btn-default" Text=">>" OnClick="AgregaTablaBase_Click" />
-                        <br />
-                        <asp:Button ID="QuitaTablaBase" runat="server" CssClass="btn btn-default" Text="<<" OnClick="QuitaTablaBase_Click" />
-                    </td>
-                    <td>
-                        <asp:ListBox ID="TablaBaseSel" runat="server" CssClass="form-control" Height="277px" Width="174px"></asp:ListBox>
-                    </td>
-                    <td>
-                        <asp:Button ID="ObtieneCampos" runat="server" CssClass="btn btn-default" Text=">>" OnClick="ObtieneCampos_Click" />
-                        <br />
-                    </td>
-                    <td class="auto-style1">
-                        <asp:ListBox ID="CamposTalbaBaseSel" runat="server" CssClass="form-control" Height="277px" Width="182px"></asp:ListBox>
-                    </td>
-                    <td>
-                        <asp:Button ID="AgregaCampoTablaSel" runat="server" CssClass="btn btn-default"  Text=">>" OnClick="AgregaCampoTablaSel_Click" />
-                        <br />
-                        <asp:Button ID="QuitaCampoTablaSel" runat="server"  CssClass="btn btn-default" Text="<<" OnClick="QuitaCampoTablaSel_Click" style="height: 26px" />
-                    </td>
-                    <td>
-                        <asp:ListBox ID="CamposSeleccionados" runat="server" CssClass="form-control" Height="277px" Width="229px"></asp:ListBox>
-                    </td>
-                    <td></td>
-                    <td>
-                        <asp:ListBox ID="CamposSeleccionadosFin" runat="server" CssClass="form-control" Height="277px" Width="229px" ViewStateMode="Enabled"></asp:ListBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td><asp:Button ID="ResetAll" runat="server" CssClass="btn btn-default" Text="Reset" Width="150" OnClick="ResetAll_Click"  /></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="auto-style1">
-                        <asp:Button ID="btnAsistente" runat="server" CssClass="btn btn-default" Text="Agregar Filtros" Width="150" OnClick="btnAsistente_Click" />
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <asp:UpdatePanel ID="EmployeeInfoUpdatePanel" runat="server">
+                      <ContentTemplate>
+                          <div class="modal"></div>
+                                <table>
+                                    <tr>
+                                        <td>Tablas en BD</td>
+                                        <td></td>
+                                        <td>Tablas Seleccionadas</td>
+                                        <td></td>
+                                        <td class="auto-style1">Campos en Tabla</td>
+                                        <td></td>
+                                        <td>Campos Seleccionados</td>
+                                        <td></td>
+                                        <td>Filtros</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:ListBox ID="TablasBD" runat="server" Height="283px" Width="167px"></asp:ListBox>
+                                        </td>
+                                        <td>
+                                            <br />
+                                            <input id="idAgregaTablasBase" value=">>" class="btn btn-default" type="button" onclick="agregaTablaBase()"/>
+                                            <br />
+                                            <input id="idQuitaTablasBase" value="<<" class="btn btn-default" type="button" onclick="quitaTablasSel()"/>
+                                        </td>
+                                        <td>
+                                            <asp:ListBox ID="TablaBaseSel" runat="server" Height="277px" Width="174px"></asp:ListBox>
+                                        </td>
+                                        <td>
+                                            <br />
+                                            <input id="idAgregaCamposTablasSel" value=">>" class="btn btn-default" type="button" onclick="agregaCamposTablaBase()"/>
+                                            <br />
+                                        </td>
+                                        <td class="auto-style1">
+                                            <asp:ListBox ID="CamposTalbaBaseSel" runat="server" Height="277px" Width="174px"></asp:ListBox>
+                                        </td>
+                                        <td>
+                                            <br />
+                                            <input id="idAgregaCamposSelTablasSel" value=">>" class="btn btn-default" type="button" onclick="agregaCamposSelTablaBase()"/>
+                                            <br />
+                                            <input id="idQuitaCamposSelTablasSel" value="<<" class="btn btn-default" type="button" onclick="quitaCamposSelTablaSel()"/>
+                                        </td>
+                                        <td>
+                                            <asp:ListBox ID="CamposSeleccionados" runat="server" class="btn btn-default" Height="277px" Width="174px"></asp:ListBox>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <asp:ListBox ID="CamposSeleccionadosFin" runat="server" Height="277px" Width="174px" ViewStateMode="Enabled"></asp:ListBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="button" name="ResetAll" id="ResetAll" class="btn btn-default" onClick="resetAll()" alt="Restarurar todo"> <img src="/Reportes/img/reset-icon2.png"></button>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="auto-style1">
+                                            <button type="button" name="ImageButton3" id="ImageButton3" class="btn btn-default" onClick="ShowFiltrosModal()" alt="Agregar Filtros"> <img src="/Reportes/img/filter_data2.png"></button>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
 
-            </table>
-        </div>
+                                </table>
+                            </div>
 
-        <br />
+                            <br />
 
-        <br />
+                          <input id="btnGenerarReporte2" value="Genera Reporte" class="btn btn-default" type="button" onclick="ShowReportePrevModal()"/>
+                          <div  style='display:none;'>
+                          <asp:Button ID="btnGenerarReporte" class="btn btn-default" runat="server" Text="GenerarReporteHid" />
+                          <asp:Button ID="btnAsistente" class="btn btn-default" runat="server" Text="GenerarReporteHid" />
+                          </div>
+                          
 
-        <br />
-        <br />
+                          <cc1:ModalPopupExtender ID="ModalPopupExtenderReportePrev" runat="server" TargetControlID="btnGenerarReporte"
+                                PopupControlID="pnlReporteGenerado" OkControlID="btnAceptarReporte" CancelControlID="btnCancelarReporte"
+                                OnOkScript="aceptarReporte()" OnCancelScript="cancelarReporte()" DropShadow="True"
+                                BackgroundCssClass="FondoAplicacion"  PopupDragHandleControlID="PopupHeader" BehaviorID="ReportePrevModalPopup" />
+                          
 
-        <asp:Button ID="Button1" runat="server" CssClass="btn btn-default" Text="GenerarReporte" OnClick="Button1_Click" />
+                            <br />
+                            <br />
 
-        <asp:Button ID="Button2" runat="server" CssClass="btn btn-default" Text="Exportar PDF" OnClick="Button2_Click" />
+                            <br />
 
-        <asp:Button ID="Button3" runat="server" CssClass="btn btn-default" Text="Exportar XLS" OnClick="Button3_Click" />
+                            <asp:Panel ID="pnlSeleccionarDatos" runat="server" CssClass="CajaDialogo" Style="display: none;">
+                                <div style="padding: 10px; background-color: #0033CC; color: #FFFFFF;">
+                                    <asp:Label ID="Label4" runat="server" Text="Filtrar datos por:" />
+                                </div>
+                                <div>
+                                    <asp:Panel runat="server" ID="Panel1" >
+                                    </asp:Panel>
+                                     <div id="contenedorFiltro" height="200" width="480" >
+                                     </div>
+                                    <asp:Button ID="btnAceptar" CssClass="btn btn-default" runat="server" Text="Aceptar"  />
+                                    &nbsp;&nbsp;
+                                    <asp:Button ID="btnCancelar" CssClass="btn btn-default" runat="server" Text="Cancelar" />
 
-        <asp:Button ID="Button4" runat="server" CssClass="btn btn-default" Text="Exportar CSV" OnClick="Button4_Click" />
+                                </div>
 
-        <asp:Button ID="Button5" runat="server" CssClass="btn btn-default" Text="Exportar Word" OnClick="Button5_Click" />
+                            </asp:Panel>
 
-        <br />
-        <br />
-        <asp:GridView ID="GridView1" runat="server" Height="67px"
-            Width="353px"
-            CellPadding="4" ForeColor="#333333" GridLines="None">
-            <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-            <EditRowStyle BackColor="#999999" />
-            <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-            <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-            <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-            <SortedAscendingCellStyle BackColor="#E9E7E2" />
-            <SortedAscendingHeaderStyle BackColor="#506C8C" />
-            <SortedDescendingCellStyle BackColor="#FFFDF8" />
-            <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
-        </asp:GridView>
-        <br />
+                            <asp:Panel ID="pnlReporteGenerado" runat="server" CssClass="CajaDialogo" Width="800" Style="display: none;">
+                                <div class="FooterDialogo">
+                                    <asp:Label ID="LabelNombreReporte" runat="server" Text="Reporte generado:" />
+                                </div>
+                                <div>
+                                    <asp:Label ID="idLabelNombreReporte" runat="server" Text="Nombre de Reporte:">
+                                        <asp:TextBox ID="idNombreReporte" runat="server" ></asp:TextBox>
+                                    </asp:Label>
+                                </div>
+                                <div >
+                                    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/Reportes/img/PDF-icon2.png" OnClick="Button2_Click" AlternateText="Exportar a PDF" />&nbsp;
+                                    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="/Reportes/img/Excel-icon2.png" OnClick="Button3_Click" AlternateText="Exportar a XLS"/>
+                                </div>
+                                <div>
+                                    <asp:Panel runat="server" ID="Panel3" HorizontalAlign="Center">
+                                         <iframe id="IframeEdit" frameborder="0" height="203" width="600" scrolling="yes" >
+                                        </iframe>
 
-        <asp:Panel ID="pnlSeleccionarDatos" runat="server" CssClass="CajaDialogo" Style="display: none;">
-            <div class="FooterDialogo">
-                <asp:Label ID="Label4" runat="server" Text="Filtrar datos por:" />
-            </div>
-
-            <div>
-                <asp:Panel runat="server" ID="Panel1"></asp:Panel>
-                <asp:Button ID="btnAceptar" runat="server" Text="Aceptar"  />
-                &nbsp;&nbsp;
-                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
-
-            </div>
-
+                                    </asp:Panel>
 
 
-        </asp:Panel>
-        <cc1:ModalPopupExtender ID="mpeSeleccion" runat="server" TargetControlID="btnAsistente"
-            PopupControlID="pnlSeleccionarDatos" OkControlID="btnAceptar" CancelControlID="btnCancelar"
-            OnOkScript="mpeSeleccionOnOk()" OnCancelScript="mpeSeleccionOnCancel()" DropShadow="True"
-            BackgroundCssClass="FondoAplicacion" />
-<script  type="text/javascript">
-    var gPrefijo = "MainContent_";
-    function mpeSeleccionOnOk() {
+                                    <asp:Button ID="btnAceptarReporte" CssClass="btn btn-default" runat="server" Text="Guardar Consulta."  />
+                                    &nbsp;&nbsp;
+                                    <asp:Button ID="btnCancelarReporte" CssClass="btn btn-default" runat="server" Text="Cerrar" />
+                                                                <br />
+                            <br />
+                            <br />
+                                </div>
 
-        var lista1 = $("#" + gPrefijo + "CamposSeleccionados"); // 
-        //var listaF = $("#" + gPrefijo + "CamposSeleccionadosFin options");  //
-        //var listaF = $("#" + gPrefijo + "CamposSeleccionadosFin options");  //
-        var listaF = document.getElementById(gPrefijo + "CamposSeleccionadosFin");
-        var filtroFinVar = "";
-        var campoNom = "";
-        var contF = 0;
+                            </asp:Panel>
+                       <cc1:ModalPopupExtender ID="mpeSeleccion" runat="server" TargetControlID="btnAsistente"
+                                PopupControlID="pnlSeleccionarDatos" OkControlID="btnAceptar" CancelControlID="btnCancelar"
+                                OnOkScript="mpeSeleccionOnOk()" OnCancelScript="mpeSeleccionOnCancel()" DropShadow="True"
+                                BackgroundCssClass="FondoAplicacion" BehaviorID="mpeSeleccion"/>
 
-        $('select#' + gPrefijo + 'CamposSeleccionados').find('option').each(function () {
-            var campoHD = $(this).val();
-            if ($(gPrefijo + "hdf" + campoHD) != null) {
-                var campoFin = "";
-                var campoAlias = "";
-                var combo = $("#" + gPrefijo + "cmb" + campoHD + " option:selected");
-                var x = combo.index();
-                if (x > 0) {
-                    //var y = combo.options;
-                    var comboText = x > 0 ? combo.val() : "";
-                    var text = $("#" + gPrefijo + "txt" + campoHD).val();
-                    //var filtro = document.getElementById("hiddenFiltros");
-                    campoFin = campoHD + " " + comboText + " " + text;
-                    filtroFinVar = filtroFinVar + "|" + campoFin;
-                    campoNom = campoNom + "|" + campoHD;
-                    var no = new Option();
-                    no.value = campoFin;
-                    no.text = campoFin;
-                    listaF[contF] = no;
-                    contF++;
-                }
-            }
-        });
+                 </ContentTemplate>
 
-        $.ajax({
-            type: "POST",
-            url: "/Reportes/SolicitudesGen.asmx/AgregaFiltros",
-            data: "{filtroFin:'" + filtroFinVar + "',campos:'" + campoNom + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-                if (msg.hasOwnProperty('d')) {
-                    msg = msg.d;
-                }
-                var json = JSON.parse(msg);
-                alert(json.mensaje);
-            },
-            error: function (xhr, status, error) {
-                alert("No se pudo agregar el Filtro...");
-            }
-        });
+            </asp:UpdatePanel>
+         </div>
 
-    }
-    function mpeSeleccionOnCancel() {
-        //var txtSituacion = document.getElementById("txtSituacion");
-        //txtSituacion.value = "";
-        //txtSituacion.style.backgroundColor = "#FFFF99";
-    }
-</script>
+    <script src="../Scripts/Reportes.js"></script>
 </asp:Content>

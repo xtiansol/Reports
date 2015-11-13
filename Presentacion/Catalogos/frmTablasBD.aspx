@@ -58,7 +58,7 @@
            <div id="divData" class="table-responsive">                
            </div>
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-12">
             <ul id="paging2" >
             </ul>
           </div>
