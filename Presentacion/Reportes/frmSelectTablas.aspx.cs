@@ -17,9 +17,9 @@ namespace Presentacion.Reportes
 {
     public partial class frmSelectTablas : System.Web.UI.Page
     {
-        static Label[] arregloLabels;
-        static TextBox[] arregloTextBoxs;
-        static DropDownList[] arregloCombos;
+        //static Label[] arregloLabels;
+        //static TextBox[] arregloTextBoxs;
+        //static DropDownList[] arregloCombos;
         static int contadorControles;
         static ArrayList campos = new ArrayList();
         static ArrayList camposFin = new ArrayList();
@@ -39,14 +39,14 @@ namespace Presentacion.Reportes
 
             if (!IsPostBack)
             {
-                arregloLabels = new Label[20];
-                arregloTextBoxs = new TextBox[20];
-                arregloCombos = new DropDownList[20];
+                //arregloLabels = new Label[20];
+                //arregloTextBoxs = new TextBox[20];
+                //arregloCombos = new DropDownList[20];
                 contadorControles = 0;
                 //Listas relacionadas de filtros tablas, campos y alias seleccionadas
                 Session["filtrosTablasAlias"] = new ArrayList();
-                Session["filtrosConAlias"] = new ArrayList();
                 Session["filtrosSinAlias"] = new ArrayList();
+                Session["filtrosConAlias"] = new ArrayList();
                 Session["filtrosCampos"] = new ArrayList();
 
                 //Listas tablas y alias filtros
@@ -57,6 +57,12 @@ namespace Presentacion.Reportes
                 Session["tablasCampos"] = new ArrayList();
                 Session["aliasCampos"] = new ArrayList();
                 Session["campos"] = new ArrayList();
+
+                //Query generado dinámico
+                Session["listGenReporte"] = new ArrayList();
+
+                //Tabla en uso
+                Session["tablaEnUso"] = "";
 
             }
             else
@@ -74,6 +80,26 @@ namespace Presentacion.Reportes
                     }
                 }
 
+
+                string tablaEnUso = (string)Session["tablaEnUso"];
+                if (tablaEnUso != null)
+                {
+                    ArrayList listCamposTabla = ServiciosGen.getCamposTablasBaseSQLServer(tablaEnUso);
+
+                    if (listCamposTabla.Count > 0)
+                    {
+                        CamposSeleccionados.Items.Clear();
+                        foreach (ArrayList lcampos in listCamposTabla)
+                        {
+                            foreach (string rcampo in lcampos)
+                            {
+                                CamposSeleccionados.Items.Add(rcampo);
+                            }
+                        }
+                    }
+                }
+
+
                 ArrayList tablasCampos = (ArrayList)Session["tablasCampos"];
                 ArrayList aliasCampos = (ArrayList)Session["aliasCampos"];
                 ArrayList campos = (ArrayList)Session["campos"];
@@ -82,12 +108,11 @@ namespace Presentacion.Reportes
                 if (tablasCampos != null && aliasCampos != null && campos != null)
                 {
                     CamposSeleccionados.Items.Clear();
-                    foreach (string campo in tablasSel)
+                    foreach (string campo in campos)
                     {
                         CamposSeleccionados.Items.Add(campo);
                     }
                 }
-
 
                 ArrayList filtrosFin = (ArrayList)Session["filtrosSinAlias"];
                 if (filtrosFin != null)
@@ -142,12 +167,12 @@ namespace Presentacion.Reportes
                 int numeroRegistro = contadorControles;
                 Label campoSel = new Label();
                 campoSel.Text = nombre;
-                arregloLabels[numeroRegistro] = campoSel;
+                //arregloLabels[numeroRegistro] = campoSel;
 
                 TextBox nuevoTxt = new TextBox();
                 nuevoTxt.ID = "txt" + nombre;
                 nuevoTxt.Width = 100;
-                arregloTextBoxs[numeroRegistro] = nuevoTxt;
+                //arregloTextBoxs[numeroRegistro] = nuevoTxt;
                 DropDownList nuevoCmb = new DropDownList();
                 nuevoCmb.ID = "cmb" + nombre;
                 nuevoCmb.Items.Add("--Seleccione operador--");
@@ -158,7 +183,7 @@ namespace Presentacion.Reportes
                 nuevoCmb.Items.Add("=");
                 nuevoCmb.Items.Add("<>");
                 nuevoCmb.SelectedIndex = 0;
-                arregloCombos[numeroRegistro] = nuevoCmb;
+                //arregloCombos[numeroRegistro] = nuevoCmb;
                 HiddenField nuevoHidF = new HiddenField();
                 nuevoHidF.ID = "hdf" + nombre;
                 nuevoHidF.Value = nombre;
@@ -438,12 +463,15 @@ namespace Presentacion.Reportes
             if (tablasSel != null && aliasTablasSel != null && tablasCampos != null && aliasCampos != null && campos != null)
             {
                 ArrayList headCol = new ArrayList();
+                ArrayList sqlGen = new ArrayList();
 
                 while (cont < campos.Count)
                 {
                     headCol.Add((string)campos[cont]);
                     cont = (cont + 1);
                 }
+
+                sqlGen.Add(ServiciosGen.toStringArrayList(campos, ","));
 
                 dt.Add(headCol);
 
@@ -462,7 +490,8 @@ namespace Presentacion.Reportes
 
                 ArrayList camposRel = ServiciosGen.generaCamposRelacion(tablasSel, aliasTablasSel, ServiciosGen.obtieneCamosRelacion(tablasSel));
 
-                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros);
+                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros, ref sqlGen);
+                Session["listGenReporte"] = sqlGen;
                 if (resp != null)
                 {
                     ArrayList datCol = new ArrayList();
@@ -504,12 +533,14 @@ namespace Presentacion.Reportes
 
             if (tablasSel != null && aliasTablasSel != null && tablasCampos != null && aliasCampos != null && campos != null)
             {
-
+                ArrayList sqlGen = new ArrayList();
                 while (cont < campos.Count)
                 {
                     dt.Columns.Add(new DataColumn((string)campos[cont], typeof(string)));
                     cont = (cont + 1);
                 }
+
+                sqlGen.Add(ServiciosGen.toStringArrayList(campos, ","));
 
                 //  Total number of rows.
                 int rowCnt = 0;
@@ -525,8 +556,8 @@ namespace Presentacion.Reportes
                 ArrayList filtros = (ArrayList)Session["filtrosConAlias"];
 
                 ArrayList camposRel = ServiciosGen.generaCamposRelacion(tablasSel, aliasTablasSel, ServiciosGen.obtieneCamosRelacion(tablasSel));
-
-                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros);
+                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros, ref sqlGen);
+                Session["listGenReporte"] = sqlGen;
                 if (resp != null)
                 {
                     for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)
@@ -754,6 +785,29 @@ namespace Presentacion.Reportes
             principal();
             agregaFiltros();
 
+        }
+
+        //Genera Reporte en XLS
+        protected void ButtonGuardar_Click(object sender, EventArgs e)
+        {
+            if (idNombreReporte.Text != "")
+            {
+                Session["nombreReporte"] = idNombreReporte.Text;
+                ArrayList listGenReporte = (ArrayList)Session["listGenReporte"];
+                if (listGenReporte != null)
+                {
+                    if (ServiciosGen.agregaReporteConsulta(idNombreReporte.Text, (string)listGenReporte[0], (string)listGenReporte[1]))
+                    {
+                        Response.Write("<script language=javascript>alert('Consulta Guardada en Historial.');</script>");
+                    }
+                    else
+                        Response.Write("<script language=javascript>alert('Error al agregar reporte a historial.');</script>");
+                }
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('Ingrese el nombre del reporte...');</script>");
+            }
         }
     }
 }

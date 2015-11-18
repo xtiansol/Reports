@@ -94,6 +94,15 @@ namespace Presentacion.Reportes {
         protected global::System.Web.UI.WebControls.Button btnAsistente;
         
         /// <summary>
+        /// Control btnHistorial.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnHistorial;
+        
+        /// <summary>
         /// Control ModalPopupExtenderReportePrev.
         /// </summary>
         /// <remarks>
@@ -184,22 +193,31 @@ namespace Presentacion.Reportes {
         protected global::System.Web.UI.WebControls.TextBox idNombreReporte;
         
         /// <summary>
-        /// Control ImageButton1.
+        /// Control idButtonPDF.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
+        protected global::System.Web.UI.WebControls.ImageButton idButtonPDF;
         
         /// <summary>
-        /// Control ImageButton2.
+        /// Control idButtonXLS.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton2;
+        protected global::System.Web.UI.WebControls.ImageButton idButtonXLS;
+        
+        /// <summary>
+        /// Control idButtonGuardar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton idButtonGuardar;
         
         /// <summary>
         /// Control Panel3.
@@ -229,6 +247,51 @@ namespace Presentacion.Reportes {
         protected global::System.Web.UI.WebControls.Button btnCancelarReporte;
         
         /// <summary>
+        /// Control pnlHistorico.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlHistorico;
+        
+        /// <summary>
+        /// Control LabelHistorico.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelHistorico;
+        
+        /// <summary>
+        /// Control Panel4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel4;
+        
+        /// <summary>
+        /// Control aceptarHistorico.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button aceptarHistorico;
+        
+        /// <summary>
+        /// Control cancelarHistorico.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cancelarHistorico;
+        
+        /// <summary>
         /// Control mpeSeleccion.
         /// </summary>
         /// <remarks>
@@ -236,5 +299,14 @@ namespace Presentacion.Reportes {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpeSeleccion;
+        
+        /// <summary>
+        /// Control ModalPopupHistorial.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupHistorial;
     }
 }

@@ -197,20 +197,16 @@
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Reportes\config.xml" />
     <Content Include="Reportes\frmFiltros.aspx" />
+    <Content Include="Reportes\frmGenRep.aspx" />
+    <Content Include="Reportes\frmHistorico.aspx" />
     <Content Include="Reportes\frmReportePrev.aspx" />
     <Content Include="Reportes\frmSelectTablas.aspx" />
-    <Content Include="Reportes\img\Excel-icon2.png" />
-    <Content Include="Reportes\img\excel-xls-icon.png" />
-    <Content Include="Reportes\img\Excel.ico" />
-    <Content Include="Reportes\img\filter_data.png" />
-    <Content Include="Reportes\img\filter_data2.png" />
+    <Content Include="Reportes\img\Excel-icon3.png" />
+    <Content Include="Reportes\img\guardar.png" />
     <Content Include="Reportes\img\LogoRep.jpg" />
-    <Content Include="Reportes\img\pdf-icon.png" />
     <Content Include="Reportes\img\PDF-icon2.png" />
-    <Content Include="Reportes\img\PDF.ico" />
+    <Content Include="Reportes\img\PDF-icon3.png" />
     <Content Include="Reportes\img\pIkfp.gif" />
-    <Content Include="Reportes\img\reset-icon.png" />
-    <Content Include="Reportes\img\reset-icon2.png" />
     <Content Include="Reportes\SolicitudesGen.asmx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -286,6 +282,20 @@
     </Compile>
     <Compile Include="Reportes\frmFiltros.aspx.designer.cs">
       <DependentUpon>frmFiltros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\frmGenRep.aspx.cs">
+      <DependentUpon>frmGenRep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reportes\frmGenRep.aspx.designer.cs">
+      <DependentUpon>frmGenRep.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\frmHistorico.aspx.cs">
+      <DependentUpon>frmHistorico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reportes\frmHistorico.aspx.designer.cs">
+      <DependentUpon>frmHistorico.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reportes\frmReportePrev.aspx.cs">
       <DependentUpon>frmReportePrev.aspx</DependentUpon>

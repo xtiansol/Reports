@@ -19,17 +19,34 @@ $(document).on({
 function ShowFiltrosModal() {
     //var frame = $get('IframeEdit');
     //frame.src = "frmFiltros.aspx?UIMODE=EDIT&EID=222";
-    $("#contenedorFiltro").load("frmFiltros.aspx?UIMODE=EDIT&EID=222");
-
-    $find('mpeSeleccion').show();
+    var cont = $("#" + gPrefijo + "CamposSeleccionados option").length;
+    if (cont > 0) {
+        $("#contenedorFiltro").load("frmFiltros.aspx?UIMODE=EDIT&EID=222");
+        $find('mpeSeleccion').show();
+    } else {
+        alert("Seleccione campos al reporte");
+    }
 }
 
 function ShowReportePrevModal() {
-    var frame = $get('IframeEdit');
-    frame.src = "frmReportePrev.aspx?UIMODE=EDIT&EID=222";
-    $find('ReportePrevModalPopup').show();
+    var cont = $("#" + gPrefijo + "CamposSeleccionados option").length;
+    if (cont > 0) {
+        $("#contenedorFiltro").empty(); //Vacia el contenedor de filtros para que no truene el llamado al generar reporte
+        $("#IframeEdit2").empty();
+        var frame = $get('IframeEdit');
+        frame.src = "frmReportePrev.aspx?UIMODE=EDIT&EID=222";
+        $find('ReportePrevModalPopup').show();
+    } else {
+        alert("Seleccione campos al reporte");
+    }
 }
 
+function ShowHistoricoModal() {
+    $("#contenedorFiltro").empty(); //Vacia el contenedor de filtros para que no truene el llamado al generar reporte
+    var frame = $get('IframeEdit2');
+    frame.src = "frmHistorico.aspx?UIMODE=EDIT&EID=222";
+    $find('mpeSeleccionHistorial').show();
+}
 
 function mpeSeleccionOnOk() {
 
@@ -48,7 +65,7 @@ function mpeSeleccionOnOk() {
 
             var campoFin = "";
             var campoAlias = "";
-            var combo = $("#"  + gPrefijo + "cmb" + campoHD + " option:selected");
+            var combo = $("#" + gPrefijo + "cmb" + campoHD + " option:selected");
             var x = combo.index();
             if (x > 0) {
                 var comboText = x > 0 ? combo.val() : "";
@@ -63,12 +80,12 @@ function mpeSeleccionOnOk() {
                 listaF[contF] = no;
                 contF++;
             }
-        } 
+        }
 
     });
-    if (filtroFinVar == "" && campoNom == ""){
+    if (filtroFinVar == "" && campoNom == "") {
         alert("No existen campos para agregar filtros!!");
-    }else {
+    } else {
         $.ajax({
             type: "POST",
             url: "../Reportes/SolicitudesGen.asmx/AgregaFiltros",
@@ -96,12 +113,13 @@ function mpeSeleccionOnCancel() {
     //txtSituacion.style.backgroundColor = "#FFFF99";
 }
 
+
 function cancelarReporte() {
     //alert("cancelar");
 }
 
 function aceptarReporte() {
-    alert("La Consulta se Guardo Exitosamente !!");
+    //alert("aceptar");
 }
 
 
@@ -205,7 +223,7 @@ function obtieneCamposTablas(tablas, func) {
 
         },
         error: function (xhr, status, error) {
-            alert("No se pudo agregar el Filtro...");
+            alert("No se pudo obtener los campos de las tabla seleccionada...");
         }
     });
     return listaGen;
@@ -279,6 +297,79 @@ function mantieneCamposSelTablasSel(tablas, alias, campos, func) {
     return respuesta;
 }
 
+function guardaConsultaReporte(nomReporte, func) {
+    var respuesta;
+    $find('ReportePrevModalPopup').hide();
+    $.ajax({
+        type: "POST",
+        url: "../Reportes/SolicitudesGen.asmx/GuardaReporteHistorial",
+        data: "{nombreReporte:'" + nomReporte + "' " +
+               "}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resp) {
+            $find('ReportePrevModalPopup').show();
+            if (resp.hasOwnProperty('d')) {
+                resp = resp.d;
+            }
+            var json = JSON.parse(resp);
+            //                    alert("Recuperado tamaño:" + json.resp.listaGen.length);
+            if (func != null) {
+                func(json.resp.listaGen);
+            }
+            alert(json.mensaje);
+
+            respuesta = true;
+
+        },
+        error: function (xhr, status, error) {
+            $find('ReportePrevModalPopup').show();
+            alert("Error al guardar el reporte en historial...");
+            respuesta = false;
+        }
+    });
+    return respuesta;
+}
+
+function guardaReporteHistorial(nombreRep) {
+    if (nombreRep != null) {
+        guardaConsultaReporte(nombreRep, null);
+    }
+}
+
+
+function resetAllReporte(func) {
+    var respuesta;
+    $.ajax({
+        type: "POST",
+        url: "../Reportes/SolicitudesGen.asmx/ResetAll",
+        data: "{nombreReporte:'' " +
+               "}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resp) {
+            if (resp.hasOwnProperty('d')) {
+                resp = resp.d;
+            }
+            var json = JSON.parse(resp);
+            //                    alert("Recuperado tamaño:" + json.resp.listaGen.length);
+            if (func != null) {
+                func(json.resp.listaGen);
+            }
+            //alert(json.mensaje);
+
+            respuesta = true;
+
+        },
+        error: function (xhr, status, error) {
+            alert("Error al eliminar variables...");
+            respuesta = false;
+        }
+    });
+    return respuesta;
+}
+
+
 function obtieneTablasSeleccionadas(separador) {
     var tablasSelec = "";
     var sep = "";
@@ -309,17 +400,18 @@ function llenaListaTablasBDRel() {
     //obtieneTablasRel('vehiculo');
     var tabSel = "";
     var sep = "";
+
     $("#" + idComp + " option:selected").each(function () {
         arrTabSel.push($(this).html());
         arrAliasTabSel.push("alias" + $(this).html());
         agregaElementoLista(idComp2, $(this).html(), $(this).html());
     });
 
-
     var listTablasSelec = obtieneTablasSeleccionadas("|");
     obtieneTablasRel(listTablasSelec, function (list) {
         llenaListaGen(idComp, list);
     });
+
     mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
 }
 
@@ -352,30 +444,86 @@ function llenaListaCamposSelTablasSel() {
     var tabsSel = "";
     var sep = "";
     $("#" + idComp + " option:selected").each(function () {
-        agregaElementoLista(idComp2, $(this).html(), $(this).html());
-        tabsSel = tabsSel + sep + $(this).html();
-        sep = "|";
+        if (!existeElemArre($(this).html(), idComp2)) {
+            agregaElementoLista(idComp2, $(this).html(), $(this).html());
+            tabsSel = tabsSel + sep + $(this).html();
+            sep = "|";
 
-        arrTabSelCampos.push(tablaSelActual);
-        arrAliasTabSelCampos.push(aliasTablaSelActual);
-        arrCamposTabSelCampos.push($(this).html());
+            arrTabSelCampos.push(tablaSelActual);
+            arrAliasTabSelCampos.push(aliasTablaSelActual);
+            arrCamposTabSelCampos.push($(this).html());
+        }
     });
-
     $("#" + idComp + " option:selected").remove();
-
     mantieneCamposSelTablasSel(toStringArr(arrTabSelCampos, '|'), toStringArr(arrAliasTabSelCampos, '|'), toStringArr(arrCamposTabSelCampos, '|'), null);
+}
 
+function eliminarItem(index, idListBox) {
+    var indexItem = -1;
+    $('#' + idListBox + ' option').each(function () {
+        indexItem++;
+        if (index == indexItem) {
+            $(this).remove();
+        }
+    });
+}
+
+function elimiarItemCamSelTabSel(index) {
+    //Eliminar arreglos
+    arrTabSelCampos.splice(index, 1);
+    arrAliasTabSelCampos.splice(index, 1);
+    arrCamposTabSelCampos.splice(index, 1);
+    //Elimina el listbox
+    eliminarItem(index, gPrefijo + 'CamposSeleccionados');
 }
 
 function quitaListaTablasBD() {
     var idComp = gPrefijo + 'TablasBD';
     var idComp2 = gPrefijo + 'TablaBaseSel';
+    var idComp3 = gPrefijo + 'CamposTalbaBaseSel';
+    var idComp4 = gPrefijo + 'CamposSeleccionados';
+    var idComp5 = gPrefijo + 'CamposSeleccionadosFin';
     var tabsSel = "";
     var sep = "";
 
 
     $("#" + idComp2 + " option:selected").each(function () {
         //alert("eliminar:" + $(this).html() + " index:" + $(this).index() + " arreglo.length:" + arrTabSel.length);
+        var tablaAEliminar = $(this).html();
+        if (tablaSelActual == tablaAEliminar) {
+            $("#" + idComp3).empty();
+        }
+
+        //Quita Campos seleccionados
+        if ($("#" + idComp4 + " option").length > 0) {
+            var bandMan = false;
+            for (var cont = 0; cont < arrTabSelCampos.length ; cont++) {
+                if (tablaAEliminar == arrTabSelCampos[cont]) {
+                    elimiarItemCamSelTabSel(cont);
+                    cont = -1;
+                    bandMan = true;
+                }
+            }
+            if (bandMan) {
+                mantieneCamposSelTablasSel(toStringArr(arrTabSelCampos, '|'), toStringArr(arrAliasTabSelCampos, '|'), toStringArr(arrCamposTabSelCampos, '|'), null);
+            }
+        }
+
+        //Quita Filtros seleccionados
+        if ($("#" + idComp5 + " option").length > 0) {
+            var bandMan = false;
+            //for (var cont = 0; cont < arrTabSelCampos.length ; cont++) {
+            //    if (tablaAEliminar == arrTabSelCampos[cont]) {
+            //        elimiarItemCamSelTabSel(cont);
+            //        cont = -1;
+            //        bandMan = true;
+            //    }
+            //}
+            //if (bandMan) {
+            //    mantieneCamposSelTablasSel(toStringArr(arrTabSelCampos, '|'), toStringArr(arrAliasTabSelCampos, '|'), toStringArr(arrCamposTabSelCampos, '|'), null);
+            //}
+        }
+
         arrTabSel.splice($(this).index(), 1);
         arrAliasTabSel.splice($(this).index(), 1);
         $(this).remove();
@@ -384,10 +532,12 @@ function quitaListaTablasBD() {
 
     if ($("#" + idComp2 + " option").length > 0) {
         llenaListaTablasBDRel();
+        mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
     } else {
-        llenaListaTablasBD();
+        //llenaListaTablasBD();
+        resetAll();
     }
-    mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
+
 }
 
 function quitaListaCamposSelTablasSel() {
@@ -398,9 +548,16 @@ function quitaListaCamposSelTablasSel() {
     var tabsSel = "";
     var sep = "";
     $("#" + idComp2 + " option:selected").each(function () {
-        agregaElementoLista(idComp, $(this).html(), $(this).html());
-        tabsSel = tabsSel + sep + $(this).html();
-        sep = "|";
+        if (!existeElemArre($(this).html(), idComp)) {
+
+            var indexItemLis = indexElemArre($(this).html(), idComp);
+            if (indexItemLis < 0 && tablaSelActual == arrTabSelCampos[$(this).index()]) {
+                alert("Agrega elementos:" + $(this).html());
+                agregaElementoLista(idComp, $(this).html(), $(this).html());
+                tabsSel = tabsSel + sep + $(this).html();
+                sep = "|";
+            }
+        }
     });
 
     $("#" + idComp2 + " option:selected").each(function () {
@@ -418,16 +575,46 @@ function quitaListaCamposSelTablasSel() {
 
 
 function agregaElementoLista(idLista, valor, descripcion) {
+    //var repetido = false;
+    //$('select#' + idLista).find('option').each(function () {
+    //    if ($(this).html() == descripcion) {
+    //        repetido = true;
+    //    }
+    //});
+    //if (!repetido) {
+    //    $("#" + idLista).append("<option value=\"" + valor + "\">" + descripcion + "</option>");
+    //}
+    if (!existeElemArre(descripcion, idLista)) {
+        $("#" + idLista).append("<option value=\"" + valor + "\">" + descripcion + "</option>");
+    }
+
+}
+
+function existeElemArre(descripcion, idLista) {
     var repetido = false;
     $('select#' + idLista).find('option').each(function () {
         if ($(this).html() == descripcion) {
             repetido = true;
         }
     });
-    if (!repetido) {
-        $("#" + idLista).append("<option value=\"" + valor + "\">" + descripcion + "</option>");
-    }
+    return repetido;
+}
 
+function indexElemArre(descripcion, idLista) {
+    var repetido = -1;
+    var cont = -1;
+    alert("va en indexElemArre 1");
+    $('select#' + idLista).find('option').each(function () {
+        alert("va en indexElemArre 2");
+        cont++;
+        if ($(this).html() == descripcion) {
+            alert("va en indexElemArre 3");
+            repetido = cont;
+        }
+
+    });
+    alert("va en indexElemArre 4:" + repetido);
+    return repetido;
 }
 
 function llenaListaGen(idLista, lista) {
@@ -452,15 +639,15 @@ function toStringArr(arreglo, sep) {
 }
 
 function resetAll() {
-    var arrTabSel = [];
-    var arrAliasTabSel = [];
+    arrTabSel = [];
+    arrAliasTabSel = [];
 
-    var arrTabSelCampos = [];
-    var arrAliasTabSelCampos = [];
-    var arrCamposTabSelCampos = [];
+    arrTabSelCampos = [];
+    arrAliasTabSelCampos = [];
+    arrCamposTabSelCampos = [];
 
-    var tablaSelActual = "";
-    var aliasTablaSelActual = "";
+    tablaSelActual = "";
+    aliasTablaSelActual = "";
 
     $("#" + gPrefijo + 'TablasBD').empty();
     $("#" + gPrefijo + 'TablaBaseSel').empty();
@@ -468,8 +655,53 @@ function resetAll() {
     $("#" + gPrefijo + 'CamposSeleccionados').empty();
     $("#" + gPrefijo + 'CamposSeleccionadosFin').empty();
 
-    mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
-    mantieneCamposSelTablasSel(toStringArr(arrTabSelCampos, '|'), toStringArr(arrAliasTabSelCampos, '|'), toStringArr(arrCamposTabSelCampos, '|'), null);
-    //mpeSeleccionOnOk();
+    resetAllReporte();
     resetSelectTab();
+}
+
+function fDefault() {
+
+}
+
+function AgregaCampoTablaSel_Click(id, obj) {
+    var id2 = id;
+    var obj2 = obj;
+    $("#contenedorRepHist").load("" + obj.href);
+    return false;
+}
+
+function expPDF_Click(obj) {
+    var nombreRep = $("#" + gPrefijo + "idNombreReporte").val();
+    if (nombreRep != null && nombreRep != "") {
+        //$("#contenedorRepGen").load(encodeURI("/Reportes/frmGenRep.aspx?tipo=PDF&nomRep=" + nombreRep));
+        $("#IframeRepGen").empty();
+        var frame = $get('IframeRepGen');
+        frame.src = "../Reportes/frmGenRep.aspx?" + encodeURI("tipo=PDF&nomRep=" + nombreRep);
+    } else {
+        alert("Ingrese el nombre del reporte");
+    }
+    return false;
+}
+
+function expXLS_Click(obj) {
+    var nombreRep = $("#" + gPrefijo + "idNombreReporte").val();
+    if (nombreRep != null && nombreRep != "") {
+        //$("#contenedorRepGen").load("/Reportes/frmGenRep.aspx?" + encodeURI("tipo=XLS&nomRep=" + nombreRep));
+        $("#IframeRepGen").empty();
+        var frame = $get('IframeRepGen');
+        frame.src = "../Reportes/frmGenRep.aspx?" + encodeURI("tipo=XLS&nomRep=" + nombreRep);
+    } else {
+        alert("Ingrese el nombre del reporte");
+    }
+    return false;
+}
+
+function guardar_Click(obj) {
+    var nombreRep = $("#" + gPrefijo + "idNombreReporte").val();
+    if (nombreRep != null && nombreRep != "") {
+        guardaReporteHistorial(nombreRep);
+    } else {
+        alert("Ingrese el nombre del reporte");
+    }
+    return false;
 }

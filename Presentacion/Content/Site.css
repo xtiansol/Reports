@@ -22,6 +22,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     width: 500px;
     font-weight: bold;
 }
-.FooterDialogo{padding: 10px; background-color: #c62828; color: #fafafa; border-radius: 5px;}.CajaDialogo div {margin: 5px;text-align: center;}.FondoAplicacion {background-color: grey;filter: alpha(opacity=70);opacity: 0.7;}.auto-style1 {width: 182px;}.theadTabla {background-color: #c62828;color: #FFFFFF;}.Eliminar,.Delete, .Seleccionar{cursor:pointer;}.btnAceptar{margin-top: 5px;}
-.modal {display:none;position:fixed;z-index:1000;top:0;left:0;height:100%;width:100%;background: rgba( 255, 255, 255, .8 )url('../Reportes/img/pIkfp.gif')50% 50% no-repeat;}body.loading {overflow: hidden;}body.loading .modal {display: block;}
+.FooterDialogo{padding: 10px; background-color: #c62828; color: #fafafa; border-radius: 5px;}.CajaDialogo div {margin: 5px;text-align: center;}.FondoAplicacion {background-color: grey;filter: alpha(opacity=70);opacity: 0.7;}.auto-style1 {width: 53px;}.auto-style1 {width: 74px;}.theadTabla {background-color: #c62828;color: #FFFFFF;}.Eliminar,.Delete, .Seleccionar{cursor:pointer;}.btnAceptar{margin-top: 5px;}
+.modal {display:none;position:fixed;z-index:1000;top:0;left:0;height:100%;width:100%;background: rgba( 255, 255, 255, .8 )url('../Reportes/img/pIkfp.gif')50% 50% no-repeat;}body.loading {overflow: hidden;}body.loading .modal {display: block;}.colorButton{color:green !important; font-weight:bold !important;}
 

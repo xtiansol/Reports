@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmReportePrev.aspx.cs" Inherits="Presentacion.Reportes.frmReportePrev" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmReportePrev.aspx.cs" Inherits="Presentacion.Reportes.frmReportePrev" validateRequest="false" enableEventValidation="false" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-        <asp:Panel runat="server" ID="PanelReportePrev">
+    <asp:Panel runat="server" ID="PanelReportePrev">
         <asp:GridView ID="GridView2" runat="server" Height="67px"
             Width="353px"
             CellPadding="4" ForeColor="#333333" GridLines="None">
@@ -16,6 +16,7 @@
             <SortedDescendingCellStyle BackColor="#FFFDF8" />
             <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
         </asp:GridView>
-
+        <div id="contenedorRepGen" >
+                       </div>
     </asp:Panel>
 </asp:Content>

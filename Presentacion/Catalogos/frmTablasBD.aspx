@@ -6,20 +6,24 @@
   <div class="panel panel-default">
     <div class="panel-heading">FORMULARIO DE REGISTRO DE DATOS</div>
     <div class="panel-body">
-      <form class="form-horizontal" role="form">
-        <div class="form-group">
-          <div class="col-ms-3">
-              <button type="button" id="btnNuevo" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
-              <form class="navbar-form" role="search">
+         
+          <div class="form-group">
+           <div class="col-md-12">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button type="button" id="btnNuevo" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
+                </div>
+                <div class="form-group">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" name="q">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
-            </form>
+                </div>
+            </div>
+           </div>
           </div>
-        </div>
           <div class="form-group">
             <Label class="col-ms-3 control-label">Nombre:</Label>
             <div class="col-ms-9">
@@ -42,7 +46,7 @@
         <button type="button" id="btnGuardar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-saved"></i> Guardar</button>
         <button type="button" id="btnCancelar" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
           </div>
-     </form>
+
     </div>
   </div>
 </div>

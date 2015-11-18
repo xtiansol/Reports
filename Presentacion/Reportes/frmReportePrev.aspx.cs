@@ -40,13 +40,14 @@ namespace Presentacion.Reportes
 
             if (tablasSel != null && aliasTablasSel != null && tablasCampos != null && aliasCampos != null && campos != null)
             {
+                ArrayList sqlGen = new ArrayList();
 
                 while (cont < campos.Count)
                 {
                     dt.Columns.Add(new DataColumn((string)campos[cont], typeof(string)));
                     cont = (cont + 1);
                 }
-
+                sqlGen.Add(ServiciosGen.toStringArrayList(campos, ","));
                 //  Total number of rows.
                 int rowCnt = 0;
                 //  Current row count
@@ -62,7 +63,8 @@ namespace Presentacion.Reportes
 
                 ArrayList camposRel = ServiciosGen.generaCamposRelacion(tablasSel, aliasTablasSel, ServiciosGen.obtieneCamosRelacion(tablasSel));
 
-                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros);
+                ArrayList resp = ServiciosGen.reporteDinamico(ServiciosGen.joinNombreAlias(campos, aliasCampos, "."), tablasSel, aliasTablasSel, camposRel, filtros, ref sqlGen);
+                Session["listGenReporte"] = sqlGen;
                 if (resp != null)
                 {
                     for (rowCtr = 0; (rowCtr < resp.Count); rowCtr++)

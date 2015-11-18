@@ -1,0 +1,1 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/PaginaMaestra/PageMaster.Master" AutoEventWireup="true" CodeBehind="frmGenRep.aspx.cs" Inherits="Presentacion.Reportes.frmGenRep" %>

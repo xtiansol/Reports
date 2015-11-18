@@ -25,17 +25,17 @@ namespace Presentacion.Reportes
             string camposNom = campos;
             if (Session["filtrosSinAlias"] == null)
                 Session["filtrosSinAlias"] = new ArrayList();
-            ArrayList filtrosTablasAlias = ((ArrayList)Session["filtrosTablasAlias"]);
-            ArrayList filtrosSinAlias = (ArrayList)Session["filtrosSinAlias"];
-            ArrayList filtrosConAlias = (ArrayList)Session["filtrosConAlias"];
-            ArrayList filtrosCampos = (ArrayList)Session["filtrosCampos"];
+            ((ArrayList)Session["filtrosTablasAlias"]).Clear();
+            ((ArrayList)Session["filtrosSinAlias"]).Clear();
+            ((ArrayList)Session["filtrosConAlias"]).Clear();
+            ((ArrayList)Session["filtrosCampos"]).Clear();
 
 
             string[] words = filtrosCom.Split('|');
             string[] wordsCamp = campos.Split('|');
-            filtrosTablasAlias.Clear();
-            filtrosSinAlias.Clear();
-            filtrosConAlias.Clear();
+            //filtrosTablasAlias.Clear();
+            //filtrosSinAlias.Clear();
+            //filtrosConAlias.Clear();
             for (int cont = 0; cont < words.Length; cont++)
             {
                 String filtro = words[cont];
@@ -45,10 +45,10 @@ namespace Presentacion.Reportes
                     int index = ((ArrayList)Session["campos"]).IndexOf(camposRec);
                     string alias = (string)((ArrayList)Session["aliasCampos"])[index];
                     string tab = (string)((ArrayList)Session["tablasCampos"])[index];
-                    filtrosTablasAlias.Add(tab);
-                    filtrosSinAlias.Add(filtro);
-                    filtrosConAlias.Add(alias + "." + filtro);
-                    filtrosCampos.Add(camposRec);
+                    ((ArrayList)Session["filtrosTablasAlias"]).Add(tab);
+                    ((ArrayList)Session["filtrosSinAlias"]).Add(filtro);
+                    ((ArrayList)Session["filtrosConAlias"]).Add(alias + "." + filtro);
+                    ((ArrayList)Session["filtrosCampos"]).Add(camposRec);
                 }
             }
 
@@ -212,6 +212,8 @@ namespace Presentacion.Reportes
             string respuesta = "{\"resp\":{\"listaGen\":";
             string resp1 = "";
             string sep = "";
+
+            string tablaUso = "";
             if (tablas != "")
             {
                 string[] words = tablas.Split('|');
@@ -222,6 +224,7 @@ namespace Presentacion.Reportes
                     if (words[cont] != "")
                     {
                         listaTablas.Add(words[cont]);
+                        tablaUso = words[cont];
                     }
 
                 }
@@ -240,7 +243,7 @@ namespace Presentacion.Reportes
                         cont++;
                     }
                 }
-
+                Session["tablaEnUso"] = tablaUso;
                 respuesta = respuesta + "[" + resp1 + "], \"respuesta\":\"Exito\"}}";
             }
             else
@@ -253,31 +256,51 @@ namespace Presentacion.Reportes
 
 
         [WebMethod(EnableSession = true)]
-        public string GuardaNombreReporte(String nombreReporte, String cadenaConsultaReporte)
+        public string GuardaReporteHistorial(String nombreReporte)
         {
-            if (nombreReporte != "" && cadenaConsultaReporte != "")
+            if (nombreReporte != "")
             {
                 Session["nombreReporte"] = nombreReporte;
-                Session["cadenaConsultaReporte"] = cadenaConsultaReporte;
-                if (ServiciosGen.agregaReporteConsulta(nombreReporte, cadenaConsultaReporte))
+                ArrayList listGenReporte = (ArrayList)Session["listGenReporte"];
+                if (ServiciosGen.agregaReporteConsulta(nombreReporte, (string)listGenReporte[0], (string)listGenReporte[1]))
                 {
-                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Agregado");
+                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Reporte Agregado a historial.");
                 }
                 else
-                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Error al agregar reporte.");
+                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Error al agregar reporte a historial.");
             }
             else
             {
-                if (nombreReporte == "")
-                {
-                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Ingrese un nombre valido.");
-                }
-                else
-                {
-                    return string.Format("{{ \"mensaje\" : \"{0} \" }}", "No hay información de la consulta a guardar.");
-                }
+                return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Ingrese un nombre valido.");
+
             }
 
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public string ResetAll()
+        {
+            Session["filtrosTablasAlias"] = new ArrayList();
+            Session["filtrosConAlias"] = new ArrayList();
+            Session["filtrosSinAlias"] = new ArrayList();
+            Session["filtrosCampos"] = new ArrayList();
+
+            //Listas tablas y alias filtros
+            Session["tablasSel"] = new ArrayList();
+            Session["aliasTablasSel"] = new ArrayList();
+
+            //Listas relacionadas de tablas, campos y alias seleccionadas
+            Session["tablasCampos"] = new ArrayList();
+            Session["aliasCampos"] = new ArrayList();
+            Session["campos"] = new ArrayList();
+
+            //tabla en uso
+            Session["tablaEnUso"] = "";
+
+            //Query generado dinámico
+            Session["listGenReporte"] = new ArrayList();
+            return string.Format("{{ \"mensaje\" : \"{0} \" }}", "Borrado.");
         }
 
     }

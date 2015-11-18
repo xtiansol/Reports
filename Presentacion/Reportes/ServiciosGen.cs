@@ -16,6 +16,30 @@ namespace Presentacion.Reportes
 
         private static SQLDispatcher sqlDispatcher = new SQLDispatcher();
 
+        // Valida si el usuario ingresado es valido
+        public static bool esUsuario(string us, string pwd)
+        {
+            config.getConfiguraciones();
+            confArch = config.getConfArch();
+            confBD = config.getConfBD();
+            sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
+            ArrayList colbd = new ArrayList();
+            colbd = sqlDispatcher.getColConsulta(("SELECT                    " + ("P.*               " + ("FROM                       " + ("usuario2 P               "
+                            + (("where P.clave = \'"
+                            + (us + "\' ")) + ("and P.password = \'"
+                            + (pwd + "\' "))))))));
+            if ((!(colbd == null)
+                        && (colbd.Count > 0)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         // Recupera las tablas base de la BD
         public static ArrayList getTablasBase()
         {
@@ -151,7 +175,7 @@ namespace Presentacion.Reportes
 
         }
 
-        public static ArrayList reporteDinamico(ArrayList campos, ArrayList tablas, ArrayList alias, ArrayList relaciones, ArrayList filtros)
+        public static ArrayList reporteDinamico(ArrayList campos, ArrayList tablas, ArrayList alias, ArrayList relaciones, ArrayList filtros, ref ArrayList sqlGenOut)
         {
             string sqlF = "SELECT ";
 
@@ -163,7 +187,6 @@ namespace Presentacion.Reportes
                 sqlCampos = sqlCampos + sep + campo;
                 sep = ", ";
             }
-
             string sqlTablasSel = " FROM ";
             sep = "";
 
@@ -193,14 +216,16 @@ namespace Presentacion.Reportes
             }
 
             sqlF = sqlF + sqlCampos + sqlTablasSel + sqlCondicion;
+            sqlGenOut.Add(sqlF);
 
             return sqlDispatcher.getColConsulta(sqlF);
 
         }
 
-        public static Boolean agregaReporteConsulta(string nombreReporte, string cadenaConsultaReporte)
+        public static Boolean agregaReporteConsulta(string nombreReporte, string cadenaCampos, string cadenaConsultaReporte)
         {
-            string sql = "INSERT INTO NOMBRES_REPORTS VALUES('" + nombreReporte + "', '" + cadenaConsultaReporte + "', GetDate(), 1);";
+            cadenaConsultaReporte = cadenaConsultaReporte.Replace("'", "''");
+            string sql = "INSERT INTO HISTORICO_REPORTES VALUES('" + nombreReporte + "', '" + cadenaCampos + "','" + cadenaConsultaReporte + "', GetDate(), 1);";
             return sqlDispatcher.ejecutaSQL(sql);
         }
 
@@ -221,6 +246,43 @@ namespace Presentacion.Reportes
 
             }
             return resp;
+        }
+
+        public static string toStringArrayList(ArrayList lista, string sep)
+        {
+            string resp = "";
+            string sepAux = "";
+            if (sep == null)
+            {
+                sep = ",";
+            }
+            if (lista != null)
+            {
+                for (int cont = 0; cont < lista.Count; cont++)
+                {
+                    resp = resp + sepAux + lista[cont];
+                    sepAux = sep;
+                }
+            }
+            return resp;
+        }
+
+        // Recupera las tablas base de la BD
+        public static ArrayList getHistorico()
+        {
+            sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
+            return sqlDispatcher.getColConsulta("SELECT TOP 30 * FROM HISTORICO_REPORTES ORDER BY FECHAREG desc");
+        }
+        public static ArrayList getHistoricoById(string id)
+        {
+            sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
+            return sqlDispatcher.getColConsulta("SELECT * FROM HISTORICO_REPORTES WHERE HISTORICOID = " + id + " ORDER BY FECHAREG");
+        }
+
+        public static ArrayList getResultadoSQL(string sql)
+        {
+            sqlDispatcher.getConexion(confBD.NomBD, confBD.Servidor, confBD.Us, confBD.Pwd, Int32.Parse(confBD.BD));
+            return sqlDispatcher.getColConsulta(sql);
         }
     }
 }
