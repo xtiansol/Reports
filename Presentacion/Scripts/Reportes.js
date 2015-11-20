@@ -29,6 +29,7 @@ function ShowFiltrosModal() {
 }
 
 function ShowReportePrevModal() {
+    $("#" + gPrefijo + "idNombreReporte").val("");
     var cont = $("#" + gPrefijo + "CamposSeleccionados option").length;
     if (cont > 0) {
         $("#contenedorFiltro").empty(); //Vacia el contenedor de filtros para que no truene el llamado al generar reporte
