@@ -71,8 +71,8 @@ namespace Presentacion.Reportes
                     linkLatLong = new HyperLink();
                     linkLatLong.ID = "linkRepHisLatLon" + dat[0];
                     linkLatLong.ImageUrl = "../Reportes/img/mapa.gif";
-                    linkLatLong.NavigateUrl = "/Reportes/frmGenRep.aspx?tipo=XLS&rep=" + dat[0];
-                    linkLatLong.Attributes.Add("onClick", "javascript:return AgregaCampoTablaSel_Click(" + dat[0] + ", this);");
+                    linkLatLong.NavigateUrl = "/XXXXXXX/XXXXXXXXX.aspx?historicoID="+dat[0]+"&nombre=" + dat[1];
+                    linkLatLong.Attributes.Add("onClick", "javascript:return AbreVentanaMapa(" + dat[0] + ", '"+dat[1]+"');");
                 }
 
 

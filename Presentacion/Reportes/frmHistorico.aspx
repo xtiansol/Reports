@@ -8,6 +8,13 @@
         $('#contenedorRepHist').attr({ src: "" + obj.href });
         return false;
     }
+
+
+    function AbreVentanaMapa(idHistorial, nombreRep) {
+        alert("va abrir ventana mapa...:"+idHistorial+":"+nombreRep);
+        window.open("/XXXXXXX/XXXXXXXXX.aspx??" + encodeURI("historicoID=" + idHistorial + "&nombre=" + nombreRep), '_blank');
+        return false;
+    }
 </script>
         <asp:Panel runat="server" ID="PanelHistorico">
         </asp:Panel>
