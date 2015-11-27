@@ -5,8 +5,7 @@
     function AgregaCampoTablaSel_Click(id, obj) {
 
         $("#contenedorRepHist").empty(); //Vacia el contenedor de filtros para que no truene el llamado al generar reporte
-        var frame = $get('contenedorRepHist');
-        frame.src = "" + obj.href;
+        $('#contenedorRepHist').attr({ src: "" + obj.href });
         return false;
     }
 </script>

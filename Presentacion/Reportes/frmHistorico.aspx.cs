@@ -64,8 +64,19 @@ namespace Presentacion.Reportes
                 linkExl.NavigateUrl = "/Reportes/frmGenRep.aspx?tipo=XLS&rep=" + dat[0];
                 linkExl.Attributes.Add("onClick", "javascript:return AgregaCampoTablaSel_Click(" + dat[0] + ", this);");
 
+                HyperLink linkLatLong = null;
 
-                AgregarControles(nombreRep, fechaRep, linkPDF, linkExl, (string)dat[0]);
+                if (dat[2]!=null && ((string)dat[2]).ToUpper().IndexOf("LATITUD") >= 0 && ((string)dat[2]).ToUpper().IndexOf("LONGITUD") >= 0)
+                {
+                    linkLatLong = new HyperLink();
+                    linkLatLong.ID = "linkRepHisLatLon" + dat[0];
+                    linkLatLong.ImageUrl = "../Reportes/img/mapa.gif";
+                    linkLatLong.NavigateUrl = "/Reportes/frmGenRep.aspx?tipo=XLS&rep=" + dat[0];
+                    linkLatLong.Attributes.Add("onClick", "javascript:return AgregaCampoTablaSel_Click(" + dat[0] + ", this);");
+                }
+
+
+                AgregarControles(nombreRep, fechaRep, linkPDF, linkExl, (string)dat[0], linkLatLong);
             }
             catch (Exception ex)
             {
@@ -73,7 +84,7 @@ namespace Presentacion.Reportes
             }
         }
 
-        protected void AgregarControles(Label nombreRep, Label fechaRep, HyperLink pdf, HyperLink xls, string id)
+        protected void AgregarControles(Label nombreRep, Label fechaRep, HyperLink pdf, HyperLink xls, string id, HyperLink latLong)
         {
             try
             {
@@ -86,6 +97,11 @@ namespace Presentacion.Reportes
                 PanelHistorico.Controls.Add(pdf);
                 PanelHistorico.Controls.Add(new LiteralControl("&nbsp;"));
                 PanelHistorico.Controls.Add(xls);
+                if (latLong != null)
+                {
+                    PanelHistorico.Controls.Add(new LiteralControl("&nbsp;"));
+                    PanelHistorico.Controls.Add(latLong);
+                }
                 PanelHistorico.Controls.Add(new LiteralControl("</td></tr>"));
 
             }
