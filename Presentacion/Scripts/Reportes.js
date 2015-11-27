@@ -17,11 +17,10 @@ $(document).on({
 });
 
 function ShowFiltrosModal() {
-    //var frame = $get('IframeEdit');
-    //frame.src = "frmFiltros.aspx?UIMODE=EDIT&EID=222";
     var cont = $("#" + gPrefijo + "CamposSeleccionados option").length;
     if (cont > 0) {
-        $("#contenedorFiltro").load("frmFiltros.aspx");
+        $("#contenedorFiltro").empty();
+        $("#contenedorFiltro").load("/Reportes/frmFiltros.aspx");
         $find('mpeSeleccion').show();
     } else {
         alert("Seleccione campos al reporte");
