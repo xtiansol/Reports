@@ -426,6 +426,29 @@ function llenaListaTablasBDRel() {
     }
 }
 
+function llenaListaTablasBDRel2() {
+    var idComp = gPrefijo + 'TablasBD';
+    var idComp2 = gPrefijo + 'TablaBaseSel';
+    //obtieneTablasRel('vehiculo');
+    var tabSel = "";
+    var sep = "";
+
+    //$("#" + idComp + " option:selected").each(function () {
+    //    arrTabSel.push($(this).html());
+    //    arrAliasTabSel.push("alias" + $(this).html());
+    //    agregaElementoLista(idComp2, $(this).html(), $(this).html());
+    //});
+
+    var listTablasSelec = obtieneTablasSeleccionadas("|");
+    obtieneTablasRel(listTablasSelec, function (list) {
+        llenaListaGen(idComp, list);
+    });
+
+    mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
+}
+
+
+
 function llenaListaCamposTablasSel() {
     var idComp = gPrefijo + 'TablaBaseSel';
     var idComp2 = gPrefijo + 'CamposTalbaBaseSel';
@@ -550,7 +573,7 @@ function quitaListaTablasBD() {
         });
 
         if ($("#" + idComp2 + " option").length > 0) {
-            llenaListaTablasBDRel();
+            llenaListaTablasBDRel2();
             mantieneTablasSel(toStringArr(arrTabSel, '|'), toStringArr(arrAliasTabSel, '|'), null);
         } else {
             //llenaListaTablasBD();
